@@ -7,19 +7,13 @@ import java.awt.event.ActionListener;
 
 public class Action extends javax.swing.JPanel {
 
-    public Action(ModelAction data) {
+    public Action(ModelActionProduct data) {
         initComponents();
-        cmdEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                data.getEvent().update(data.getStudent());
-            }
+        cmdEdit.addActionListener((ActionEvent ae) -> {
+            data.getEvent().update(data.getProduct());
         });
-        cmdDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                data.getEvent().delete(data.getStudent());
-            }
+        cmdDelete.addActionListener((ActionEvent ae) -> {
+            data.getEvent().delete(data.getProduct());
         });
     }
 

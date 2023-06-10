@@ -1,10 +1,10 @@
 package com.raven.model;
 
-import com.raven.swing.table.EventAction;
-import com.raven.swing.table.ModelAction;
+import com.raven.swing.table.ModelActionProduct;
 import com.raven.swing.table.ModelProfile;
 import java.text.DecimalFormat;
 import javax.swing.Icon;
+import com.raven.swing.table.EventActionProduct;
 
 public class ModelStudent {
 
@@ -65,8 +65,8 @@ public class ModelStudent {
     private String course;
     private double fees;
 
-    public Object[] toRowTable(EventAction event) {
-        DecimalFormat df = new DecimalFormat("$#,##0.00");
-        return new Object[]{new ModelProfile(icon, name), gender, course, df.format(fees), new ModelAction(this, event)};
-    }
+//    public Object[] toRowTable(EventActionProduct event) {
+//        DecimalFormat df = new DecimalFormat("$#,##0.00");
+//        return new Object[]{new ModelProfile(icon, name), gender, course, df.format(fees), new ModelActionProduct(this, event)};
+//    }
 }
