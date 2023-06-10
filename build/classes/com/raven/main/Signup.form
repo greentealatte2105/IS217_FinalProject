@@ -109,7 +109,7 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
-                              <Component id="buttonEffect1" min="-2" pref="199" max="-2" attributes="0"/>
+                              <Component id="bSignUp" min="-2" pref="199" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="20" max="32767" attributes="0"/>
@@ -131,7 +131,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="txtConfirm" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="buttonEffect1" pref="51" max="32767" attributes="0"/>
+                      <Component id="bSignUp" pref="51" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -142,21 +142,33 @@
               <Properties>
                 <Property name="hint" type="java.lang.String" value="User name"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUsernameKeyReleased"/>
+              </Events>
             </Component>
             <Component class="com.raven.swing.TextField" name="txtPhone">
               <Properties>
                 <Property name="hint" type="java.lang.String" value="Phone"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPhoneKeyReleased"/>
+              </Events>
             </Component>
             <Component class="com.raven.swing.TextField" name="txtEmail">
               <Properties>
                 <Property name="hint" type="java.lang.String" value="E-mail"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtEmailKeyReleased"/>
+              </Events>
             </Component>
             <Component class="com.raven.swing.PasswordField" name="txtPassword">
               <Properties>
                 <Property name="hint" type="java.lang.String" value="Password"/>
               </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPasswordKeyReleased"/>
+              </Events>
             </Component>
             <Component class="com.raven.swing.PasswordField" name="txtConfirm">
               <Properties>
@@ -166,7 +178,7 @@
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtConfirmKeyReleased"/>
               </Events>
             </Component>
-            <Component class="com.raven.swing.ButtonEffect" name="buttonEffect1">
+            <Component class="com.raven.swing.ButtonEffect" name="bSignUp">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -177,7 +189,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonEffect1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bSignUpActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -4,6 +4,7 @@
  */
 package com.raven.main;
 
+import com.raven.dao.UserDAO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -238,11 +239,18 @@ public class Login extends javax.swing.JFrame {
 
     private void bLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLoginActionPerformed
         // TODO add your handling code here:
-        String user = txtUsername.getText();
+         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
-        if (user.equals("admin") && pass.equals("admin"))
-        {
-            System.out.println("ProjectCafe.Login.bLoginActionPerformed()");
+//        // code chưa connect sql
+//        if (user.equals("admin") && pass.equals("admin"))
+//        {
+//            System.out.println("ProjectCafe.Login.bLoginActionPerformed()");
+//            setVisible(false);
+//            new Main().setVisible(true);
+//        }
+            // code sử dụng database
+        boolean check = UserDAO.login(user, pass);
+        if (check) {
             setVisible(false);
             new Main().setVisible(true);
         }

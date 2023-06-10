@@ -4,6 +4,8 @@
  */
 package com.raven.main;
 
+import com.raven.dao.UserDAO;
+import com.raven.model.User;
 import java.awt.Color;
 
 /**
@@ -11,13 +13,47 @@ import java.awt.Color;
  * @author dothinhtpr247gmai.com
  */
 public class Signup extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Sigup
-     */
+    public String emailPattern = "^[a-zA-Z0-9]+[@]+[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+";
+    public String phoneNumerPattern = "^[0-9]{10}$";
     public Signup() {
         initComponents();
 //        setBackground(new Color(0,0,0,0));
+        setColorbSignup(false);
+        
+    }
+    
+    public void setColorbSignup(boolean validate){
+        if (validate == true){
+            bSignUp.setEnabled(true);
+            bSignUp.setForeground(Color.green);
+        }
+        else{
+            bSignUp.setEnabled(false);
+            bSignUp.setForeground(Color.RED);
+        }
+    }
+    
+    public void clear(){
+        txtUsername.setText("");
+        txtPassword.setText("");
+        txtEmail.setText("");
+        txtPhone.setText("");
+        txtConfirm.setText("");
+        setColorbSignup(false);
+    }
+    
+    public void validateFields(){
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
+        String confirm = txtConfirm.getText();
+        String email = txtEmail.getText();
+        String phoneNumber = txtPhone.getText();
+        if (!username.equals("") && !password.equals("") && password.equals(confirm)
+                && phoneNumber.matches(phoneNumerPattern) && email.matches(emailPattern)) {
+            setColorbSignup(true);
+        }   
+        else
+            setColorbSignup(false);
     }
 
     /**
@@ -36,7 +72,7 @@ public class Signup extends javax.swing.JFrame {
         txtEmail = new com.raven.swing.TextField();
         txtPassword = new com.raven.swing.PasswordField();
         txtConfirm = new com.raven.swing.PasswordField();
-        buttonEffect1 = new com.raven.swing.ButtonEffect();
+        bSignUp = new com.raven.swing.ButtonEffect();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         bExit = new com.raven.swing.Button();
@@ -52,12 +88,32 @@ public class Signup extends javax.swing.JFrame {
         panel.setOpaque(false);
 
         txtUsername.setHint("User name");
+        txtUsername.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtUsernameKeyReleased(evt);
+            }
+        });
 
         txtPhone.setHint("Phone");
+        txtPhone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPhoneKeyReleased(evt);
+            }
+        });
 
         txtEmail.setHint("E-mail");
+        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtEmailKeyReleased(evt);
+            }
+        });
 
         txtPassword.setHint("Password");
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyReleased(evt);
+            }
+        });
 
         txtConfirm.setHint("Confirm Password");
         txtConfirm.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -66,12 +122,12 @@ public class Signup extends javax.swing.JFrame {
             }
         });
 
-        buttonEffect1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonEffect1.setText("SIGN UP");
-        buttonEffect1.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
-        buttonEffect1.addActionListener(new java.awt.event.ActionListener() {
+        bSignUp.setForeground(new java.awt.Color(255, 255, 255));
+        bSignUp.setText("SIGN UP");
+        bSignUp.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        bSignUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonEffect1ActionPerformed(evt);
+                bSignUpActionPerformed(evt);
             }
         });
 
@@ -94,7 +150,7 @@ public class Signup extends javax.swing.JFrame {
                                     .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(panelLayout.createSequentialGroup()
                         .addGap(57, 57, 57)
-                        .addComponent(buttonEffect1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(bSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
@@ -111,7 +167,7 @@ public class Signup extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(buttonEffect1, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                .addComponent(bSignUp, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
         );
 
@@ -257,12 +313,40 @@ public class Signup extends javax.swing.JFrame {
             txtConfirm.correct();
         else
             txtConfirm.fail();
-
+        validateFields();
     }//GEN-LAST:event_txtConfirmKeyReleased
 
-    private void buttonEffect1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEffect1ActionPerformed
+    private void bSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSignUpActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonEffect1ActionPerformed
+        User user = new User();
+        user.setUserName(txtUsername.getText());
+        user.setPhoneNumber(txtPhone.getText());
+        user.seteMail(txtEmail.getText());
+        user.setPassword(txtPassword.getText());    
+        bSignUp.setEnabled(true);
+        UserDAO.save(user); 
+        clear();
+    }//GEN-LAST:event_bSignUpActionPerformed
+
+    private void txtUsernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsernameKeyReleased
+        // TODO add your handling code here
+        validateFields();
+    }//GEN-LAST:event_txtUsernameKeyReleased
+
+    private void txtPhoneKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneKeyReleased
+        // TODO add your handling code here:
+        validateFields();
+    }//GEN-LAST:event_txtPhoneKeyReleased
+
+    private void txtEmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyReleased
+        // TODO add your handling code here:
+        validateFields();
+    }//GEN-LAST:event_txtEmailKeyReleased
+
+    private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+        // TODO add your handling code here:
+        validateFields();
+    }//GEN-LAST:event_txtPasswordKeyReleased
 
     /**
      * @param args the command line arguments
@@ -302,8 +386,8 @@ public class Signup extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button bExit;
+    private com.raven.swing.ButtonEffect bSignUp;
     private com.raven.component.BackgroundSignup backgroundSignup1;
-    private com.raven.swing.ButtonEffect buttonEffect1;
     private com.raven.component.footer footerLoginfail1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
