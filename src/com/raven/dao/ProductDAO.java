@@ -18,6 +18,19 @@ public class ProductDAO {
         String query = "insert into product (name,category,price) values('" + product.getName() + "','" + product.getIdCategory() + "','" + product.getPrice() + "') ";
         DbOperations.SetDataOrDelete(query, "Product Added Successfully");
     }
+    public static String getProductName(int idProduct){
+        String productName = "";
+        ResultSet rs = DbOperations.getData("select name from ProductCategory where id=" + idProduct);
+        try {
+            while (rs.next()){
+            productName = rs.getString("name");
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productName;
+    }
+    
     public static ArrayList<Product> getAllRecords() {
         ArrayList<Product> arrayList = new ArrayList<>();
         try {

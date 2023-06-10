@@ -4,6 +4,7 @@
  */
 package com.raven.model;
 
+import com.raven.dao.ProductDAO;
 import com.raven.swing.table.ModelActionProduct;
 import java.text.DecimalFormat;
 import com.raven.swing.table.EventActionProduct;
@@ -63,7 +64,8 @@ public class Product {
     
     public Object[] toRowTable(EventActionProduct event) {
         DecimalFormat df = new DecimalFormat("#,##0 VND");
-        return new Object[]{id, name, idCategory, df.format(price), new ModelActionProduct(this, event) };
+//        return new Object[]{id, name, idCategory, df.format(price), new ModelActionProduct(this, event) };
+        return new Object[]{id, name, ProductDAO.getProductName(idCategory), df.format(price), new ModelActionProduct(this, event) };
     }
     
 }
