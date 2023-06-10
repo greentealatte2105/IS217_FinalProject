@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="icon">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/classes/com/raven/icon/iwhite_exit 3.zip!/" />
+      <root url="jar://$PROJECT_DIR$/build/classes/com/raven/icon/iwhite_exit.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
