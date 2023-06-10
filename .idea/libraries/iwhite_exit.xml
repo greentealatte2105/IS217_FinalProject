@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="iwhite_exit">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/com/raven/icon/iwhite_exit.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
