@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
 public class Header extends javax.swing.JPanel {
-
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -21,15 +20,12 @@ public class Header extends javax.swing.JPanel {
         lbRole.setText(this.role);
     }
     
-    private String userName;
-    private String role;
+    private String userName = "";
+    private String role = "";
     public Header() {
         initComponents();
         setOpaque(true);
-        userName = "User name";
-        role = "Staff";
         updateProfile();
-        
     }
    
 

@@ -26,8 +26,17 @@ public class Main extends javax.swing.JFrame {
     private Header header;
     private MainForm main;
     private Animator animator;
-
+    private String username;
+    private String role;
+    
     public Main() {
+        initComponents();
+        init();
+    }
+    
+    public Main(String username, String role) {
+        this.username = username; // Store the username value
+        this.role = role;
         initComponents();
         init();
     }
@@ -38,6 +47,10 @@ public class Main extends javax.swing.JFrame {
         menu = new Menu();
         header = new Header();
         main = new MainForm();
+        // pass username from Main to header
+        header.setUserName(this.username);
+        header.setRole(this.role);
+        header.updateProfile();
         // show form
         menu.addEvent(new EventMenuSelected() {
             @Override
