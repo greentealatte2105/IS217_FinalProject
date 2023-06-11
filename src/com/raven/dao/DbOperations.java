@@ -12,6 +12,16 @@ import javax.swing.JOptionPane;
  * @author Thien
  */
 public class DbOperations {
+    public static void SetDataOrDelete(PreparedStatement stmt, String msg) {
+        try {
+            stmt.executeUpdate();
+            if (!msg.equals("")) {
+                JOptionPane.showMessageDialog(null, msg);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e, "Message", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     public static void SetDataOrDelete(String query, String msg){
         try {
             Connection con = ConnectionProvider.getCon();

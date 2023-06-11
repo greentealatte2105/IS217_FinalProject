@@ -5,6 +5,7 @@
 package com.raven.dao;
 
 import com.raven.model.Product;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -31,6 +32,54 @@ public class ProductDAO {
         return productName;
     }
     
+    public static void update(Product product) {
+        try {
+            String query = "UPDATE product SET name = ?, category = ?, price = ? WHERE id = ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getIdCategory());
+            stmt.setDouble(3, product.getPrice());
+            stmt.setInt(4, product.getId());
+            DbOperations.SetDataOrDelete(stmt, "Product Updated Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    public static void delete(int productId) {
+        try {
+            String query = "DELETE FROM product WHERE id = ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setInt(1, productId);
+            DbOperations.SetDataOrDelete(stmt, "Product Deleted Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    public static ArrayList<Product> getRecordsByIdCategory(int idCategory) {
+        ArrayList<Product> arrayList = new ArrayList<>();
+        try {
+            String query = "SELECT product.id, product.name, product.price, productCategory.name AS category " +
+                            "FROM product " +
+                            "JOIN productCategory ON product.idCategory = productCategory.id " +
+                            "WHERE productCategory.id = %s;";
+            query = String.format(query, Integer.toString(idCategory));
+            ResultSet rs = DbOperations.getData(query);
+            while(rs.next()){
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+//                product.setIdCategory(rs.getInt("category"));
+                product.setPrice(rs.getInt("price"));
+                arrayList.add(product);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        return arrayList;
+    }
     public static ArrayList<Product> getAllRecords() {
         ArrayList<Product> arrayList = new ArrayList<>();
         try {
