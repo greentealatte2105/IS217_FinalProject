@@ -20,7 +20,7 @@ public class Card extends javax.swing.JPanel {
     public Card(ProductCategory productCategory) {
         initComponents();
         setOpaque(false);
-        setSize(138, 72);
+        setSize(138, 40);
         this.productCategory = productCategory;
         updateProductCategory();
     }

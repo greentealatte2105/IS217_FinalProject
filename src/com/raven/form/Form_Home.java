@@ -49,7 +49,7 @@ public class Form_Home extends javax.swing.JPanel {
         
 //        addProduct(new Card(new Product(0,"Tra sua",10000)));
 //        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        ArrayList<Product> list = ProductDAO.getAllRecords();
+        ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(2);
         Iterator<Product> itr = list.iterator();
         while (itr.hasNext()) {
             Product productObj = itr.next();
