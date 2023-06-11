@@ -1,13 +1,17 @@
 package com.raven.form;
 
+import com.raven.dao.ProductDAO;
 import com.raven.component.Card;
 import com.raven.component.billInfoRow;
+import com.raven.dao.ProductCategoryDAO;
 import com.raven.dialog.Message;
 import com.raven.main.Main;
 import com.raven.model.Product;
+import com.raven.model.ProductCategory;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 
 public class Form_Home extends javax.swing.JPanel {
@@ -19,13 +23,23 @@ public class Form_Home extends javax.swing.JPanel {
         scrollBill.setVerticalScrollBar(new ScrollBarCustom());
         scrollProduct.setVerticalScrollBar(new ScrollBarCustom());
         initBillInfo();
+        initCategoryCard();
         initProductCard();
+    }
+    
+    private void initCategoryCard() {
+        ArrayList<ProductCategory> list = ProductCategoryDAO.getAllRecords();
+        Iterator<ProductCategory> itr = list.iterator();
+        while (itr.hasNext()) {
+            ProductCategory productCategoryObj = itr.next();
+            addCategory( new Card( new ProductCategory(productCategoryObj.getId(), productCategoryObj.getName() ) ) );
+        }
     }
     private void initBillInfo() {
         addBillRow(new billInfoRow(new Product(1,"Tra vvvvvsua", 200000)));
         addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
         
-       addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
+        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
         addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
         addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
         addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
@@ -33,66 +47,27 @@ public class Form_Home extends javax.swing.JPanel {
     
     private void initProductCard(){
         
+//        addProduct(new Card(new Product(0,"Tra sua",10000)));
+//        addProduct(new Card(new Product(0,"Tra sua",10000)));
+        ArrayList<Product> list = ProductDAO.getAllRecords();
+        Iterator<Product> itr = list.iterator();
+        while (itr.hasNext()) {
+            Product productObj = itr.next();
+//            table1.addRow(new Object[]{productObj.getId(), productObj.getName(), productObj.getIdCategory(), productObj.getPrice()} );
+            addProduct(new Card(new Product(productObj.getId(), productObj.getName(), productObj.getIdCategory(), productObj.getPrice())));
+        }
         
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        addProduct(new Card(new Product(0,"Tra sua",10000)));
-        
-
     }
 
     private void addBillRow(billInfoRow row){
         billPanel.add(row);
     }
-    
-   private void addProduct(Card card){
-       productView.add(card);
-  }
+    private void addCategory(Card card){
+        panelBorder3.add(card);
+    }
+    private void addProduct(Card card){
+        productView.add(card);
+    }
     public void setProducts(ArrayList<Product> products){
         this.products = products;
     }

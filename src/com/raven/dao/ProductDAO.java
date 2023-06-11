@@ -30,6 +30,29 @@ public class ProductDAO {
         }
         return productName;
     }
+    public static ArrayList<Product> getRecordsByIdCategory(int idCategory) {
+        ArrayList<Product> arrayList = new ArrayList<>();
+        try {
+            String query = "SELECT product.id, product.name, product.price, productCategory.name AS category " +
+                            "FROM product " +
+                            "JOIN productCategory ON product.idCategory = productCategory.id " +
+                            "WHERE productCategory.id = %s;";
+            query = String.format(query, Integer.toString(idCategory));
+            ResultSet rs = DbOperations.getData(query);
+            while(rs.next()){
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+//                product.setIdCategory(rs.getInt("category"));
+                product.setPrice(rs.getInt("price"));
+                arrayList.add(product);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        return arrayList;
+    }
     
     public static ArrayList<Product> getAllRecords() {
         ArrayList<Product> arrayList = new ArrayList<>();
@@ -49,6 +72,5 @@ public class ProductDAO {
         }
 
         return arrayList;
-
     }
 }

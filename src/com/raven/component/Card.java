@@ -1,6 +1,7 @@
 package com.raven.component;
 
 import com.raven.model.Product;
+import com.raven.model.ProductCategory;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -12,18 +13,30 @@ import java.text.DecimalFormat;
 public class Card extends javax.swing.JPanel {
 
     private Product product;
+    private ProductCategory productCategory;
    
     private Color colorGradient;
-
+    
+    public Card(ProductCategory productCategory) {
+        initComponents();
+        setOpaque(false);
+        setSize(138, 72);
+        this.productCategory = productCategory;
+        updateProductCategory();
+    }
+    
     public Card(Product product) {
         initComponents();
         setOpaque(false);
         setSize(138, 72);
         this.product = product;
-        update();
+        updateProduct();
     }
-
-    public void update() {
+    
+    public void updateProductCategory() {
+        lbProductName.setText(productCategory.getName());
+    }
+    public void updateProduct() {
        lbProductName.setText(product.getName());
        DecimalFormat df = new DecimalFormat("#,###,###");
        priceView.setText(df.format(product.getPrice()));

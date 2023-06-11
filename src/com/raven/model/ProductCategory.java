@@ -14,6 +14,14 @@ import com.raven.swing.table.EventActionProduct;
 public class ProductCategory {
     private int id;
     private String name;
+
+    public ProductCategory(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public ProductCategory() {
+    }
     
 
     public int getId() {
