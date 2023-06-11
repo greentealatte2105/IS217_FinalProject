@@ -4,9 +4,6 @@
  */
 package com.raven.model;
 
-import java.text.DecimalFormat;
-import com.raven.swing.table.EventActionProduct;
-
 /**
  *
  * @author dothinhtpr247gmai.com
@@ -41,8 +38,5 @@ public class ProductCategory {
     }
 
     
-    public Object[] toRowTable(EventActionProduct event) {
-        return new Object[]{id, name };
-    }
     
 }

@@ -5,12 +5,14 @@ import com.raven.component.Menu;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
 import com.raven.form.Form1;
-import com.raven.form.Form_Home;
+import com.raven.form.OrderForm;
 import com.raven.form.MainForm;
+import com.raven.model.User;
 import com.raven.swing.MenuItem;
 import com.raven.swing.PopupMenu;
 import com.raven.swing.icon.GoogleMaterialDesignIcons;
 import com.raven.swing.icon.IconFontSwing;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,31 +28,28 @@ public class Main extends javax.swing.JFrame {
     private Header header;
     private MainForm main;
     private Animator animator;
-    private String username;
-    private String role;
-    
+    private User user;
+
     public Main() {
         initComponents();
+//        setBackground(new Color(0,0,0,0));
+//        bg.setBackground(new Color(0,0,0,0));
+
+
         init();
     }
-    
-    public Main(String username, String role) {
-        this.username = username; // Store the username value
-        this.role = role;
-        initComponents();
-        init();
+    public void setUser(User user){
+        this.user = user;
+
     }
 
     private void init() {
-        layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
+        layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[100%, fill]0");
         bg.setLayout(layout);
         menu = new Menu();
         header = new Header();
         main = new MainForm();
-        // pass username from Main to header
-        header.setUserName(this.username);
-        header.setRole(this.role);
-        header.updateProfile();
+//        header.showProfile(user);
         // show form
         menu.addEvent(new EventMenuSelected() {
             @Override
@@ -58,7 +57,7 @@ public class Main extends javax.swing.JFrame {
                 System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 if (menuIndex == 0) {
                     if (subMenuIndex == 0) {
-                        main.showForm(new Form_Home());
+                        main.showForm(new OrderForm());
                     } else if (subMenuIndex == 1) {
                         main.showForm(new Form1());
                     }
@@ -77,7 +76,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
         menu.initMenuItem();
-        bg.add(menu, "w 230!, spany 2");    // Span Y 2cell
+        bg.add(menu, "w 200!, spany 2");    // Span Y 2cell
         bg.add(header, "h 50!, wrap");
         bg.add(main, "w 100%, h 100%");
         
@@ -86,9 +85,9 @@ public class Main extends javax.swing.JFrame {
             public void timingEvent(float fraction) {
                 double width;
                 if (menu.isShowMenu()) {
-                    width = 60 + (170 * (1f - fraction));
+                    width = 60 + (150 * (1f - fraction));
                 } else {
-                    width = 60 + (170 * fraction);
+                    width = 60 + (150 * fraction);
                 }
                 layout.setComponentConstraints(menu, "w " + width + "!, spany2");
                 menu.revalidate();
@@ -120,20 +119,19 @@ public class Main extends javax.swing.JFrame {
         //  Init google icon font
         IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont());
         //  Start with this form
-        main.showForm(new Form_Home());
+        main.showForm(new OrderForm());
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bg = new javax.swing.JLayeredPane();
+        bg = new com.raven.swing.PanelBorder();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        bg.setBackground(new java.awt.Color(245, 245, 245));
-        bg.setOpaque(true);
+        bg.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -150,11 +148,11 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -184,6 +182,7 @@ public class Main extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -195,6 +194,6 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLayeredPane bg;
+    private com.raven.swing.PanelBorder bg;
     // End of variables declaration//GEN-END:variables
 }

@@ -44,8 +44,8 @@ public class Signup extends javax.swing.JFrame {
     
     public void validateFields(){
         String username = txtUsername.getText();
-        String password = txtPassword.getText();
-        String confirm = txtConfirm.getText();
+        String password = String.valueOf(txtPassword.getPassword());
+        String confirm = String.valueOf(txtConfirm.getPassword());
         String email = txtEmail.getText();
         String phoneNumber = txtPhone.getText();
         if (!username.equals("") && !password.equals("") && password.equals(confirm)
@@ -322,7 +322,7 @@ public class Signup extends javax.swing.JFrame {
         user.setUserName(txtUsername.getText());
         user.setPhoneNumber(txtPhone.getText());
         user.seteMail(txtEmail.getText());
-        user.setPassword(txtPassword.getText());    
+        user.setPassword(String.valueOf(txtPassword.getPassword()));    
         bSignUp.setEnabled(true);
         UserDAO.save(user); 
         clear();

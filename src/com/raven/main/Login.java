@@ -4,7 +4,6 @@
  */
 package com.raven.main;
 
-import com.raven.component.Header;
 import com.raven.dao.UserDAO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -14,14 +13,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author dothinhtpr247gmai.com
  */
 public class Login extends javax.swing.JFrame {
-    private Header header;
+
+    /**
+     * Creates new form Signin
+     */
     public Login() {
         initComponents();
     }
@@ -238,7 +239,7 @@ public class Login extends javax.swing.JFrame {
 
     private void bLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLoginActionPerformed
         // TODO add your handling code here:
-        String user = txtUsername.getText();
+         String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
 //        // code chưa connect sql
 //        if (user.equals("admin") && pass.equals("admin"))
@@ -248,12 +249,10 @@ public class Login extends javax.swing.JFrame {
 //            new Main().setVisible(true);
 //        }
             // code sử dụng database
-        int loginID = UserDAO.login(user, pass);
-        if (loginID > 0) {
+        boolean check = UserDAO.login(user, pass);
+        if (check) {
             setVisible(false);
-            // pass username in loginForm to Main
-            String role = UserDAO.getUserRole(loginID);
-            new Main(user, role).setVisible(true);
+            new Main().setVisible(true);
         }
     }//GEN-LAST:event_bLoginActionPerformed
 

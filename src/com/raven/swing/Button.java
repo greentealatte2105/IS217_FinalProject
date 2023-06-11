@@ -36,7 +36,7 @@ public class Button extends JButton {
     public Button() {
         setContentAreaFilled(false);
         setBorder(new EmptyBorder(5, 5, 5, 5));
-        setBackground(Color.WHITE);
+        setBackground(new Color(0,0,0,0));
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {
             @Override
@@ -73,7 +73,7 @@ public class Button extends JButton {
         Graphics2D g2 = img.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, width, height, height, height);
+        g2.fillRoundRect(0, 0, width, height, 14, 16);
         if (pressedPoint != null) {
             g2.setColor(effectColor);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));

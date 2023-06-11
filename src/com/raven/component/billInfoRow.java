@@ -67,6 +67,7 @@ public class billInfoRow extends javax.swing.JPanel {
             }
         });
 
+        bDelete.setBackground(new java.awt.Color(255, 255, 255));
         bDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/delete.png"))); // NOI18N
         bDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

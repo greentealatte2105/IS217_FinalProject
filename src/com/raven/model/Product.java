@@ -1,19 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.raven.model;
 
 import com.raven.dao.ProductDAO;
-import com.raven.swing.table.ModelActionProduct;
 import java.text.DecimalFormat;
-import com.raven.swing.table.EventActionProduct;
+
 
 /**
  *
  * @author dothinhtpr247gmai.com
  */
 public class Product {
+
+    public Product(int id, String name, int price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
     private int id;
     private String name;
     private int idCategory;
@@ -25,11 +27,7 @@ public class Product {
         this.idCategory = idCategory;
         this.price = price;
     }
-    public Product(int id, String name, int price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-    }
+
     public Product() {
     }
     
@@ -66,10 +64,5 @@ public class Product {
         this.price = price;
     }
     
-    public Object[] toRowTable(EventActionProduct event) {
-        DecimalFormat df = new DecimalFormat("#,##0 VND");
-//        return new Object[]{id, name, idCategory, df.format(price), new ModelActionProduct(this, event) };
-        return new Object[]{id, name, ProductDAO.getProductName(idCategory), df.format(price), new ModelActionProduct(this, event) };
-    }
     
 }

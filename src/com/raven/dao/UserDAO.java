@@ -14,8 +14,8 @@ import javax.swing.*;
  * @author Thien
  */
 public class UserDAO {
-    public static int login(String username, String password){
-//        User user = null;
+    public static boolean login(String username, String password){
+        User user = null;
         try {
             Connection con = ConnectionProvider.getCon();
             String storedFunction = "Call USP_Login(?, ?)";
@@ -25,37 +25,22 @@ public class UserDAO {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             
-            // trả về là id (default là 0), cho nên id > 0 là có tồn tại
-            int loginID = 0;
+            // kiểm tra hợp lệ
+            boolean loginStatus = false;
             if (resultSet.next()){
-                loginID = resultSet.getInt("id");
+                loginStatus = resultSet.getBoolean("login_status");
             }
             
-            if (loginID > 0) {
+            if (loginStatus) {
                 JOptionPane.showMessageDialog(null, "Welcome " + username);
-                return loginID;
+                return true;
             }
             else
                 JOptionPane.showMessageDialog(null, "Username or password is incorrect!", "ERROR", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        return 0;
-    }
-    
-    public static String getUserRole(int id){
-        try {
-            String query = "SELECT Role FROM Account WHERE id=" +id;
-            ResultSet rs = DbOperations.getData(query);
-            if (rs.next()) {
-                String role = rs.getString("role");
-                return role;
-            }
-        }
-        catch (Exception e){
-            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return "";
+        return false;
     }
     
     public static void save(User user){
