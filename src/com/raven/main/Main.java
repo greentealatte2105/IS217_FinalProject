@@ -5,7 +5,7 @@ import com.raven.component.Menu;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
 import com.raven.form.Form1;
-import com.raven.form.Form_Home;
+import com.raven.form.OrderForm;
 import com.raven.form.MainForm;
 import com.raven.model.User;
 import com.raven.swing.MenuItem;
@@ -44,7 +44,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void init() {
-        layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[100%, fill]10");
+        layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[100%, fill]0");
         bg.setLayout(layout);
         menu = new Menu();
         header = new Header();
@@ -57,24 +57,24 @@ public class Main extends javax.swing.JFrame {
                 System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 if (menuIndex == 0) {
                     if (subMenuIndex == 0) {
-                        main.showForm(new Form_Home());
+                        main.showForm(new OrderForm());
                     } else if (subMenuIndex == 1) {
                         main.showForm(new Form1());
                     }
                 }
             }
         });
-//        menu.addEventShowPopup(new EventShowPopupMenu() {
-//            @Override
-//            public void showPopup(Component com) {
-//                MenuItem item = (MenuItem) com;
-//                PopupMenu popup = new PopupMenu(Main.this, item.getIndex(), item.getEventSelected(), item.getMenu().getSubMenu());
-//                int x = Main.this.getX() + 52;
-//                int y = Main.this.getY() + com.getY() + 86;
-//                popup.setLocation(x, y);
-//                popup.setVisible(true);
-//            }
-//        });
+        menu.addEventShowPopup(new EventShowPopupMenu() {
+            @Override
+            public void showPopup(Component com) {
+                MenuItem item = (MenuItem) com;
+                PopupMenu popup = new PopupMenu(Main.this, item.getIndex(), item.getEventSelected(), item.getMenu().getSubMenu());
+                int x = Main.this.getX() + 52;
+                int y = Main.this.getY() + com.getY() + 86;
+                popup.setLocation(x, y);
+                popup.setVisible(true);
+            }
+        });
         menu.initMenuItem();
         bg.add(menu, "w 200!, spany 2");    // Span Y 2cell
         bg.add(header, "h 50!, wrap");
@@ -85,9 +85,9 @@ public class Main extends javax.swing.JFrame {
             public void timingEvent(float fraction) {
                 double width;
                 if (menu.isShowMenu()) {
-                    width = 60 + (170 * (1f - fraction));
+                    width = 60 + (150 * (1f - fraction));
                 } else {
-                    width = 60 + (170 * fraction);
+                    width = 60 + (150 * fraction);
                 }
                 layout.setComponentConstraints(menu, "w " + width + "!, spany2");
                 menu.revalidate();
@@ -119,7 +119,7 @@ public class Main extends javax.swing.JFrame {
         //  Init google icon font
         IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont());
         //  Start with this form
-        main.showForm(new Form_Home());
+        main.showForm(new OrderForm());
     }
 
     @SuppressWarnings("unchecked")

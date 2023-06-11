@@ -98,7 +98,7 @@ public class Background extends JComponent {
             BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = img.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+            g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 3, 4));
             g2.setComposite(AlphaComposite.SrcIn);
             g2.drawImage(bufferedImage, 0, 0, null);
             g2.dispose();

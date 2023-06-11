@@ -36,7 +36,7 @@ public class PasswordField extends JPasswordField {
         setBackground(new Color(0, 0, 0, 0));
         setForeground(new Color(255, 255, 255));
         setSelectionColor(new Color(200, 200, 200, 100));
-        animator = new Animator(100, new TimingTargetAdapter() {
+        animator = new Animator(50, new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
                 if (show) {

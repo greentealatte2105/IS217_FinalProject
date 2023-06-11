@@ -23,6 +23,7 @@ public class PanelBorder extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 204, 204));
+        setAutoscrolls(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -41,7 +42,7 @@ public class PanelBorder extends javax.swing.JPanel {
         Graphics2D g2 = (Graphics2D) grphcs;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 3, 4);
         super.paintComponent(grphcs);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

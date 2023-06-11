@@ -14,7 +14,7 @@
       <Dimension value="[138, 72]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[138, 72]"/>
+      <Dimension value="[120, 70]"/>
     </Property>
   </Properties>
   <Events>
@@ -38,12 +38,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel3" min="-2" pref="37" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                      <Component id="priceView" max="32767" attributes="0"/>
-                  </Group>
-                  <Component id="lbProductName" max="32767" attributes="0"/>
+                  <Component id="lbProductName" pref="140" max="32767" attributes="0"/>
+                  <Component id="priceView" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -52,12 +48,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="lbProductName" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="priceView" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+              <EmptySpace pref="10" max="32767" attributes="0"/>
+              <Component id="priceView" min="-2" pref="23" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,7 +62,7 @@
           <Color blue="7a" green="83" red="8a" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Montserrat" size="16" style="1"/>
+          <Font name="Montserrat" size="18" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="34" green="34" red="34" type="rgb"/>
@@ -83,26 +76,12 @@
           <Color blue="96" green="8b" red="8e" type="rgb"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Montserrat" size="13" style="0"/>
+          <Font name="Montserrat" size="14" style="0"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="96" green="8b" red="8e" type="rgb"/>
         </Property>
         <Property name="text" type="java.lang.String" value="1121313123123"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="96" green="8b" red="8e" type="rgb"/>
-        </Property>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Montserrat" size="13" style="0"/>
-        </Property>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="96" green="8b" red="8e" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Price:"/>
       </Properties>
     </Component>
   </SubComponents>

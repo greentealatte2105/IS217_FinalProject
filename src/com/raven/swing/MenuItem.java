@@ -41,12 +41,21 @@ public class MenuItem extends javax.swing.JPanel {
     public int getIndex() {
         return index;
     }
-
+    
+    public void setColorMenuItem(Color color){
+        colorMenu = color;
+    }
+    public void setColorSubMenu(Color color){
+        colorSubMenu = color;
+    }
     private float alpha;
     private ModelMenu menu;
     private boolean open;
     private EventMenuSelected eventSelected;
     private int index;
+    private Color colorMenu;
+    private Color colorSubMenu;
+
 
     public MenuItem(ModelMenu menu, EventMenu event, EventMenuSelected eventSelected, int index) {
         initComponents();
@@ -86,6 +95,9 @@ public class MenuItem extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        setForeground(new java.awt.Color(255, 255, 255));
+        setOpaque(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,6 +110,7 @@ public class MenuItem extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
     @Override
     protected void paintComponent(Graphics grphcs) {
         int width = getWidth();
@@ -106,9 +119,12 @@ public class MenuItem extends javax.swing.JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(new Color(50, 50, 50));
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g2.fillRect(0, 2, width, 38);
+        g2.fillRoundRect(0, 2, width, 38, 38, 38);
+        g2.fillRect(0, 2, 100 , 38); // rect of menu name
+        g2.fillRect(0, 19, width, 38); // rect of menu name
         g2.setComposite(AlphaComposite.SrcOver);
-        g2.fillRect(0, 40, width, height - 40);
+        g2.fillRoundRect(0, 40, width, height - 40, 38,38);
+        g2.fillRect(0, 40, width,40); // rect of sub menu
         g2.setColor(new Color(100, 100, 100));
         g2.drawLine(30, 40, 30, height - 17);
         for (int i = 0; i < menu.getSubMenu().length; i++) {
@@ -123,11 +139,14 @@ public class MenuItem extends javax.swing.JPanel {
 
     private void createArrowButton(Graphics2D g2) {
         int size = 4;
+        // position arrow 
         int y = 19;
-        int x = 205;
+        int x = 205; // 
         g2.setColor(new Color(230, 230, 230));
         float ay = alpha * size;
         float ay1 = (1f - alpha) * size;
+      
+   
         g2.drawLine(x, (int) (y + ay), x + 4, (int) (y + ay1));
         g2.drawLine(x + 4, (int) (y + ay1), x + 8, (int) (y + ay));
     }

@@ -2,31 +2,88 @@ package com.raven.component;
 
 import com.raven.model.Product;
 import java.awt.Color;
-import java.awt.GradientPaint;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+
+import javax.swing.JPanel;
 
 public class Card extends javax.swing.JPanel {
 
     private Product product;
-   
     private Color colorGradient;
 
-    public Card(Product product) {
+    public Card(Product product, JPanel panel) {
         initComponents();
         setOpaque(false);
         setSize(138, 72);
         this.product = product;
         update();
+        lbProductName.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               System.out.println(".mouseClicked()");
+               setBackground(new Color(214,200,174,255));
+               billInfoRow row = new billInfoRow(product);
+               panel.add(row);
+               panel.repaint();
+               panel.revalidate();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e){
+                System.out.println(".mouseEntered()");
+                String txt = "<HTML><u>"+product.getName() +"</u></HTML>";
+                lbProductName.setText(txt);
+            }
+            @Override
+            public void mouseExited(MouseEvent e){
+                setBackground(new Color(233,220,190));
+
+                lbProductName.setText(product.getName());
+            }
+        });
+        priceView.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               System.out.println(".mouseClicked()");
+                setBackground(new Color(214,200,174,255));
+
+               billInfoRow row = new billInfoRow(product);
+               panel.add(row);
+               panel.repaint();
+            }
+            @Override
+            public void mouseEntered(MouseEvent e){
+                System.out.println(".mouseEntered()");
+                String txt = "<HTML><u>"+product.getName() +"</u></HTML>";
+                lbProductName.setText(txt);
+            }
+            @Override
+            public void mouseExited(MouseEvent e){
+                setBackground(new Color(233,220,190));
+
+                lbProductName.setText(product.getName());
+            }
+        });
+        
+        
     }
+    public void addBill(JPanel billPanel){
+       
+    }
+    
 
     public void update() {
        lbProductName.setText(product.getName());
        DecimalFormat df = new DecimalFormat("#,###,###");
-       priceView.setText(df.format(product.getPrice()));
+       priceView.setText("Price: " + df.format(product.getPrice()));
     }
     public void actionPush(ActionEvent evt){
         
@@ -38,12 +95,11 @@ public class Card extends javax.swing.JPanel {
 
         lbProductName = new javax.swing.JLabel();
         priceView = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(233, 220, 190));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setMaximumSize(new java.awt.Dimension(138, 72));
-        setMinimumSize(new java.awt.Dimension(138, 72));
+        setMinimumSize(new java.awt.Dimension(120, 70));
         addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 formComponentAdded(evt);
@@ -51,19 +107,14 @@ public class Card extends javax.swing.JPanel {
         });
 
         lbProductName.setBackground(new java.awt.Color(138, 131, 122));
-        lbProductName.setFont(new java.awt.Font("Montserrat", 1, 16)); // NOI18N
+        lbProductName.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
         lbProductName.setForeground(new java.awt.Color(52, 52, 52));
         lbProductName.setText("Tra sua");
 
         priceView.setBackground(new java.awt.Color(142, 139, 150));
-        priceView.setFont(new java.awt.Font("Montserrat", 0, 13)); // NOI18N
+        priceView.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         priceView.setForeground(new java.awt.Color(142, 139, 150));
         priceView.setText("1121313123123");
-
-        jLabel3.setBackground(new java.awt.Color(142, 139, 150));
-        jLabel3.setFont(new java.awt.Font("Montserrat", 0, 13)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(142, 139, 150));
-        jLabel3.setText("Price:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -72,21 +123,16 @@ public class Card extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2)
-                        .addComponent(priceView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(lbProductName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lbProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                    .addComponent(priceView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lbProductName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(priceView, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(priceView, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -105,7 +151,6 @@ public class Card extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbProductName;
     private javax.swing.JLabel priceView;
     // End of variables declaration//GEN-END:variables
