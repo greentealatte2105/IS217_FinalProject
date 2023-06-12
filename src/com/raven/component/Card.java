@@ -28,7 +28,7 @@ public class Card extends javax.swing.JPanel {
         setSize(138, 72);
         this.product = product;
         update();
-        DecimalFormat df = new DecimalFormat("#,###,###");
+//        DecimalFormat df = new DecimalFormat("#,###,###");
         lbProductName.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -36,8 +36,8 @@ public class Card extends javax.swing.JPanel {
                setBackground(new Color(214,200,174,255));
                billInfoRow row = new billInfoRow(product,lbTotal);
 
-               int total = Integer.parseInt(lbTotal.getText().replaceAll("[\\.]", "")) + product.getPrice();
-               lbTotal.setText(df.format(total));
+               int total = Integer.parseInt(lbTotal.getText().replaceAll("[,]", "")) + product.getPrice();
+               lbTotal.setText(String.valueOf(total));
                
                panel.add(row);
                panel.repaint();

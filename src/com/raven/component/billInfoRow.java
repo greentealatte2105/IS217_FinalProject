@@ -183,10 +183,10 @@ public class billInfoRow extends javax.swing.JPanel {
             parent.revalidate();
         }
         else
-        {int total = Integer.parseInt(lbTotal.getText().replaceAll("[\\.]", "")) - price;
+        {int total = Integer.parseInt(lbTotal.getText().replaceAll("[,]", "")) - price;
             if (total <= 0)
                 this.lbTotal.setText("");
-            else  this.lbTotal.setText(df.format(total));
+            else  this.lbTotal.setText(String.valueOf(total));
             update();
         }
     }//GEN-LAST:event_bDescreaseActionPerformed
@@ -195,14 +195,16 @@ public class billInfoRow extends javax.swing.JPanel {
         // TODO add your handling code here:
         quantity += 1;
         amount = quantity * price;
-        int total = Integer.parseInt(lbTotal.getText().replaceAll("[\\.]", "")) + price;
-        this.lbTotal.setText(df.format(total));
+        int total = Integer.parseInt(lbTotal.getText().replaceAll("[,]", "")) + price;
+        this.lbTotal.setText(String.valueOf(total));
         update();
     }//GEN-LAST:event_bInscreaseActionPerformed
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
         // TODO add your handling code here:
         JComponent parent = (JComponent) this.getParent();
+        int total = Integer.parseInt(lbTotal.getText().replaceAll("[,]", "")) - amount;
+        this.lbTotal.setText(String.valueOf(total));
         parent.remove(this);
         parent.repaint();
         parent.revalidate();
