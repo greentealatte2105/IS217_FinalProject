@@ -2,9 +2,12 @@ package com.raven.form;
 
 import com.raven.component.Card;
 import com.raven.component.billInfoRow;
+import com.raven.dao.ProductCategoryDAO;
+import com.raven.dao.ProductDAO;
 import com.raven.dialog.Message;
 import com.raven.main.Main;
 import com.raven.model.Product;
+import com.raven.model.ProductCategory;
 import com.raven.swing.Button;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
@@ -13,6 +16,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class OrderForm extends javax.swing.JPanel {
     private ArrayList<Product> products;
@@ -29,29 +33,21 @@ public class OrderForm extends javax.swing.JPanel {
         scrollProduct.setVerticalScrollBar(new ScrollBarCustom());
         scrollCatogory.setHorizontalScrollBar(new ScrollBarCustom());
         initBillInfo();
-        initProductCard();
         initCatagory();
     }
     private void initCatagory(){
-        
-        catagoryPanel.add(createCatagroryButton("Ca phe"));
-        catagoryPanel.add(createCatagroryButton("Tra"));
-        catagoryPanel.add(createCatagroryButton("Coctail"));
-        catagoryPanel.add(createCatagroryButton("Nuoc ngot"));
-        catagoryPanel.add(createCatagroryButton("Ca phe da"));
-        catagoryPanel.add(createCatagroryButton("Ca phe da"));
-        catagoryPanel.add(createCatagroryButton("Ca phe da"));
-        catagoryPanel.add(createCatagroryButton("Ca phe da"));
-
-
-     
-                
+        ArrayList<ProductCategory> list = ProductCategoryDAO.getAllRecords();
+        Iterator<ProductCategory> itr = list.iterator();
+        while (itr.hasNext()) {
+            ProductCategory productCategoryObj = itr.next();
+            catagoryPanel.add( createCatagroryButton(productCategoryObj) );
+        }            
     }
-    public Button createCatagroryButton(String name){
+    public Button createCatagroryButton(ProductCategory productCategory){
         Button bt = new Button();
 //        bt.setSize(300,200);
         bt.setPreferredSize(new Dimension(100,45));
-        bt.setText(name);
+        bt.setText(productCategory.getName());
         bt.setFont(new Font("Montserrat", Font.BOLD,16));
         bt.setForeground(new Color(255,255,255));
         bt.setBackground(defaultColor);
@@ -65,12 +61,16 @@ public class OrderForm extends javax.swing.JPanel {
                 }
                 bt.setBackground(choiceColor);
                 currentCatagoryButton = bt;
-//                System.out.println(bt.getText());
-            }
-            
-        });
+                ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(productCategory.getId());
+                productView.removeAll();
+                productView.repaint();
+                productView.revalidate();
+                initProductCard(list);
+                
+            }});
         return bt;
     }
+                
     private void initBillInfo() {
         
         addBillRow(new billInfoRow(new Product(1,"Tra vvvvvsua", 200000)));
@@ -82,22 +82,14 @@ public class OrderForm extends javax.swing.JPanel {
         
     }
     
-    private void initProductCard(){
-        
-        
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-        addProduct(new Card(new Product(0,"Tra sua",10000), billPanel));
-//        orderBillParentPanel.getClass().
+    private void initProductCard(ArrayList<Product> listProduct){
+        Iterator<Product> itr = listProduct.iterator();
+        while (itr.hasNext()) {
+            Product productObj = itr.next();
+            addProduct(new Card(new Product(productObj.getId(), productObj.getName(), productObj.getPrice()), billPanel));
+        }
     }
-
+    
     private void addBillRow(billInfoRow row){
         billPanel.add(row);
     }
