@@ -47,7 +47,7 @@ public class BackgroundForgot extends JComponent {
 
     public BackgroundForgot() {
         
-        image = new ImageIcon(getClass().getResource("/com/raven/images/COFFEE_BEANS.jpg"));
+        image = new ImageIcon(getClass().getResource("/com/raven/images/cafe.jpg"));
     }
 
     private void createImage() {
