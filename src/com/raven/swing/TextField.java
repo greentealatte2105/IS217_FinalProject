@@ -105,6 +105,26 @@ public class TextField extends JTextField {
             animator.setStartFraction(0f);
         }
     }
+     public void fail()
+    {
+        Graphics g = getGraphics().create();
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setColor(new Color(250, 95, 85));
+        g2.drawLine(0, getHeight() - 3, getWidth(), getHeight() - 3);
+        g2.dispose();
+        super.paint(g);
+    }
+    public void correct()
+    {
+        Graphics g = getGraphics().create();
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setColor(new Color(64, 181, 173));
+        g2.drawLine(0, getHeight() - 3, getWidth(), getHeight() - 3);
+        g2.dispose();
+        super.paint(g);
+    }
 
     @Override
     public void paint(Graphics g) {

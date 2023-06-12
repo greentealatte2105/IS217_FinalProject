@@ -260,6 +260,8 @@ public class Login extends javax.swing.JFrame {
     private void lbForgotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbForgotMouseClicked
         // TODO add your handling code here:
         System.out.println("ProjectCafe.Login.lbForgotMouseClicked()");
+        setVisible(false);
+        new ForgotPassword().setVisible(true);
         
     }//GEN-LAST:event_lbForgotMouseClicked
 
