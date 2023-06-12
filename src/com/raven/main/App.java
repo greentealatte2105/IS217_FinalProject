@@ -11,8 +11,8 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
-//        new Login().setVisible(true);
-            new Main().setVisible(true);
+        new Login().setVisible(true);
+//            new Main().setVisible(true);
 //new Signup().setVisible(true);
     }
 }
