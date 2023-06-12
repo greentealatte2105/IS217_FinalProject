@@ -5,6 +5,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.raven.component.Card;
 import com.raven.component.billInfoRow;
+import com.raven.dao.ConnectionProvider;
 import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
 import com.raven.dialog.Message;
@@ -20,6 +21,9 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +38,7 @@ public class OrderForm extends javax.swing.JPanel {
     private Button currentCatagoryButton = null;
     private Color defaultColor = new Color(0,0,0,150);
     private Color choiceColor = new Color(0,0,0,100);
-    private double discount = 1;
+    private double discount = 0;
 
     public OrderForm() {
         initComponents();
@@ -100,7 +104,9 @@ public class OrderForm extends javax.swing.JPanel {
             public void update(Product product) {
                billInfoRow row = new billInfoRow(product,lbTotalView);
 
-               int total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice();
+               int discount = Integer.valueOf(txtDiscount.getText());
+               int total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice() * (100 - discount)/100;;
+//               total = total * (100 - discount)/100;
                lbTotalView.setText(df.format(total));
                
                billPanel.add(row);
@@ -199,8 +205,14 @@ public class OrderForm extends javax.swing.JPanel {
                 txtCustomerActionPerformed(evt);
             }
         });
+        txtCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCustomerKeyReleased(evt);
+            }
+        });
 
         txtRank.setBorder(null);
+        txtRank.setEnabled(false);
         txtRank.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtRank.setHint("Rank");
         txtRank.addActionListener(new java.awt.event.ActionListener() {
@@ -210,6 +222,8 @@ public class OrderForm extends javax.swing.JPanel {
         });
 
         txtDiscount.setBorder(null);
+        txtDiscount.setText("0");
+        txtDiscount.setEnabled(false);
         txtDiscount.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtDiscount.setHint("Discount");
         txtDiscount.addActionListener(new java.awt.event.ActionListener() {
@@ -260,13 +274,12 @@ public class OrderForm extends javax.swing.JPanel {
                     .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(scrollBill, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
                         .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(20, 20, 20))
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
                         .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbTotalView, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -421,6 +434,38 @@ public class OrderForm extends javax.swing.JPanel {
     private void txtDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiscountActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDiscountActionPerformed
+
+    // check the phone number then return rank and discount
+    private void txtCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCustomerKeyReleased
+        try {
+            String phoneNumber = txtCustomer.getText();
+            Connection con = ConnectionProvider.getCon();
+            Statement st = con.createStatement();
+            
+            String query = "SELECT cc.name as `Rank`, cc.discount as Discount FROM Customer c " +
+                        "JOIN CustomerCategory cc ON c.idRank = cc.id WHERE c.phoneNumber = " + phoneNumber + ";";
+            
+            ResultSet rs = st.executeQuery(query);
+            if (rs.next()) {
+                String rank = rs.getString("Rank");
+                int discount = rs.getInt("Discount");
+                txtRank.setText(rank);
+                txtDiscount.setText(String.valueOf(discount));
+//                
+//                discount = Integer.valueOf(txtDiscount.getText());
+//                total = total * (100 - discount)/100;
+            } 
+            else {
+            // Handle the case when no matching customer is found
+                txtRank.setText("None");
+                txtDiscount.setText("0");
+            }
+        } catch (Exception e) {
+//            txtRank.setText("None");
+//            txtDiscount.setText("0");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_txtCustomerKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button bPrintBill;
