@@ -3,14 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/form/OrderForm.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/ProductDAO.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/component/Card.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/ProductCategoryDAO.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/main/App.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/model/Product.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/main/Main.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/ConnectionProvider.java</file>
+            <file>file:/D:/test%20code%20from%20github/IS217_FinalProject/src/com/raven/component/Menu.java</file>
+            <file>file:/D:/test%20code%20from%20github/IS217_FinalProject/src/com/raven/form/ReportForm.java</file>
+            <file>file:/D:/test%20code%20from%20github/IS217_FinalProject/src/com/raven/main/Main.java</file>
+            <file>file:/D:/test%20code%20from%20github/IS217_FinalProject/src/raven/chart/CurveLineChart.java</file>
         </group>
     </open-files>
 </project-private>

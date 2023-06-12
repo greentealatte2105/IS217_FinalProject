@@ -285,7 +285,8 @@ public class OrderForm extends javax.swing.JPanel {
 
             com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
             try{
-                PdfWriter.getInstance(doc, new FileOutputStream("/Users/dothinhtpr247gmai.com/Desktop/test/IS217_FinalProject/src/com/raven/receiptPdf/invoice.pdf"));
+//                PdfWriter.getInstance(doc, new FileOutputStream("/Users/dothinhtpr247gmai.com/Desktop/test/IS217_FinalProject/src/com/raven/receiptPdf/invoice.pdf"));
+                PdfWriter.getInstance(doc, new FileOutputStream("D:/test code from github/IS217_FinalProject"));
                 doc.open();
                 Paragraph cafeName = new Paragraph("                                                                 Mood Lift Cafe\n");
                 doc.add(cafeName);
