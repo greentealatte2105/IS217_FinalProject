@@ -223,7 +223,7 @@ public class OrderForm extends javax.swing.JPanel {
         productViewParentPanelLayout.setVerticalGroup(
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productViewParentPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(64, Short.MAX_VALUE)
                 .addComponent(scrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );
@@ -267,7 +267,7 @@ public class OrderForm extends javax.swing.JPanel {
                         .addGap(23, 23, 23)
                         .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
-                        .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)))
+                        .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents

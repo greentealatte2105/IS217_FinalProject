@@ -7,6 +7,7 @@ import com.raven.event.EventShowPopupMenu;
 import com.raven.form.Form1;
 import com.raven.form.OrderForm;
 import com.raven.form.MainForm;
+import com.raven.form.ReportForm;
 import com.raven.model.User;
 import com.raven.swing.MenuItem;
 import com.raven.swing.PopupMenu;
@@ -64,13 +65,16 @@ public class Main extends javax.swing.JFrame {
             public void menuSelected(int menuIndex, int subMenuIndex) {
                 System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 if (menuIndex == 0) {
-                    if (subMenuIndex == 0) {
-                        main.showForm(new OrderForm());
-                    } else if (subMenuIndex == 1) {
-                        main.showForm(new Form1());
-                    }
+                    main.showForm(new Form1());
+                }
+                else if (menuIndex == 1) {
+                    main.showForm(new OrderForm());
+                }
+                else if (menuIndex == 2) {
+                    main.showForm(new ReportForm());
                 }
             }
+            
         });
         menu.addEventShowPopup(new EventShowPopupMenu() {
             @Override

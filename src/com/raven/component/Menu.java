@@ -63,15 +63,11 @@ public class Menu extends javax.swing.JPanel {
 
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/order.png")), 
-                    "Order", "Table", "Beverage", "Food")
-                );
-        addMenu(new ModelMenu(
-                    new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), 
-                    "Charts", "Morris", "Flot", "Line")
+                    "Order")
                 );
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), 
-                    "Report", "Income", "Expense", "Profit")
+                    "Report")
                 );
         addMenu(new ModelMenu(
                 new ImageIcon(getClass().getResource("/com/raven/icon/14.png")), 
