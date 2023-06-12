@@ -56,10 +56,10 @@ public class Menu extends javax.swing.JPanel {
     }
 
     public void initMenuItem() {
-//        addMenu(new ModelMenu(
-//                new ImageIcon(getClass().getResource("/com/raven/icon/home.png")), 
-//                "Home")
-//                );
+        addMenu(new ModelMenu(
+                new ImageIcon(getClass().getResource("/com/raven/icon/home.png")), 
+                "Home")
+                );
 
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/order.png")), 
@@ -75,7 +75,7 @@ public class Menu extends javax.swing.JPanel {
                 );
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), 
-                    "Report", "Income", "Expense", "Profit")
+                    "Report")
                 );
         addMenu(new ModelMenu(
                 new ImageIcon(getClass().getResource("/com/raven/icon/log-out-24.png")), 

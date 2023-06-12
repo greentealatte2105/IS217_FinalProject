@@ -7,10 +7,9 @@ import java.util.ArrayList;
 
 public class Bill {
 
-    public Bill(int id, int idStaff, int idTable, String date, int total) {
+    public Bill(int id, int idStaff, String date, int total) {
         this.id = id;
         this.idStaff = idStaff;
-        this.idTable = idTable;
         this.date = date;
         this.total = total;
 //        this.billInfoList = billInfoList;
@@ -33,14 +32,6 @@ public class Bill {
 
     public void setIdStaff(int idStaff) {
         this.idStaff = idStaff;
-    }
-
-    public int getIdTable() {
-        return idTable;
-    }
-
-    public void setIdTable(int idTable) {
-        this.idTable = idTable;
     }
 
     public String getDate() {
@@ -76,7 +67,6 @@ public class Bill {
 //    }
     private int id;
     private int idStaff;
-    private int idTable;
     private String date;
     private int discount;
     private int total;
