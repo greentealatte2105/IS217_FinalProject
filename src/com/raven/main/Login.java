@@ -249,10 +249,11 @@ public class Login extends javax.swing.JFrame {
 //            new Main().setVisible(true);
 //        }
             // code sử dụng database
-        boolean check = UserDAO.login(user, pass);
-        if (check) {
+        int loginID = UserDAO.login(user, pass);
+        if (loginID > 0) {
             setVisible(false);
-            new Main().setVisible(true);
+            String role = UserDAO.getUserRole(loginID);
+            new Main(user, role).setVisible(true);
         }
     }//GEN-LAST:event_bLoginActionPerformed
 

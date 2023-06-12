@@ -29,15 +29,21 @@ public class Main extends javax.swing.JFrame {
     private MainForm main;
     private Animator animator;
     private User user;
-
-    public Main() {
+    private String username;
+    private String role; 
+    
+    public Main(){
         initComponents();
-//        setBackground(new Color(0,0,0,0));
-//        bg.setBackground(new Color(0,0,0,0));
-
-
         init();
     }
+
+    public Main(String username, String role) {
+        this.username = username; // Store the username value
+        this.role = role;
+        initComponents();
+        init();
+    }
+    
     public void setUser(User user){
         this.user = user;
 
@@ -49,8 +55,10 @@ public class Main extends javax.swing.JFrame {
         menu = new Menu();
         header = new Header();
         main = new MainForm();
-//        header.showProfile(user);
-        // show form
+//      // pass username from Main to header
+        header.setUserName(this.username);
+        header.setRole(this.role);
+        header.updateProfile();
         menu.addEvent(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
