@@ -1,5 +1,8 @@
 package com.raven.form;
 
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.raven.component.Card;
 import com.raven.component.billInfoRow;
 import com.raven.dao.ProductCategoryDAO;
@@ -15,8 +18,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 
 public class OrderForm extends javax.swing.JPanel {
     private ArrayList<Product> products;
@@ -73,12 +79,12 @@ public class OrderForm extends javax.swing.JPanel {
                 
     private void initBillInfo() {
         
-        addBillRow(new billInfoRow(new Product(1,"Tra vvvvvsua", 200000)));
-        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
-        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
-        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
-        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
-        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
+//        addBillRow(new billInfoRow(new Product(1,"Tra vvvvvsua", 200000)));
+//        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
+//        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
+//        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
+//        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
+//        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
         
     }
     
@@ -86,7 +92,7 @@ public class OrderForm extends javax.swing.JPanel {
         Iterator<Product> itr = listProduct.iterator();
         while (itr.hasNext()) {
             Product productObj = itr.next();
-            addProduct(new Card(new Product(productObj.getId(), productObj.getName(), productObj.getPrice()), billPanel));
+            addProduct(new Card(new Product(productObj.getId(), productObj.getName(), productObj.getPrice()), billPanel, lbTotalView));
         }
     }
     
@@ -268,6 +274,56 @@ public class OrderForm extends javax.swing.JPanel {
 
     private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
         // TODO add your handling code here:
+        if (billPanel.getComponentCount() > 0){
+            String name;
+            String id;
+            String amount;
+            String quantity;
+            String price;
+            String total = lbTotalView.getText();
+            SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+            com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
+            try{
+                PdfWriter.getInstance(doc, new FileOutputStream("/Users/dothinhtpr247gmai.com/Desktop/test/IS217_FinalProject/src/com/raven/receiptPdf/invoice.pdf"));
+                doc.open();
+                Paragraph cafeName = new Paragraph("                                                                 Mood Lift Cafe\n");
+                doc.add(cafeName);
+                Paragraph starLine = new Paragraph("****************************************************************************************************************");
+                doc.add(starLine);
+
+//                Paragraph customer = new Paragraph("\nCustomer Phone: "+txtCustomerPhone);
+//                doc.add(customer);
+                doc.add(starLine);
+                PdfPTable tb1 = new PdfPTable(4);
+                tb1.addCell("Name");
+                tb1.addCell("Price");
+                tb1.addCell("Quantity");
+                tb1.addCell("Total");
+                for(int i=0; i < billPanel.getComponentCount();i++){
+                    billInfoRow billinfo = (billInfoRow) billPanel.getComponent(i);
+                    name = billinfo.getName();
+    //                id = String.valueOf(billinfo.getIdProduct());
+                    price = String.valueOf(billinfo.getPrice());
+                    amount = String.valueOf(billinfo.getAmount());
+                    quantity = String.valueOf(billinfo.getQuantity());
+                    tb1.addCell(name);
+                    tb1.addCell(price);
+                    tb1.addCell("x"+quantity);
+                    tb1.addCell(amount);
+                }
+                doc.add(tb1);
+                Paragraph paragraph3 = new Paragraph("\nTotal Paid: "+lbTotalView);
+                doc.add(paragraph3);
+                doc.add(starLine);
+                Paragraph thanksMsg = new Paragraph("Thank You,Please Visit Again");
+                doc.add(thanksMsg);
+                
+                 }
+            catch(Exception e){
+                JOptionPane.showMessageDialog(null,e);
+            }
+        }
         
     }//GEN-LAST:event_bPrintBillActionPerformed
 

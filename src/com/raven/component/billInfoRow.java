@@ -6,6 +6,7 @@ import com.raven.model.Product;
 import java.text.DecimalFormat;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 /**
  *
@@ -17,11 +18,33 @@ public class billInfoRow extends javax.swing.JPanel {
 //    private BillInfo info;
     private int idProduct;
     private String nameProduct;
+
+    public int getPrice() {
+        return price;
+    }
     private int price;
     private int quantity;
     private int amount;
+
+    public int getIdProduct() {
+        return idProduct;
+    }
+
+    public String getNameProduct() {
+        return nameProduct;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+    private DecimalFormat df = new DecimalFormat("#,###,###");
+    private JLabel lbTotal;
     
-    public billInfoRow(Product product) {
+    public billInfoRow(Product product, JLabel lbTotal) {
         initComponents();
         setOpaque(false);
         idProduct = product.getId();
@@ -29,11 +52,12 @@ public class billInfoRow extends javax.swing.JPanel {
         price = product.getPrice();
         quantity = 1;
         amount = price * quantity;
+        this.lbTotal = lbTotal;
         update();
     }
     
     public void update(){
-        DecimalFormat df = new DecimalFormat("#,###,###");
+        
 
         lbName.setText(nameProduct);
         lbQuantity.setText(String.valueOf(quantity));
@@ -159,14 +183,20 @@ public class billInfoRow extends javax.swing.JPanel {
             parent.revalidate();
         }
         else
+        {int total = Integer.parseInt(lbTotal.getText().replaceAll("[\\.]", "")) - price;
+            if (total <= 0)
+                this.lbTotal.setText("");
+            else  this.lbTotal.setText(df.format(total));
             update();
+        }
     }//GEN-LAST:event_bDescreaseActionPerformed
 
     private void bInscreaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInscreaseActionPerformed
         // TODO add your handling code here:
         quantity += 1;
         amount = quantity * price;
-                
+        int total = Integer.parseInt(lbTotal.getText().replaceAll("[\\.]", "")) + price;
+        this.lbTotal.setText(df.format(total));
         update();
     }//GEN-LAST:event_bInscreaseActionPerformed
 

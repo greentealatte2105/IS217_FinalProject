@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import javax.swing.JLabel;
 
 import javax.swing.JPanel;
 
@@ -19,19 +20,25 @@ public class Card extends javax.swing.JPanel {
 
     private Product product;
     private Color colorGradient;
+    
 
-    public Card(Product product, JPanel panel) {
+    public Card(Product product, JPanel panel, JLabel lbTotal) {
         initComponents();
         setOpaque(false);
         setSize(138, 72);
         this.product = product;
         update();
+        DecimalFormat df = new DecimalFormat("#,###,###");
         lbProductName.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                System.out.println(".mouseClicked()");
                setBackground(new Color(214,200,174,255));
-               billInfoRow row = new billInfoRow(product);
+               billInfoRow row = new billInfoRow(product,lbTotal);
+
+               int total = Integer.parseInt(lbTotal.getText().replaceAll("[\\.]", "")) + product.getPrice();
+               lbTotal.setText(df.format(total));
+               
                panel.add(row);
                panel.repaint();
                panel.revalidate();
@@ -55,7 +62,7 @@ public class Card extends javax.swing.JPanel {
                System.out.println(".mouseClicked()");
                 setBackground(new Color(214,200,174,255));
 
-               billInfoRow row = new billInfoRow(product);
+               billInfoRow row = new billInfoRow(product,lbTotal);
                panel.add(row);
                panel.repaint();
             }
@@ -100,6 +107,7 @@ public class Card extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         setMaximumSize(new java.awt.Dimension(138, 72));
         setMinimumSize(new java.awt.Dimension(120, 70));
+        setPreferredSize(new java.awt.Dimension(140, 80));
         addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 formComponentAdded(evt);
