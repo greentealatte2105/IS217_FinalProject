@@ -31,7 +31,9 @@ public class Main extends javax.swing.JFrame {
     private MainForm main;
     private Animator animator;
     private User user;
+    private int idUser;
     private String username;
+    private String password;
     private String role; 
     
     public Main(){
@@ -39,28 +41,29 @@ public class Main extends javax.swing.JFrame {
         init();
     }
 
-    public Main(String username, String role) {
-        this.username = username; // Store the username value
-        this.role = role;
+    public Main(User objUser) {
+        this.user = objUser;
+        this.username = objUser.getUserName();
+        this.role = objUser.getRole();
         initComponents();
         init();
     }
     
     public void setUser(User user){
         this.user = user;
-
+    }
+    
+    public User getUser() {
+        return this.user;
     }
 
     private void init() {
         layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
         bg.setLayout(layout);
         menu = new Menu();
-        header = new Header();
-        main = new MainForm();
-//      // pass username from Main to header
-        header.setUserName(this.username);
-        header.setRole(this.role);
-        header.updateProfile();
+        header = new Header(user);
+        main = new MainForm(user);
+
         menu.addEvent(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
@@ -180,40 +183,6 @@ public class Main extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.PanelBorder bg;

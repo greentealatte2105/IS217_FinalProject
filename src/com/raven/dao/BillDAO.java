@@ -61,8 +61,20 @@ public class BillDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
-
         return arrayList;
-
+    }
+    
+    public static int getLastestBillId() {
+        int id = -1;
+        try {
+            ResultSet rs = DbOperations.getData("SELECT MAX(id) AS lastestID FROM Bill;");
+            while (rs.next()) {
+                id = rs.getInt("lastestID");
+                return id;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return id;
     }
 }
