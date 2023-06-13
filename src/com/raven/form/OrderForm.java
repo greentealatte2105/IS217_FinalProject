@@ -8,17 +8,16 @@ import com.raven.component.Header;
 import com.raven.component.billInfoRow;
 import com.raven.dao.BillDAO;
 import com.raven.dao.ConnectionProvider;
+import com.raven.dao.CustomerDAO;
 import com.raven.dao.DbOperations;
 import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
-import com.raven.dao.UserDAO;
 import com.raven.dialog.Message;
 import com.raven.event.EventBillRow;
 import com.raven.event.EventCard;
 import com.raven.main.Main;
 import com.raven.model.Product;
 import com.raven.model.ProductCategory;
-import com.raven.model.User;
 import com.raven.swing.Button;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
@@ -35,8 +34,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 public class OrderForm extends javax.swing.JPanel {
@@ -48,6 +45,7 @@ public class OrderForm extends javax.swing.JPanel {
     private Color choiceColor = new Color(0,0,0,100);
     private int discount = 0;
     private DecimalFormat df = new DecimalFormat("#,###,###");
+    private int idCustomer = -1;
 
     public OrderForm() {
         initComponents();
@@ -469,6 +467,38 @@ public class OrderForm extends javax.swing.JPanel {
         }
     }
     
+    // update total customer, if customer is new, add new customer into database
+    private void updateCustomerTotal(int idCustomer, int idBill){
+        // create new customer
+        if (idCustomer == -1) {
+            try {
+                String query = "CALL USP_AddCustomer(1, ?, 0);";
+                PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+                stmt.setString(1, txtCustomer.getText());
+                stmt.execute();
+                // get the id of the recently added customer
+                idCustomer = CustomerDAO.getLastestId();
+                JOptionPane.showMessageDialog(null, "New customer added into database");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // update total and rank of customer
+        try {
+                String query = "CALL USP_UpdateCustomerTotal(?, ?);";
+                PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+                stmt.setInt(1, idCustomer);
+                stmt.setInt(2, idBill);
+                stmt.execute();
+                
+                query = "CALL USP_UpdateCustomerRank;";
+                stmt = ConnectionProvider.getCon().prepareStatement(query);
+                stmt.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+    
     private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
         // TODO add your handling code here:
         // create a new bill
@@ -479,7 +509,6 @@ public class OrderForm extends javax.swing.JPanel {
             PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
             
             stmt.setInt(1, idUser);
-//            stmt.setString(2, "CURDATE()");
             stmt.setInt(2, Integer.parseInt(txtDiscount.getText()));
             stmt.execute();
             
@@ -506,10 +535,9 @@ public class OrderForm extends javax.swing.JPanel {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // tính tiền mọi bill
-            
-
         }
+        // tính tiền mọi bill
+//        JOptionPane.showMessageDialog(null, this.idCustomer);
         try {
                 String query = "CALL USP_CalculateBill(?);";
                 PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
@@ -520,8 +548,8 @@ public class OrderForm extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         
-
-        
+        // cập nhật tổng tiền đã chi của customer
+        updateCustomerTotal(idCustomer, idBill);
     }//GEN-LAST:event_bPrintBillActionPerformed
 
     private void txtCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerActionPerformed
@@ -543,11 +571,13 @@ public class OrderForm extends javax.swing.JPanel {
             Connection con = ConnectionProvider.getCon();
             Statement st = con.createStatement();
             
-            String query = "SELECT cc.name as `Rank`, cc.discount as Discount FROM Customer c " +
+            String query = "SELECT c.id as idCustomer, cc.name as `Rank`, cc.discount as Discount FROM Customer c " +
                         "JOIN CustomerCategory cc ON c.idRank = cc.id WHERE c.phoneNumber = " + phoneNumber + ";";
             
             ResultSet rs = st.executeQuery(query);
+            // có customer trong database
             if (rs.next()) {
+                this.idCustomer = rs.getInt("idCustomer");
                 String rank = rs.getString("Rank");
                 
                  int total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) ;
@@ -558,18 +588,17 @@ public class OrderForm extends javax.swing.JPanel {
                
                txtRank.setText(rank);
                txtDiscount.setText(String.valueOf(discount));
-//                
-//                discount = Integer.valueOf(txtDiscount.getText());
-//                total = total * (100 - discount)/100;
             } 
             else {
-            // Handle the case when no matching customer is found
+            // When no matching customer is found, so we will create a new customer
+                this.idCustomer = -1;
                 txtRank.setText("None");
                 txtDiscount.setText("0");
             }
         } catch (Exception e) {
 //            txtRank.setText("None");
 //            txtDiscount.setText("0");
+            this.idCustomer = -1;
             e.printStackTrace();
         }
     }//GEN-LAST:event_txtCustomerKeyReleased

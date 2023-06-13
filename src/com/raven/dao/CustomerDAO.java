@@ -45,6 +45,21 @@ public class CustomerDAO {
         }
     }
     
+    // get the new idcustomer recently add
+    public static int getLastestId(){
+        int id = -1;
+        try {
+            ResultSet rs = DbOperations.getData("SELECT MAX(id) AS lastestID FROM Customer;");
+            while (rs.next()) {
+                id = rs.getInt("lastestID");
+                return id;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return id;
+    }
+    
     public static Customer getRecordById(int id){
         Customer result = new Customer();
         try {

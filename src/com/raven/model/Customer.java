@@ -4,6 +4,10 @@
  */
 package com.raven.model;
 
+import com.raven.dao.DbOperations;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Dell
