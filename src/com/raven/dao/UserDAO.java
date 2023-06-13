@@ -74,7 +74,7 @@ public class UserDAO {
     
     public static ArrayList<User> getAllStaff() {
         ArrayList<User> arrayList = new ArrayList<>();
-        String query = "SELECT a.id, a.username, a.password, a.email, a.phoneNumber, a.role, b.timeCount " +
+        String query = "SELECT a.id, a.userName, a.password, a.phoneNumber, a.email, a.role, b.timeCount " +
                         "FROM account a " +
                         "JOIN staffmanagement b ON a.id = b.id " +
                         "WHERE a.role = 'staff';";
@@ -85,6 +85,8 @@ public class UserDAO {
                 staff.setId(rs.getInt("id"));
                 staff.setUserName(rs.getString("userName"));
                 staff.seteMail(rs.getString("email"));
+                staff.setPassword(rs.getString("password"));
+
                 staff.setPhoneNumber(rs.getString("phoneNumber"));
                 staff.setRole(rs.getString("role"));
                 staff.setTime(rs.getFloat("timeCount"));

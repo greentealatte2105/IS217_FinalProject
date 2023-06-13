@@ -1,22 +1,19 @@
 package com.raven.form;
 
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.raven.component.Card;
-import com.raven.component.Header;
 import com.raven.component.billInfoRow;
 import com.raven.dao.BillDAO;
 import com.raven.dao.ConnectionProvider;
 import com.raven.dao.CustomerDAO;
-import com.raven.dao.DbOperations;
 import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
-import com.raven.dialog.Message;
 import com.raven.event.EventBillRow;
 import com.raven.event.EventCard;
-import com.raven.main.Main;
 import com.raven.model.Product;
 import com.raven.model.ProductCategory;
 import com.raven.swing.Button;
@@ -539,11 +536,14 @@ public class OrderForm extends javax.swing.JPanel {
             }
 }
     }
+    
+     
+       
+    
     private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
         // TODO add your handling code here:
         // create a new bill
-    
-        
+
         MainForm parent = (MainForm) getParent();
         int idUser = parent.getUser().getId();
         try {
