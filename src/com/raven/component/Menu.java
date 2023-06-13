@@ -66,12 +66,20 @@ public class Menu extends javax.swing.JPanel {
                     "Order")
                 );
         addMenu(new ModelMenu(
+                    new ImageIcon(getClass().getResource("/com/raven/icon/edit-24.png")), 
+                    "Edit")
+                );
+        addMenu(new ModelMenu(
+                    new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), 
+                    "Charts", "Morris", "Flot", "Line")
+                );
+        addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), 
                     "Report")
                 );
         addMenu(new ModelMenu(
-                new ImageIcon(getClass().getResource("/com/raven/icon/14.png")), 
-                "Gallery")
+                new ImageIcon(getClass().getResource("/com/raven/icon/log-out-24.png")), 
+                "Log out")
                 );
     }
 
@@ -167,9 +175,10 @@ public class Menu extends javax.swing.JPanel {
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gra = new GradientPaint(0, 0, new Color(33, 105, 249), getWidth(), 0, new Color(93, 58, 196));
-        g2.setPaint(gra);
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//        GradientPaint gra = new GradientPaint(0, 0, new Color(33, 105, 249), getWidth(), 0, new Color(93, 58, 196));
+//        g2.setPaint(gra);
+        g2.setColor(new Color(51,51,51));
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
         g2.fillRect(getWidth() - 25, 0, getWidth(), 25);
         g2.fillRect(getWidth() - 25, getHeight() - 25, getWidth(), getHeight());

@@ -5,9 +5,11 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.raven.component.Card;
 import com.raven.component.billInfoRow;
+import com.raven.dao.ConnectionProvider;
 import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
 import com.raven.dialog.Message;
+import com.raven.event.EventCard;
 import com.raven.main.Main;
 import com.raven.model.Product;
 import com.raven.model.ProductCategory;
@@ -19,9 +21,14 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class OrderForm extends javax.swing.JPanel {
@@ -31,6 +38,7 @@ public class OrderForm extends javax.swing.JPanel {
     private Button currentCatagoryButton = null;
     private Color defaultColor = new Color(0,0,0,150);
     private Color choiceColor = new Color(0,0,0,100);
+    private double discount = 0;
 
     public OrderForm() {
         initComponents();
@@ -38,17 +46,23 @@ public class OrderForm extends javax.swing.JPanel {
         scrollBill.setVerticalScrollBar(new ScrollBarCustom());
         scrollProduct.setVerticalScrollBar(new ScrollBarCustom());
         scrollCatogory.setHorizontalScrollBar(new ScrollBarCustom());
-        initBillInfo();
+        
         initCatagory();
     }
     private void initCatagory(){
         ArrayList<ProductCategory> list = ProductCategoryDAO.getAllRecords();
+        System.out.println(list.size());
         Iterator<ProductCategory> itr = list.iterator();
         while (itr.hasNext()) {
             ProductCategory productCategoryObj = itr.next();
             catagoryPanel.add( createCatagroryButton(productCategoryObj) );
         }            
+        Button initProducts = (Button) catagoryPanel.getComponent(0);
+        currentCatagoryButton = initProducts;
+        currentCatagoryButton.setBackground(choiceColor);
+        initProductCard(getProductDAO(list.get(0).getId()));
     }
+    
     public Button createCatagroryButton(ProductCategory productCategory){
         Button bt = new Button();
 //        bt.setSize(300,200);
@@ -67,32 +81,44 @@ public class OrderForm extends javax.swing.JPanel {
                 }
                 bt.setBackground(choiceColor);
                 currentCatagoryButton = bt;
-                ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(productCategory.getId());
+                
                 productView.removeAll();
                 productView.repaint();
                 productView.revalidate();
-                initProductCard(list);
+                initProductCard(getProductDAO(productCategory.getId()));
                 
             }});
         return bt;
     }
-                
-    private void initBillInfo() {
-        
-//        addBillRow(new billInfoRow(new Product(1,"Tra vvvvvsua", 200000)));
-//        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
-//        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
-//        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
-//        addBillRow(new billInfoRow(new Product(1,"Tra vvvsua", 200000)));
-//        addBillRow(new billInfoRow(new Product(4,"Tra sua", 200000)));
-        
+    
+    public ArrayList<Product> getProductDAO(int idCatagory){
+        ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(idCatagory);
+        return list;
     }
     
     private void initProductCard(ArrayList<Product> listProduct){
         Iterator<Product> itr = listProduct.iterator();
+        DecimalFormat df = new DecimalFormat("#,###,###");
+        EventCard evt = new EventCard() {
+            @Override
+            public void update(Product product) {
+               billInfoRow row = new billInfoRow(product,lbTotalView);
+
+               int discount = Integer.valueOf(txtDiscount.getText());
+               int total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice() * (100 - discount)/100;;
+//               total = total * (100 - discount)/100;
+               lbTotalView.setText(df.format(total));
+               
+               billPanel.add(row);
+               billPanel.repaint();
+               billPanel.revalidate();
+            }
+        };
         while (itr.hasNext()) {
             Product productObj = itr.next();
-            addProduct(new Card(new Product(productObj.getId(), productObj.getName(), productObj.getPrice()), billPanel, lbTotalView));
+            
+            Product product = new Product(productObj.getId(), productObj.getName(), productObj.getPrice());
+            addProduct(new Card(product, evt));
         }
     }
     
@@ -126,11 +152,15 @@ public class OrderForm extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         scrollBill = new javax.swing.JScrollPane();
         billPanel = new javax.swing.JPanel();
+        txtCustomer = new com.raven.swing.TextField();
+        txtRank = new com.raven.swing.TextField();
+        txtDiscount = new com.raven.swing.TextField();
         productViewParentPanel = new com.raven.swing.PanelBorder();
         scrollProduct = new javax.swing.JScrollPane();
         productView = new javax.swing.JPanel();
         scrollCatogory = new javax.swing.JScrollPane();
         catagoryPanel = new javax.swing.JPanel();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         orderBillParentPanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -145,11 +175,15 @@ public class OrderForm extends javax.swing.JPanel {
         });
 
         lbTotalView.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
-        lbTotalView.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbTotalView.setText("000000000");
+        lbTotalView.setText("0");
+        lbTotalView.setAlignmentX(0.5F);
+        lbTotalView.setOpaque(true);
+        lbTotalView.setPreferredSize(new java.awt.Dimension(50, 30));
 
         jLabel2.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
-        jLabel2.setText("Total");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Total: ");
+        jLabel2.setOpaque(true);
 
         jLabel3.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -163,6 +197,41 @@ public class OrderForm extends javax.swing.JPanel {
         billPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         scrollBill.setViewportView(billPanel);
 
+        txtCustomer.setBorder(null);
+        txtCustomer.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        txtCustomer.setHint("Customer");
+        txtCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCustomerActionPerformed(evt);
+            }
+        });
+        txtCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCustomerKeyReleased(evt);
+            }
+        });
+
+        txtRank.setBorder(null);
+        txtRank.setEnabled(false);
+        txtRank.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        txtRank.setHint("Rank");
+        txtRank.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRankActionPerformed(evt);
+            }
+        });
+
+        txtDiscount.setBorder(null);
+        txtDiscount.setText("0");
+        txtDiscount.setEnabled(false);
+        txtDiscount.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        txtDiscount.setHint("Discount");
+        txtDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDiscountActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout orderBillParentPanelLayout = new javax.swing.GroupLayout(orderBillParentPanel);
         orderBillParentPanel.setLayout(orderBillParentPanelLayout);
         orderBillParentPanelLayout.setHorizontalGroup(
@@ -170,31 +239,51 @@ public class OrderForm extends javax.swing.JPanel {
             .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                 .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scrollBill, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(orderBillParentPanelLayout.createSequentialGroup()
+                        .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(scrollBill, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(orderBillParentPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(259, 259, 259)))
+                        .addContainerGap(13, Short.MAX_VALUE))
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                         .addComponent(bPrintBill, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lbTotalView, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(259, 259, 259)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(lbTotalView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7))))
+            .addGroup(orderBillParentPanelLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(txtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtRank, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         orderBillParentPanelLayout.setVerticalGroup(
             orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addComponent(jLabel3)
-                .addGap(138, 138, 138)
-                .addComponent(scrollBill, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(30, 30, 30)
                 .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2)
-                    .addComponent(lbTotalView))
-                .addGap(10, 10, 10))
+                    .addComponent(txtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRank, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(scrollBill, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(orderBillParentPanelLayout.createSequentialGroup()
+                        .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20))
+                    .addGroup(orderBillParentPanelLayout.createSequentialGroup()
+                        .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbTotalView, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         productViewParentPanel.setBackground(new java.awt.Color(102, 102, 102));
@@ -207,8 +296,10 @@ public class OrderForm extends javax.swing.JPanel {
         scrollProduct.setPreferredSize(new java.awt.Dimension(100, 800));
 
         productView.setBackground(new java.awt.Color(243, 243, 243));
-        productView.setPreferredSize(new java.awt.Dimension(100, 800));
-        productView.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 10, 10));
+        productView.setPreferredSize(new java.awt.Dimension(100, 600));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10);
+        flowLayout1.setAlignOnBaseline(true);
+        productView.setLayout(flowLayout1);
         scrollProduct.setViewportView(productView);
 
         javax.swing.GroupLayout productViewParentPanelLayout = new javax.swing.GroupLayout(productViewParentPanel);
@@ -217,13 +308,13 @@ public class OrderForm extends javax.swing.JPanel {
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(productViewParentPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(scrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 659, Short.MAX_VALUE)
+                .addComponent(scrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
                 .addGap(10, 10, 10))
         );
         productViewParentPanelLayout.setVerticalGroup(
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productViewParentPanelLayout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addComponent(scrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );
@@ -238,9 +329,12 @@ public class OrderForm extends javax.swing.JPanel {
         catagoryPanel.setBackground(new java.awt.Color(255, 255, 255));
         catagoryPanel.setForeground(new java.awt.Color(153, 255, 255));
         catagoryPanel.setOpaque(false);
-        catagoryPanel.setPreferredSize(new java.awt.Dimension(1200, 100));
+        catagoryPanel.setPreferredSize(new java.awt.Dimension(1300, 60));
         catagoryPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 10, 10));
         scrollCatogory.setViewportView(catagoryPanel);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trending", "New", "Increase", "Decrease", " " }));
+        jComboBox2.setBorder(null);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -248,27 +342,29 @@ public class OrderForm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
-                        .addGap(10, 10, 10))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(scrollCatogory, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(20, 20, 20)))
                 .addComponent(orderBillParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(orderBillParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(productViewParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(orderBillParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -327,10 +423,55 @@ public class OrderForm extends javax.swing.JPanel {
         
     }//GEN-LAST:event_bPrintBillActionPerformed
 
+    private void txtCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCustomerActionPerformed
+
+    private void txtRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRankActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRankActionPerformed
+
+    private void txtDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiscountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDiscountActionPerformed
+
+    // check the phone number then return rank and discount
+    private void txtCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCustomerKeyReleased
+        try {
+            String phoneNumber = txtCustomer.getText();
+            Connection con = ConnectionProvider.getCon();
+            Statement st = con.createStatement();
+            
+            String query = "SELECT cc.name as `Rank`, cc.discount as Discount FROM Customer c " +
+                        "JOIN CustomerCategory cc ON c.idRank = cc.id WHERE c.phoneNumber = " + phoneNumber + ";";
+            
+            ResultSet rs = st.executeQuery(query);
+            if (rs.next()) {
+                String rank = rs.getString("Rank");
+                int discount = rs.getInt("Discount");
+                txtRank.setText(rank);
+                txtDiscount.setText(String.valueOf(discount));
+//                
+//                discount = Integer.valueOf(txtDiscount.getText());
+//                total = total * (100 - discount)/100;
+            } 
+            else {
+            // Handle the case when no matching customer is found
+                txtRank.setText("None");
+                txtDiscount.setText("0");
+            }
+        } catch (Exception e) {
+//            txtRank.setText("None");
+//            txtDiscount.setText("0");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_txtCustomerKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button bPrintBill;
     private javax.swing.JPanel billPanel;
     private javax.swing.JPanel catagoryPanel;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbTotalView;
@@ -340,5 +481,8 @@ public class OrderForm extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollBill;
     private javax.swing.JScrollPane scrollCatogory;
     private javax.swing.JScrollPane scrollProduct;
+    private com.raven.swing.TextField txtCustomer;
+    private com.raven.swing.TextField txtDiscount;
+    private com.raven.swing.TextField txtRank;
     // End of variables declaration//GEN-END:variables
 }

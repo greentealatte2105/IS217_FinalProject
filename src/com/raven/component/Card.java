@@ -1,7 +1,9 @@
 package com.raven.component;
 
+import com.raven.event.EventCard;
 import com.raven.model.Product;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,26 +24,23 @@ public class Card extends javax.swing.JPanel {
     private Color colorGradient;
     
 
-    public Card(Product product, JPanel panel, JLabel lbTotal) {
+    public Card(Product product, EventCard eventCard) {
         initComponents();
         setOpaque(false);
-        setSize(138, 72);
+//        setSize(138, 72);
         this.product = product;
+        int length = Math.max(product.getName().length(), 
+                                String.valueOf(product.getPrice()).length() + 8);
+        this.setPreferredSize(new Dimension( length * 10 + 8,90));
         update();
-//        DecimalFormat df = new DecimalFormat("#,###,###");
+        
         lbProductName.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-               System.out.println(".mouseClicked()");
-               setBackground(new Color(214,200,174,255));
-               billInfoRow row = new billInfoRow(product,lbTotal);
-
-               int total = Integer.parseInt(lbTotal.getText().replaceAll("[,]", "")) + product.getPrice();
-               lbTotal.setText(String.valueOf(total));
+                eventCard.update(product);
+//              
+                setBackground(new Color(214,200,174,255));
                
-               panel.add(row);
-               panel.repaint();
-               panel.revalidate();
             }
             @Override
             public void mouseEntered(MouseEvent e){
@@ -61,10 +60,8 @@ public class Card extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                System.out.println(".mouseClicked()");
                 setBackground(new Color(214,200,174,255));
+                eventCard.update(product);
 
-               billInfoRow row = new billInfoRow(product,lbTotal);
-               panel.add(row);
-               panel.repaint();
             }
             @Override
             public void mouseEntered(MouseEvent e){
@@ -104,10 +101,10 @@ public class Card extends javax.swing.JPanel {
         priceView = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(233, 220, 190));
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        setMaximumSize(new java.awt.Dimension(138, 72));
-        setMinimumSize(new java.awt.Dimension(120, 70));
-        setPreferredSize(new java.awt.Dimension(140, 80));
+        setAutoscrolls(true);
+        setMaximumSize(new java.awt.Dimension(250, 80));
+        setMinimumSize(new java.awt.Dimension(90, 80));
+        setPreferredSize(new java.awt.Dimension(100, 80));
         addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 formComponentAdded(evt);
@@ -115,32 +112,44 @@ public class Card extends javax.swing.JPanel {
         });
 
         lbProductName.setBackground(new java.awt.Color(138, 131, 122));
-        lbProductName.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        lbProductName.setFont(new java.awt.Font("Montserrat", 1, 16)); // NOI18N
         lbProductName.setForeground(new java.awt.Color(52, 52, 52));
         lbProductName.setText("Tra sua");
+        lbProductName.setAutoscrolls(true);
+        lbProductName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lbProductName.setMaximumSize(new java.awt.Dimension(250, 20));
+        lbProductName.setMinimumSize(new java.awt.Dimension(60, 20));
+        lbProductName.setPreferredSize(new java.awt.Dimension(60, 20));
 
         priceView.setBackground(new java.awt.Color(142, 139, 150));
-        priceView.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        priceView.setFont(new java.awt.Font("Montserrat", 0, 16)); // NOI18N
         priceView.setForeground(new java.awt.Color(142, 139, 150));
         priceView.setText("1121313123123");
+        priceView.setAutoscrolls(true);
+        priceView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        priceView.setMaximumSize(new java.awt.Dimension(250, 30));
+        priceView.setMinimumSize(new java.awt.Dimension(60, 30));
+        priceView.setPreferredSize(new java.awt.Dimension(30, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .addComponent(priceView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(priceView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(lbProductName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(priceView, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(5, 5, 5)
+                .addComponent(lbProductName, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(priceView, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5))
         );
     }// </editor-fold>//GEN-END:initComponents
 

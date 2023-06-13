@@ -4,6 +4,7 @@ import com.raven.component.Header;
 import com.raven.component.Menu;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
+import com.raven.form.EditForm;
 import com.raven.form.Form1;
 import com.raven.form.OrderForm;
 import com.raven.form.MainForm;
@@ -51,7 +52,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void init() {
-        layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[100%, fill]0");
+        layout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
         bg.setLayout(layout);
         menu = new Menu();
         header = new Header();
@@ -63,16 +64,25 @@ public class Main extends javax.swing.JFrame {
         menu.addEvent(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
-                System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
+//                System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 if (menuIndex == 0) {
-                    main.showForm(new Form1());
+
+                        //show home
+            
                 }
                 else if (menuIndex == 1) {
                     main.showForm(new OrderForm());
                 }
-                else if (menuIndex == 2) {
+                else if (menuIndex == 3) {
                     main.showForm(new ReportForm());
                 }
+                 else if (menuIndex == 2) {
+                        main.showForm(new EditForm());
+                }
+                 else if(menuIndex == 5){
+                     new Login().setVisible(true);
+                     setVisible(false);
+                 }
             }
             
         });

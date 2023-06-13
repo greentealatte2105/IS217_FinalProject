@@ -325,6 +325,8 @@ public class Signup extends javax.swing.JFrame {
         user.setPassword(String.valueOf(txtPassword.getPassword()));    
         bSignUp.setEnabled(true);
         UserDAO.save(user); 
+        new Login().setVisible(true);
+        setVisible(false);
         clear();
     }//GEN-LAST:event_bSignUpActionPerformed
 
