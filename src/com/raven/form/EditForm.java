@@ -122,11 +122,11 @@ public class EditForm extends javax.swing.JPanel {
         this.products = products;
     }
 
-    private boolean showMessage(String message) {
-        Message obj = new Message(Main.getFrames()[0], true);
-        obj.showMessage(message);
-        return obj.isOk();
-    }
+//    private boolean showMessage(String message) {
+//        Message obj = new Message(Main.getFrames()[0], true);
+//        obj.showMessage(message);
+//        return obj.isOk();
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

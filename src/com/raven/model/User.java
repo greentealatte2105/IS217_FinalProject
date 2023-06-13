@@ -94,7 +94,7 @@ public class User {
     }
             
     public Object[] toRowTable(EventAction event) {
-        DecimalFormat df = new DecimalFormat("$#,##0.00");
-        return new Object[]{id,userName,eMail,"10","", new ModelAction(this, event)};
+        DecimalFormat df = new DecimalFormat("##.##");
+        return new Object[]{id,userName,eMail,phoneNumber,df.format(time),"", new ModelAction(this, event)};
     }
 }

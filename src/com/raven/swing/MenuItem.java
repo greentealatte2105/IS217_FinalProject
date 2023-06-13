@@ -64,7 +64,8 @@ public class MenuItem extends javax.swing.JPanel {
         this.index = index;
         setOpaque(false);
         setLayout(new MigLayout("wrap, fillx, insets 0", "[fill]", "[fill, 40!]0[fill, 35!]"));
-        MenuButton firstItem = new MenuButton(menu.getIcon(), "      " + menu.getMenuName());
+        MenuButton firstItem = new MenuButton(menu.getIcon(), "    " + menu.getMenuName());
+        
         firstItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
