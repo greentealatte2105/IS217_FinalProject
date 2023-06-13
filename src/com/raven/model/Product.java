@@ -10,15 +10,22 @@ import java.text.DecimalFormat;
  * @author dothinhtpr247gmai.com
  */
 public class Product {
-
+    
+    private int id;
+    private String name;
+    private int idCategory;
+    
     public Product(int id, String name, int price) {
         this.id = id;
         this.name = name;
         this.price = price;
     }
-    private int id;
-    private String name;
-    private int idCategory;
+    
+    public Product(String name, int idCategory, int price) {
+        this.name = name;
+        this.idCategory = idCategory;
+        this.price = price;
+    }
     private int price;
 
     public Product(int id, String name, int idCategory, int price) {

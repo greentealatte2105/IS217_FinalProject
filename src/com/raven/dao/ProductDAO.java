@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class ProductDAO {
     public static void save(Product product) {
-        String query = "insert into product (name,category,price) values('" + product.getName() + "','" + product.getIdCategory() + "','" + product.getPrice() + "') ";
+        String query = "insert into product (name,idCategory,price) values('" + product.getName() + "','" + product.getIdCategory() + "','" + product.getPrice() + "') ";
         DbOperations.SetDataOrDelete(query, "Product Added Successfully");
     }
     public static String getProductName(int idProduct){
@@ -31,10 +31,24 @@ public class ProductDAO {
         }
         return productName;
     }
-    
+    public static int getProductCategoryId(String productName){
+        int productCategoryId = 0;
+        try {
+            String query = "select id from ProductCategory where name= ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setString(1, productName);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                productCategoryId = rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productCategoryId;
+    }
     public static void update(Product product) {
         try {
-            String query = "UPDATE product SET name = ?, category = ?, price = ? WHERE id = ?";
+            String query = "UPDATE product SET name = ?, idCategory = ?, price = ? WHERE id = ?";
             PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
             stmt.setString(1, product.getName());
             stmt.setInt(2, product.getIdCategory());

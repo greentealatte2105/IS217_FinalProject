@@ -106,7 +106,7 @@ public class EditForm extends javax.swing.JPanel {
         }
     }
     public void updateTabble(JButton button){
-        model.insertRow(0,new Object[]{" "+txtCatagory.getText(), txtName.getText(),txtPrice.getText(),button.getText()});
+        model.insertRow(0,new Object[]{" "+txtCatagory.getText(), txtName.getText(),txtPrice.getText(), button.getText()});
     }
     
     
@@ -383,21 +383,30 @@ public class EditForm extends javax.swing.JPanel {
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
         // TODO add your handling code here:
         updateTabble(bAdd);
-        
-        
-        
+        Product addProduct = new Product( txtName.getText(), 
+                                        ProductDAO.getProductCategoryId(txtCatagory.getText()), 
+                                        Integer.parseInt( txtPrice.getText().replace(",", "") ));
+        ProductDAO.save(addProduct);
     }//GEN-LAST:event_bAddActionPerformed
 
     private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
         // TODO add your handling code here:
-                updateTabble(bEdit);
-
+        updateTabble(bEdit);
+        Product updateProduct = new Product( Integer.parseInt(txtId.getText()),
+                                        txtName.getText(), 
+                                        ProductDAO.getProductCategoryId(txtCatagory.getText()), 
+                                        Integer.parseInt( txtPrice.getText().replace(",", "") ));
+        ProductDAO.update(updateProduct);
     }//GEN-LAST:event_bEditActionPerformed
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
         // TODO add your handling code here:
-                updateTabble(bDelete);
-
+        updateTabble(bDelete);
+        Product deleteProduct = new Product( Integer.parseInt(txtId.getText()),
+                                        txtName.getText(), 
+                                        ProductDAO.getProductCategoryId(txtCatagory.getText()), 
+                                        Integer.parseInt( txtPrice.getText().replace(",", "") ));
+        ProductDAO.delete(deleteProduct.getId());
     }//GEN-LAST:event_bDeleteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
