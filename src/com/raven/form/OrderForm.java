@@ -25,7 +25,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +37,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class OrderForm extends javax.swing.JPanel {
@@ -415,6 +419,8 @@ public class OrderForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void exportBillPdf() {
+        String filePath = getClass().getResource("filename").getPath();
+        System.out.println(filePath + "s##########################################");
         if (billPanel.getComponentCount() > 0){
             String name;
             String id;
@@ -426,7 +432,7 @@ public class OrderForm extends javax.swing.JPanel {
 
             com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
             try{
-                PdfWriter.getInstance(doc, new FileOutputStream("/Users/dothinhtpr247gmai.com/Desktop/test/IS217_FinalProject/src/com/raven/receiptPdf/invoice.pdf"));
+                PdfWriter.getInstance(doc, new FileOutputStream("/com/raven/invoice.pdf"));
                 doc.open();
                 Paragraph cafeName = new Paragraph("                                                                 Mood Lift Cafe\n");
                 doc.add(cafeName);
@@ -454,7 +460,7 @@ public class OrderForm extends javax.swing.JPanel {
                     tb1.addCell(amount);
                 }
                 doc.add(tb1);
-                Paragraph paragraph3 = new Paragraph("\nTotal Paid: "+lbTotalView);
+                Paragraph paragraph3 = new Paragraph("\nTotal Paid: "+lbTotalView.getText());
                 doc.add(paragraph3);
                 doc.add(starLine);
                 Paragraph thanksMsg = new Paragraph("Thank You,Please Visit Again");
@@ -498,10 +504,30 @@ public class OrderForm extends javax.swing.JPanel {
                 e.printStackTrace();
             }
     }
-    
+    public void test(){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Bill");
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            try {
+                FileWriter writer = new FileWriter(fileToSave);
+                writer.write("Customer Phone: " + txtCustomer.getText() + "\n");
+                writer.write("Product Name: " + "tra" + "\n");
+                writer.write("Price: " + "10000" + "\n");
+                writer.write("Quantity: " + "1" + "\n");
+                writer.write("Amount: " + "10000" + "\n");
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+}
+    }
     private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
         // TODO add your handling code here:
         // create a new bill
+    
+        test();
         MainForm parent = (MainForm) getParent();
         int idUser = parent.getUser().getId();
         try {
@@ -550,6 +576,8 @@ public class OrderForm extends javax.swing.JPanel {
         
         // cập nhật tổng tiền đã chi của customer
         updateCustomerTotal(idCustomer, idBill);
+
+        
     }//GEN-LAST:event_bPrintBillActionPerformed
 
     private void txtCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerActionPerformed

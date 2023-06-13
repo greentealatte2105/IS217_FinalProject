@@ -2,6 +2,7 @@ package com.raven.main;
 
 import com.raven.component.Header;
 import com.raven.component.Menu;
+import com.raven.dialog.Message;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
 import com.raven.form.EditForm;
@@ -18,6 +19,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.Instant;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
@@ -35,7 +39,7 @@ public class Main extends javax.swing.JFrame {
     private String username;
     private String password;
     private String role; 
-    
+    private Instant start = Instant.now();
     public Main(){
         initComponents();
         init();
@@ -87,8 +91,20 @@ public class Main extends javax.swing.JFrame {
                 }
                  else if(menuIndex != ((user.getRole().equals("admin") ? 1: 0) + 4)){                 } else {
                      //Log out
-                     new Login().setVisible(true);
-                     setVisible(false);
+                     DecimalFormat dfFloat = new DecimalFormat("##.###");
+                     Instant end = Instant.now();
+                     Duration timeElapsed = Duration.between(start, end);
+//                     System.out.println((float)timeElapsed.toMillis()/3600000);
+                     // show message
+                     float totalTime = (float)timeElapsed.toMillis()/3600000;
+                     
+                     if (showMessage("<HTML><p>Thời gian sử dụng là "+dfFloat.format(totalTime)+ "</p></HTML>"))
+                     {
+                        user.setTime(totalTime);
+                        new Login().setVisible(true);
+                        setVisible(false);
+
+                     }
                 }
             }
             
@@ -149,6 +165,11 @@ public class Main extends javax.swing.JFrame {
         IconFontSwing.register(GoogleMaterialDesignIcons.getIconFont());
         //  Start with this form
         main.showForm(new OrderForm());
+    }
+     private boolean showMessage(String message) {
+        Message obj = new Message(this.getFrames()[0], true);
+        obj.showMessage(message);
+        return obj.isOk();
     }
 
     @SuppressWarnings("unchecked")

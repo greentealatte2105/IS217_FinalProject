@@ -19,6 +19,15 @@ public class User {
     private String phoneNumber = "";
     private String eMail = "";
     private String role = "";
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+    private float time;
     
     public User(){
     }

@@ -167,7 +167,7 @@ public class EditForm extends javax.swing.JPanel {
 
         jLabel3.setFont(new java.awt.Font("Montserrat", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Product Infromation ");
+        jLabel3.setText("Product Information ");
 
         bEdit.setBackground(new java.awt.Color(0, 153, 204));
         bEdit.setForeground(new java.awt.Color(255, 255, 255));
@@ -215,7 +215,7 @@ public class EditForm extends javax.swing.JPanel {
 
         lbCatagory.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
         lbCatagory.setForeground(new java.awt.Color(255, 255, 255));
-        lbCatagory.setText("Catagory:");
+        lbCatagory.setText("Category:");
 
         javax.swing.GroupLayout editParentPanelLayout = new javax.swing.GroupLayout(editParentPanel);
         editParentPanel.setLayout(editParentPanelLayout);
@@ -344,7 +344,7 @@ public class EditForm extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Catagory", "Name", "Price", "Action"
+                "Category", "Name", "Price", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
