@@ -98,6 +98,32 @@ public class UserDAO {
         return arrayList;
     }
     
+    public static void delete(int id){
+        try {
+            String query = "DELETE FROM account WHERE id = ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setInt(1, id);
+            DbOperations.SetDataOrDelete(stmt, "User Deleted Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    public static void update(User user) {
+        try {
+            String query = "UPDATE account SET username = ?, password = ?, phoneNumber = ?, role = ? WHERE id = ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setString(1, user.getUserName());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getPhoneNumber());
+            stmt.setString(4, user.getRole());
+            stmt.setInt(4, user.getId());
+            DbOperations.SetDataOrDelete(stmt, "User Updated Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     public static void addTimeForUser(int idUser, float time){
         try {
             // find user in management
