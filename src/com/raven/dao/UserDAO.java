@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.raven.dao;
 import com.raven.model.User;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
@@ -72,6 +68,37 @@ public class UserDAO {
             JOptionPane.showMessageDialog(null, "Sign up successfully");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static void addTimeForUser(int idUser, float time){
+        try {
+            // find user in management
+            String sql = "SELECT * FROM StaffManagement WHERE id =" + idUser +";";
+            ResultSet rs = DbOperations.getData(sql);
+            if (rs.next()){
+                // found a user, add more time to exist time of user
+                sql = "UPDATE StaffManagement sm SET sm.timeCount = sm.timeCount + ? WHERE sm.id = ?;";
+                PreparedStatement st = ConnectionProvider.getCon().prepareStatement(sql);
+                st.setFloat(1, time);
+                st.setInt(2, idUser);
+                st.execute();
+            }
+            else{
+                // not found user, so we will add new user to management
+                sql = "INSERT INTO StaffManagement(id, timeCount) VALUES (" + idUser + "," + time + ");";
+                Connection con = ConnectionProvider.getCon();
+                Statement st = con.createStatement();
+                st.execute(sql);
+                
+//                // get lastestID to add time
+//                sql = "SELECT MAX(id) AS lastestID FROM StaffManagement;";
+//                rs = DbOperations.getData(sql);
+//                int lastestidUser = rs.getInt("lastestID");
+//                JOptionPane.showMessageDialog(null, lastestidUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
