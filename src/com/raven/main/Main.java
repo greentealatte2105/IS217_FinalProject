@@ -2,6 +2,7 @@ package com.raven.main;
 
 import com.raven.component.Header;
 import com.raven.component.Menu;
+import com.raven.dao.UserDAO;
 import com.raven.dialog.Message;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
@@ -48,6 +49,7 @@ public class Main extends javax.swing.JFrame {
     public Main(User objUser) {
         this.user = objUser;
         this.username = objUser.getUserName();
+        this.idUser = objUser.getId();
         this.role = objUser.getRole();
         initComponents();
         init();
@@ -95,7 +97,7 @@ public class Main extends javax.swing.JFrame {
                      Instant end = Instant.now();
                      Duration timeElapsed = Duration.between(start, end);
 //                     System.out.println((float)timeElapsed.toMillis()/3600000);
-                     // show message
+                     // show message and usage time
                      float totalTime = (float)timeElapsed.toMillis()/3600000;
                      
                      if (showMessage("<HTML><p>Thời gian sử dụng là "+dfFloat.format(totalTime)+ "</p></HTML>"))
@@ -103,7 +105,7 @@ public class Main extends javax.swing.JFrame {
                         user.setTime(totalTime);
                         new Login().setVisible(true);
                         setVisible(false);
-
+                        UserDAO.addTimeForUser(idUser, totalTime);
                      }
                 }
             }
