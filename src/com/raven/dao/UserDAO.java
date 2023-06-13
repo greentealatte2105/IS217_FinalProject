@@ -2,6 +2,7 @@ package com.raven.dao;
 import com.raven.model.User;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
@@ -69,6 +70,32 @@ public class UserDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    public static ArrayList<User> getAllStaff() {
+        ArrayList<User> arrayList = new ArrayList<>();
+        String query = "SELECT a.id, a.username, a.password, a.email, a.phoneNumber, a.role, b.timeCount " +
+                        "FROM account a " +
+                        "JOIN staffmanagement b ON a.id = b.id " +
+                        "WHERE a.role = 'staff';";
+        try {
+            ResultSet rs = DbOperations.getData("select * from product");
+            while (rs.next()) {
+                User staff = new User();
+                staff.setId(rs.getInt("id"));
+                staff.setUserName(rs.getString("username"));
+                staff.setPassword(rs.getString("password"));
+                staff.setPhoneNumber(rs.getString("phoneNumber"));
+                staff.setRole(rs.getString("role"));
+                staff.setTime(rs.getFloat("timeCount"));
+                arrayList.add(staff);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        return arrayList;
     }
     
     public static void addTimeForUser(int idUser, float time){
