@@ -190,11 +190,13 @@ public class EditForm extends javax.swing.JPanel {
         });
 
         lbName.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
+        lbName.setForeground(new java.awt.Color(255, 255, 255));
         lbName.setText("Name:");
 
         txtName.setFont(new java.awt.Font("Montserrat", 0, 16)); // NOI18N
 
         lbId.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
+        lbId.setForeground(new java.awt.Color(255, 255, 255));
         lbId.setText("ID:");
 
         txtId.setEnabled(false);
@@ -204,6 +206,7 @@ public class EditForm extends javax.swing.JPanel {
         txtId.setPreferredSize(new java.awt.Dimension(30, 35));
 
         lbPrice.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
+        lbPrice.setForeground(new java.awt.Color(255, 255, 255));
         lbPrice.setText("Price:");
 
         txtPrice.setFont(new java.awt.Font("Montserrat", 0, 16)); // NOI18N
@@ -211,6 +214,7 @@ public class EditForm extends javax.swing.JPanel {
         txtCatagory.setFont(new java.awt.Font("Montserrat", 0, 16)); // NOI18N
 
         lbCatagory.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
+        lbCatagory.setForeground(new java.awt.Color(255, 255, 255));
         lbCatagory.setText("Catagory:");
 
         javax.swing.GroupLayout editParentPanelLayout = new javax.swing.GroupLayout(editParentPanel);

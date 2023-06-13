@@ -76,16 +76,20 @@ public class Main extends javax.swing.JFrame {
                 else if (menuIndex == 1) {
                     main.showForm(new OrderForm());
                 }
+                else if (menuIndex == 2) {
+                        main.showForm(new EditForm());
+                }
                 else if (menuIndex == 3) {
                     main.showForm(new ReportForm());
                 }
-                 else if (menuIndex == 2) {
-                        main.showForm(new EditForm());
+                else if (menuIndex == 4 && user.getRole().equals("admin")) {
+                        main.showForm(new StaffManagementForm());
                 }
-                 else if(menuIndex == 5){
+                 else if(menuIndex != ((user.getRole().equals("admin") ? 1: 0) + 4)){                 } else {
+                     //Log out
                      new Login().setVisible(true);
                      setVisible(false);
-                 }
+                }
             }
             
         });
@@ -100,7 +104,7 @@ public class Main extends javax.swing.JFrame {
                 popup.setVisible(true);
             }
         });
-        menu.initMenuItem();
+        menu.initMenuItem(user);
         bg.add(menu, "w 200!, spany 2");    // Span Y 2cell
         bg.add(header, "h 50!, wrap");
         bg.add(main, "w 100%, h 100%");

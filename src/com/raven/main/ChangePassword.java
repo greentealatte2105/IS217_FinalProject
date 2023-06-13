@@ -4,20 +4,24 @@
  */
 package com.raven.main;
 
+import com.raven.dao.ConnectionProvider;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author dothinhtpr247gmai.com
  */
 public class ChangePassword extends javax.swing.JFrame {
-
-    /**
-     * Creates new form ChangePassword
-     */
-    public ChangePassword() {
+    private int id;
+    
+    public ChangePassword(int id) {
         initComponents();
+        this.id = id;
     }
+    
     public void setColorbSignup(boolean validate){
         if (validate == true){
             bUpdate.setEnabled(true);
@@ -182,8 +186,17 @@ public class ChangePassword extends javax.swing.JFrame {
 
     private void bUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateActionPerformed
         // TODO add your handling code here:
-        //kiểm tra format email, check xem có tài khoản không,
-        //nếu có chuyển đến tạo mới mật khẩu, nếu không hỏi có muốn sign up
+        // đổi mật khẩu
+        try {
+            Connection con = ConnectionProvider.getCon();
+            Statement st = con.createStatement();
+            String sql = "UPDATE Account a SET a.password = '" + String.valueOf(txtPassword.getPassword()) + 
+                    "' WHERE a.id = '" + this.id + "';";
+            st.execute(sql);
+            JOptionPane.showMessageDialog(null, "Update password successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_bUpdateActionPerformed
 
     private void txtConfirmKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtConfirmKeyReleased
@@ -232,7 +245,7 @@ public class ChangePassword extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChangePassword().setVisible(true);
+                new ChangePassword(-1).setVisible(true);
             }
         });
     }

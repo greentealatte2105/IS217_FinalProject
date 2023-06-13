@@ -4,6 +4,10 @@
  */
 package com.raven.model;
 
+import com.raven.swing.table.EventAction;
+import com.raven.swing.table.ModelAction;
+import java.text.DecimalFormat;
+
 /**
  *
  * @author dothinhtpr247gmai.com
@@ -24,6 +28,11 @@ public class User {
         this.userName = userName;
         this.password = password;
         this.role = role;
+    }
+     public User(int id, String userName, String eMail) {
+        this.id = id;
+        this.userName = userName;
+        this.eMail = eMail;
     }
 
     public int getId() {
@@ -74,5 +83,8 @@ public class User {
         this.role = role;
     }
             
-    
+    public Object[] toRowTable(EventAction event) {
+        DecimalFormat df = new DecimalFormat("$#,##0.00");
+        return new Object[]{id,userName,eMail,"10","", new ModelAction(this, event)};
+    }
 }

@@ -4,6 +4,7 @@ import com.raven.event.EventMenu;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
 import com.raven.model.ModelMenu;
+import com.raven.model.User;
 import com.raven.swing.MenuAnimation;
 import com.raven.swing.MenuItem;
 import com.raven.swing.scrollbar.ScrollBarCustom;
@@ -55,7 +56,7 @@ public class Menu extends javax.swing.JPanel {
         panel.setLayout(layout);
     }
 
-    public void initMenuItem() {
+    public void initMenuItem(User user) {
         addMenu(new ModelMenu(
                 new ImageIcon(getClass().getResource("/com/raven/icon/home.png")), 
                 "Home")
@@ -69,13 +70,19 @@ public class Menu extends javax.swing.JPanel {
                     new ImageIcon(getClass().getResource("/com/raven/icon/edit-24.png")), 
                     "Edit")
                 );
-        addMenu(new ModelMenu(
-                    new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), 
-                    "Charts", "Morris", "Flot", "Line")
-                );
+//        addMenu(new ModelMenu(
+//                    new ImageIcon(getClass().getResource("/com/raven/icon/2.png")), 
+//                    "Charts", "Morris", "Flot", "Line")
+//                );
+
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), 
                     "Report")
+                );
+        if (user.getRole().equals("admin"))
+        addMenu(new ModelMenu(
+                    new ImageIcon(getClass().getResource("/com/raven/icon/staff-24.png")), 
+                    "Staff")
                 );
         addMenu(new ModelMenu(
                 new ImageIcon(getClass().getResource("/com/raven/icon/log-out-24.png")), 
