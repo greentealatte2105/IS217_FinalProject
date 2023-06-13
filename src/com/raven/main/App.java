@@ -15,7 +15,7 @@ public class App {
         System.out.println(new App().getGreeting());
 //        new Login().setVisible(true);
         
-            new Main(new User(1, "user", "1", "role")).setVisible(true);
+        new Main(new User(1, "user", "1", "role")).setVisible(true);
 //new Signup().setVisible(true);
     }
 }
