@@ -14,28 +14,31 @@ import javax.swing.table.DefaultTableModel;
 
 public class StaffManagementForm extends javax.swing.JPanel {
 
-    
+    private DefaultTableModel model;
     public StaffManagementForm() {
         initComponents();
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom());
         tbStaff.fixTable(jScrollPane1);
-
+         model = (DefaultTableModel) tbStaff.getModel();
         initTableData();
     }
     private void initTableData() {
-        DefaultTableModel model = (DefaultTableModel) tbStaff.getModel();
+        
         EventAction eventAction = new EventAction() {
             @Override
             public void delete(User user) {
                UserDAO.delete(user.getId());
                model.removeRow(tbStaff.getSelectedRow());
+               model.fireTableDataChanged();
+
             }
 
             @Override
             public void update(User user) {
                 System.err.println("clicked");
                 DecimalFormat df = new DecimalFormat("##.##");
+                
                 txtId.setText(String.valueOf(user.getId()));
                 txtName.setText(user.getUserName());
                 txtEmail.setText(user.geteMail());
@@ -44,18 +47,21 @@ public class StaffManagementForm extends javax.swing.JPanel {
                 int row = tbStaff.getSelectedRow();
                 int col = tbStaff.getSelectedColumn();
                 System.err.println(row + "   " + col);
-                txtSalary.setText((String) tbStaff.getValueAt(row, col));
-                
+                txtSalary.setText((String) model.getValueAt(row, col - 1).toString());
+              
                 
             }
         };     
-       
+        model.setRowCount(0);
         ArrayList<User> staffList = UserDAO.getAllStaff();
+        System.err.println(staffList.size());
         Iterator<User> itr = staffList.iterator();
         while (itr.hasNext()) {
             User staff = (User) itr.next();
             tbStaff.addRow(staff.toRowTable(eventAction));
-        }            
+        }        
+                    model.fireTableDataChanged();
+
 //         DefaultTableModel tableModel = (DefaultTableModel) tbStaff.getModel();
 //         tableModel.setRowCount(0);
     }
@@ -193,8 +199,7 @@ public class StaffManagementForm extends javax.swing.JPanel {
                                 .addComponent(txtSalary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(bUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .addComponent(bUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(30, 30, 30))
         );
         panelBorder1Layout.setVerticalGroup(
@@ -348,6 +353,7 @@ public class StaffManagementForm extends javax.swing.JPanel {
         User newUser = new User(id, name, email);
         newUser.setTime(time);
         newUser.setPhoneNumber(phone);
+        newUser.setRole("staff");
         UserDAO.update(newUser);
     }//GEN-LAST:event_bUpdateActionPerformed
 
@@ -357,13 +363,14 @@ public class StaffManagementForm extends javax.swing.JPanel {
         DecimalFormat df = new DecimalFormat("###,###,###");
         for (int i = 0; i < tbStaff.getRowCount(); i++)
         {
-            float time = Float.parseFloat((String) tbStaff.getValueAt(0, 4));
+            float time = Float.parseFloat(model.getValueAt(i, 4).toString());
             time *= salary;
             tbStaff.setValueAt(df.format(time), i, 5);
              tbStaff.repaint();
                 tbStaff.revalidate();
         }
-       
+                   model.fireTableDataChanged();
+
     }//GEN-LAST:event_bTimekeepingActionPerformed
 
     private void txtSalaryPerTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSalaryPerTimeActionPerformed

@@ -34,17 +34,7 @@ public class Table extends JTable {
         setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean focus, int i, int i1) {
-//                if (o instanceof ModelProfile) {
-//                    ModelProfile data = (ModelProfile) o;
-//                    Profile cell = new Profile(data);
-//                    if (selected) {
-//                        cell.setBackground(new Color(239, 244, 255));
-//                    } else {
-//                        cell.setBackground(Color.WHITE);
-//                    }
-//                    return cell;
-//
-//                } else 
+//                
                     if (o instanceof ModelAction) {
                     ModelAction data = (ModelAction) o;
                     Action cell = new Action(data);

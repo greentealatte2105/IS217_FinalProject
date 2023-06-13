@@ -18,7 +18,7 @@ public class TableCellAction extends DefaultCellEditor {
     public Component getTableCellEditorComponent(JTable jtable, Object o, boolean bln, int i, int i1) {
         data = (ModelAction) o;
         Action cell = new Action(data);
-        cell.setBackground(new Color(52,52,52));
+        cell.setBackground(new Color(52,52,52,30));
        
         return cell;
     }

@@ -58,6 +58,17 @@ public class Header extends javax.swing.JPanel {
         lbUserName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbUserName.setText("NPQThien");
         lbUserName.setName("userName"); // NOI18N
+        lbUserName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbUserNameMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbUserNameMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbUserNameMouseExited(evt);
+            }
+        });
 
         lbRole.setFont(new java.awt.Font("Montserrat", 0, 13)); // NOI18N
         lbRole.setForeground(new java.awt.Color(127, 127, 127));
@@ -73,9 +84,9 @@ public class Header extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addComponent(cmdMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 470, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 389, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(87, 87, 87)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lbRole)
                     .addComponent(lbUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -98,6 +109,23 @@ public class Header extends javax.swing.JPanel {
                 .addGap(5, 5, 5))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void lbUserNameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserNameMouseEntered
+        // TODO add your handling code here:
+        String txt = "<HTML><u>"+user.getUserName()+"</u></HTML>";
+        lbUserName.setText(txt);
+        
+    }//GEN-LAST:event_lbUserNameMouseEntered
+
+    private void lbUserNameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserNameMouseExited
+        // TODO add your handling code here:
+        lbUserName.setText(user.getUserName());
+
+    }//GEN-LAST:event_lbUserNameMouseExited
+
+    private void lbUserNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbUserNameMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lbUserNameMouseClicked
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button cmdMenu;

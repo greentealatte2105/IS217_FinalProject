@@ -82,16 +82,16 @@ public class Main extends javax.swing.JFrame {
                 else if (menuIndex == 1) {
                     main.showForm(new OrderForm());
                 }
-                else if (menuIndex == 2) {
+                else if (menuIndex == 2&& user.getRole().equals("admin")) {
                         main.showForm(new EditForm());
                 }
-                else if (menuIndex == 3) {
+                else if (menuIndex == 3&& user.getRole().equals("admin")) {
                     main.showForm(new ReportForm());
                 }
                 else if (menuIndex == 4 && user.getRole().equals("admin")) {
                         main.showForm(new StaffManagementForm());
                 }
-                 else if(menuIndex != ((user.getRole().equals("admin") ? 1: 0) + 4)){                 } else {
+                 else {
                      //Log out
                      DecimalFormat dfFloat = new DecimalFormat("##.###");
                      Instant end = Instant.now();
@@ -101,15 +101,14 @@ public class Main extends javax.swing.JFrame {
                      float totalTime = (float)timeElapsed.toMillis()/3600000;
                      String message = "<HTML><p style=\"text-align:center\">“Your working time is <b>"+dfFloat.format(totalTime)+ 
                             "</b><br>Do you want to log out?</p></HTML>";
-                     if (!(user.getRole().equals("admin")) && showMessage(message,"question"))
+                     if ( showMessage(message,"question"))
                      {
                         user.setTime(totalTime);
                         new Login().setVisible(true);
                         setVisible(false);
                         UserDAO.addTimeForUser(idUser, totalTime);
                      }
-                      new Login().setVisible(true);
-                        setVisible(false);
+                    
                 }
             }
             

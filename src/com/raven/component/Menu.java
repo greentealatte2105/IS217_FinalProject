@@ -66,6 +66,9 @@ public class Menu extends javax.swing.JPanel {
                     new ImageIcon(getClass().getResource("/com/raven/icon/order.png")), 
                     "Order")
                 );
+        
+        if (user.getRole().equals("admin")){
+        
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/edit-24.png")), 
                     "Edit")
@@ -79,11 +82,11 @@ public class Menu extends javax.swing.JPanel {
                     new ImageIcon(getClass().getResource("/com/raven/icon/3.png")), 
                     "Report")
                 );
-        if (user.getRole().equals("admin"))
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/staff-24.png")), 
                     "Staff")
                 );
+        }
         addMenu(new ModelMenu(
                 new ImageIcon(getClass().getResource("/com/raven/icon/log-out-24.png")), 
                 "Log out")
@@ -182,7 +185,7 @@ public class Menu extends javax.swing.JPanel {
     @Override
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs;
-//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //        GradientPaint gra = new GradientPaint(0, 0, new Color(33, 105, 249), getWidth(), 0, new Color(93, 58, 196));
 //        g2.setPaint(gra);
         g2.setColor(new Color(51,51,51));

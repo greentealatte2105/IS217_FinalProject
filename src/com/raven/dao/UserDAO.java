@@ -84,7 +84,7 @@ public class UserDAO {
                 User staff = new User();
                 staff.setId(rs.getInt("id"));
                 staff.setUserName(rs.getString("userName"));
-                staff.setPassword(rs.getString("password"));
+                staff.seteMail(rs.getString("email"));
                 staff.setPhoneNumber(rs.getString("phoneNumber"));
                 staff.setRole(rs.getString("role"));
                 staff.setTime(rs.getFloat("timeCount"));
@@ -111,13 +111,13 @@ public class UserDAO {
     
     public static void update(User user) {
         try {
-            String query = "UPDATE account SET username = ?, password = ?, phoneNumber = ?, role = ? WHERE id = ?";
+            String query = "UPDATE Account SET userName = ?, email = ?, phoneNumber = ?, role = ? WHERE id = ?";
             PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
             stmt.setString(1, user.getUserName());
-            stmt.setString(2, user.getPassword());
+            stmt.setString(2, user.geteMail());
             stmt.setString(3, user.getPhoneNumber());
             stmt.setString(4, user.getRole());
-            stmt.setInt(4, user.getId());
+            stmt.setInt(5, user.getId());
             DbOperations.SetDataOrDelete(stmt, "User Updated Successfully");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
