@@ -419,8 +419,8 @@ public class OrderForm extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     private void exportBillPdf() {
-        String filePath = getClass().getResource("filename").getPath();
-        System.out.println(filePath + "s##########################################");
+//        String filePath = getClass().getResource("filename").getPath();
+//        System.out.println(filePath + "s##########################################");
         if (billPanel.getComponentCount() > 0){
             String name;
             String id;
@@ -429,10 +429,11 @@ public class OrderForm extends javax.swing.JPanel {
             String price;
             String total = lbTotalView.getText();
             SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy");
-
+            
+            String path = "C:\\Users\\Dell\\Desktop\\";
             com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
             try{
-                PdfWriter.getInstance(doc, new FileOutputStream("/com/raven/invoice.pdf"));
+                PdfWriter.getInstance(doc, new FileOutputStream(path + "" +" bill.pdf"));
                 doc.open();
                 Paragraph cafeName = new Paragraph("                                                                 Mood Lift Cafe\n");
                 doc.add(cafeName);
@@ -449,7 +450,8 @@ public class OrderForm extends javax.swing.JPanel {
                 tb1.addCell("Total");
                 for(int i=0; i < billPanel.getComponentCount();i++){
                     billInfoRow billinfo = (billInfoRow) billPanel.getComponent(i);
-                    name = billinfo.getName();
+                    name = String.valueOf(billinfo.getNameProduct());
+                    System.out.println(name);
     //                id = String.valueOf(billinfo.getIdProduct());
                     price = String.valueOf(billinfo.getPrice());
                     amount = String.valueOf(billinfo.getAmount());
@@ -466,10 +468,11 @@ public class OrderForm extends javax.swing.JPanel {
                 Paragraph thanksMsg = new Paragraph("Thank You,Please Visit Again");
                 doc.add(thanksMsg);
                 
-                 }
+            }
             catch(Exception e){
                 JOptionPane.showMessageDialog(null,e);
             }
+            doc.close();
         }
     }
     
@@ -527,7 +530,8 @@ public class OrderForm extends javax.swing.JPanel {
         // TODO add your handling code here:
         // create a new bill
     
-        test();
+        // test();
+        exportBillPdf();
         MainForm parent = (MainForm) getParent();
         int idUser = parent.getUser().getId();
         try {
