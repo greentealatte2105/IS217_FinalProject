@@ -1,5 +1,7 @@
 package com.raven.form;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -523,11 +525,43 @@ public class OrderForm extends javax.swing.JPanel {
             }
 }
     }
+    
+       private void exportBillPdfThien() {
+        String path = "";
+        JFileChooser j = new JFileChooser();
+        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = j.showSaveDialog(this);
+        
+        if (x == JFileChooser.APPROVE_OPTION){
+            path = j.getSelectedFile().getPath();
+        }
+        
+        try {
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, new FileOutputStream(path + "bill.pdf"));
+            doc.open();
+            doc.add(new Paragraph("--------------------------------------------------------"));
+            doc.add(new Paragraph("                         GRAND CAFE                      "));
+            doc.add(new Paragraph("--------------------------------------------------------"));
+            doc.add(new Paragraph("                      HÓA ĐƠN BÁN HÀNG                      "));
+             doc.add(new Paragraph("Xin chào! Đây là một ví dụ về văn bản tiếng Việt trong PDF."));
+            
+            doc.add(new Paragraph("Hello, World! This is my first PDF."));
+            doc.close();
+            
+            System.out.println("PDF created successfully.");
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+       
+    
     private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
         // TODO add your handling code here:
         // create a new bill
-    
-        test();
+        
         MainForm parent = (MainForm) getParent();
         int idUser = parent.getUser().getId();
         try {
@@ -576,7 +610,7 @@ public class OrderForm extends javax.swing.JPanel {
         
         // cập nhật tổng tiền đã chi của customer
         updateCustomerTotal(idCustomer, idBill);
-
+        exportBillPdfThien();
         
     }//GEN-LAST:event_bPrintBillActionPerformed
 

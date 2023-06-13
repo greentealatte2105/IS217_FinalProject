@@ -74,16 +74,17 @@ public class UserDAO {
     
     public static ArrayList<User> getAllStaff() {
         ArrayList<User> arrayList = new ArrayList<>();
-        String query = "SELECT a.id, a.username, a.password, a.email, a.phoneNumber, a.role, b.timeCount " +
+        String query = "SELECT a.id, a.userName, a.password, a.phoneNumber, a.email, a.role, b.timeCount " +
                         "FROM account a " +
                         "JOIN staffmanagement b ON a.id = b.id " +
                         "WHERE a.role = 'staff';";
         try {
-            ResultSet rs = DbOperations.getData("select * from product");
+            ResultSet rs = DbOperations.getData(query);
             while (rs.next()) {
                 User staff = new User();
                 staff.setId(rs.getInt("id"));
-                staff.setUserName(rs.getString("username"));
+                staff.setUserName(rs.getString("userName"));
+                staff.seteMail(rs.getString("email"));
                 staff.setPassword(rs.getString("password"));
                 staff.setPhoneNumber(rs.getString("phoneNumber"));
                 staff.setRole(rs.getString("role"));
@@ -117,7 +118,7 @@ public class UserDAO {
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getPhoneNumber());
             stmt.setString(4, user.getRole());
-            stmt.setInt(4, user.getId());
+            stmt.setInt(5, user.getId());
             DbOperations.SetDataOrDelete(stmt, "User Updated Successfully");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);

@@ -1,9 +1,12 @@
 package com.raven.form;
 
+import com.raven.dao.UserDAO;
 import com.raven.model.User;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import com.raven.swing.table.EventAction;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
 
 public class StaffManagementForm extends javax.swing.JPanel {
 
@@ -12,16 +15,9 @@ public class StaffManagementForm extends javax.swing.JPanel {
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom());
         tbStaff.fixTable(jScrollPane1);
-//        tbStaff.getColumnModel().getColumn(0).setPreferredWidth(3); // id
-//        tbStaff.getColumnModel().getColumn(1).setPreferredWidth(20); // name
-//        tbStaff.getColumnModel().getColumn(2).setPreferredWidth(80); // email
-//        tbStaff.getColumnModel().getColumn(3).setPreferredWidth(6); // time
-//        tbStaff.getColumnModel().getColumn(5).setPreferredWidth(30);
-
+        
                 
 
-
-//        tbStaff.
         initTableData();
     }
     private void initTableData() {
@@ -40,40 +36,21 @@ public class StaffManagementForm extends javax.swing.JPanel {
                 txtTime.setText("10");
                 txtSalary.setText("0");
             }
+            
         };
-//        
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-
-
-          
-//        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
-//        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
-//        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
-//        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
-//        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
-//        table1.addRow(new ModelStudent(new ImageIcon(getClass().getResource("/com/raven/icon/profile2.jpg")), "Bora", "Male", "C#", 300).toRowTable(eventAction));
+        // add data row
+        ArrayList<User> userList = UserDAO.getAllStaff();
+        for (User user : userList) {
+            int id = user.getId();
+            String username = user.getUserName();
+            String email = user.geteMail();
+            float time = user.getTime();
+            Object[] tbData = { id, username, email, time};
+            DefaultTableModel tblModel = (DefaultTableModel) tbStaff.getModel();
+            tbStaff.addRow(tbData);
+        }
+        
+        
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
