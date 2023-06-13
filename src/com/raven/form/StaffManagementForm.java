@@ -1,34 +1,34 @@
 package com.raven.form;
 
+import com.raven.dao.UserDAO;
+import com.raven.model.ProductCategory;
 import com.raven.model.User;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import com.raven.swing.table.EventAction;
-import javax.swing.ImageIcon;
+import java.awt.Choice;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.swing.ImageIcon; 
+import javax.swing.table.DefaultTableModel;
 
 public class StaffManagementForm extends javax.swing.JPanel {
 
+    
     public StaffManagementForm() {
         initComponents();
         setOpaque(false);
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom());
         tbStaff.fixTable(jScrollPane1);
-//        tbStaff.getColumnModel().getColumn(0).setPreferredWidth(3); // id
-//        tbStaff.getColumnModel().getColumn(1).setPreferredWidth(20); // name
-//        tbStaff.getColumnModel().getColumn(2).setPreferredWidth(80); // email
-//        tbStaff.getColumnModel().getColumn(3).setPreferredWidth(6); // time
-//        tbStaff.getColumnModel().getColumn(5).setPreferredWidth(30);
 
-                
-
-
-//        tbStaff.
         initTableData();
     }
     private void initTableData() {
+        DefaultTableModel model = (DefaultTableModel) tbStaff.getModel();
         EventAction eventAction = new EventAction() {
             @Override
             public void delete(User user) {
-               
+               UserDAO.delete(user.getId());
+               model.removeRow(tbStaff.getSelectedRow());
             }
 
             @Override
@@ -39,32 +39,18 @@ public class StaffManagementForm extends javax.swing.JPanel {
                 txtEmail.setText(user.geteMail());
                 txtTime.setText("10");
                 txtSalary.setText("0");
+                
             }
         };
 //        
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
-          tbStaff.addRow(new User(1,"Thinh","mail@gmail").toRowTable(eventAction));
+        ArrayList<User> staffList = UserDAO.getAllStaff();
+        Iterator<User> itr = staffList.iterator();
+        while (itr.hasNext()) {
+            User staff = itr.next();
+            tbStaff.addRow(staff.toRowTable(eventAction));
+        }            
+        
+        
 
 
           
@@ -91,7 +77,7 @@ public class StaffManagementForm extends javax.swing.JPanel {
         txtTime = new com.raven.swing.TextField();
         txtSalary = new com.raven.swing.TextField();
         jLabel6 = new javax.swing.JLabel();
-        buttonBadges1 = new com.raven.swing.ButtonBadges();
+        bUpdate = new com.raven.swing.ButtonBadges();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbStaff = new com.raven.swing.table.Table();
 
@@ -129,13 +115,13 @@ public class StaffManagementForm extends javax.swing.JPanel {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Information");
 
-        buttonBadges1.setBackground(new java.awt.Color(0, 153, 204));
-        buttonBadges1.setForeground(new java.awt.Color(255, 255, 255));
-        buttonBadges1.setText("UPDATE");
-        buttonBadges1.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
-        buttonBadges1.addActionListener(new java.awt.event.ActionListener() {
+        bUpdate.setBackground(new java.awt.Color(0, 153, 204));
+        bUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        bUpdate.setText("UPDATE");
+        bUpdate.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        bUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonBadges1ActionPerformed(evt);
+                bUpdateActionPerformed(evt);
             }
         });
 
@@ -156,12 +142,8 @@ public class StaffManagementForm extends javax.swing.JPanel {
                         .addComponent(txtSalary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelBorder1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0))
-                            .addGroup(panelBorder1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
                                 .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,7 +158,7 @@ public class StaffManagementForm extends javax.swing.JPanel {
             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBorder1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonBadges1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63))
         );
         panelBorder1Layout.setVerticalGroup(
@@ -206,7 +188,7 @@ public class StaffManagementForm extends javax.swing.JPanel {
                             .addComponent(txtSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
-                .addComponent(buttonBadges1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
@@ -214,17 +196,17 @@ public class StaffManagementForm extends javax.swing.JPanel {
 
         tbStaff.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Name", "Email", "Time", "Salary", "Action"
+                "Id", "Name", "Email", "Phone number", "Time", "Salary", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -259,12 +241,20 @@ public class StaffManagementForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdActionPerformed
 
-    private void buttonBadges1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBadges1ActionPerformed
+    private void bUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonBadges1ActionPerformed
+        int id = Integer.parseInt(txtId.getText());
+        String name = txtName.getText();
+        String email = txtEmail.getText();
+        float time = Float.parseFloat(txtTime.getText());
+        
+        User newUser = new User(id, name, email);
+        newUser.setTime(time);
+        UserDAO.update(newUser);
+    }//GEN-LAST:event_bUpdateActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.raven.swing.ButtonBadges buttonBadges1;
+    private com.raven.swing.ButtonBadges bUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
