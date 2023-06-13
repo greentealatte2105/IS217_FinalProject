@@ -2,6 +2,7 @@ package com.raven.swing;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -35,7 +36,9 @@ public class MenuButton extends JButton {
 
     public MenuButton(Icon icon, String text) {
         super(text);
+        setFont(new Font("Montserrat", Font.PLAIN, 16));
         setIcon(icon);
+        setHorizontalAlignment(CENTER);
         init();
         setBorder(new EmptyBorder(1, 20, 1, 1));
     }
