@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.raven.dao;
 import com.raven.model.User;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
@@ -72,6 +69,89 @@ public class UserDAO {
             JOptionPane.showMessageDialog(null, "Sign up successfully");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static ArrayList<User> getAllStaff() {
+        ArrayList<User> arrayList = new ArrayList<>();
+        String query = "SELECT a.id, a.username, a.password, a.email, a.phoneNumber, a.role, b.timeCount " +
+                        "FROM account a " +
+                        "JOIN staffmanagement b ON a.id = b.id " +
+                        "WHERE a.role = 'staff';";
+        try {
+            ResultSet rs = DbOperations.getData("select * from product");
+            while (rs.next()) {
+                User staff = new User();
+                staff.setId(rs.getInt("id"));
+                staff.setUserName(rs.getString("username"));
+                staff.setPassword(rs.getString("password"));
+                staff.setPhoneNumber(rs.getString("phoneNumber"));
+                staff.setRole(rs.getString("role"));
+                staff.setTime(rs.getFloat("timeCount"));
+                arrayList.add(staff);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+        return arrayList;
+    }
+    
+    public static void delete(int id){
+        try {
+            String query = "DELETE FROM account WHERE id = ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setInt(1, id);
+            DbOperations.SetDataOrDelete(stmt, "User Deleted Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    public static void update(User user) {
+        try {
+            String query = "UPDATE account SET username = ?, password = ?, phoneNumber = ?, role = ? WHERE id = ?";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            stmt.setString(1, user.getUserName());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getPhoneNumber());
+            stmt.setString(4, user.getRole());
+            stmt.setInt(4, user.getId());
+            DbOperations.SetDataOrDelete(stmt, "User Updated Successfully");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    public static void addTimeForUser(int idUser, float time){
+        try {
+            // find user in management
+            String sql = "SELECT * FROM StaffManagement WHERE id =" + idUser +";";
+            ResultSet rs = DbOperations.getData(sql);
+            if (rs.next()){
+                // found a user, add more time to exist time of user
+                sql = "UPDATE StaffManagement sm SET sm.timeCount = sm.timeCount + ? WHERE sm.id = ?;";
+                PreparedStatement st = ConnectionProvider.getCon().prepareStatement(sql);
+                st.setFloat(1, time);
+                st.setInt(2, idUser);
+                st.execute();
+            }
+            else{
+                // not found user, so we will add new user to management
+                sql = "INSERT INTO StaffManagement(id, timeCount) VALUES (" + idUser + "," + time + ");";
+                Connection con = ConnectionProvider.getCon();
+                Statement st = con.createStatement();
+                st.execute(sql);
+                
+//                // get lastestID to add time
+//                sql = "SELECT MAX(id) AS lastestID FROM StaffManagement;";
+//                rs = DbOperations.getData(sql);
+//                int lastestidUser = rs.getInt("lastestID");
+//                JOptionPane.showMessageDialog(null, lastestidUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
