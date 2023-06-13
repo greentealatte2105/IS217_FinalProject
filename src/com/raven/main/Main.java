@@ -97,14 +97,17 @@ public class Main extends javax.swing.JFrame {
 //                     System.out.println((float)timeElapsed.toMillis()/3600000);
                      // show message
                      float totalTime = (float)timeElapsed.toMillis()/3600000;
-                     
-                     if (showMessage("<HTML><p>Thời gian sử dụng là "+dfFloat.format(totalTime)+ "</p></HTML>"))
+                     String message = "<HTML><p style=\"text-align:center\">“Your working time is <b>"+dfFloat.format(totalTime)+ 
+                            "</b><br>Do you want to log out?</p></HTML>";
+                     if (!(user.getRole().equals("admin")) && showMessage(message,"question"))
                      {
                         user.setTime(totalTime);
                         new Login().setVisible(true);
                         setVisible(false);
 
                      }
+                      new Login().setVisible(true);
+                        setVisible(false);
                 }
             }
             
@@ -166,8 +169,8 @@ public class Main extends javax.swing.JFrame {
         //  Start with this form
         main.showForm(new OrderForm());
     }
-     private boolean showMessage(String message) {
-        Message obj = new Message(this.getFrames()[0], true);
+     private boolean showMessage(String message, String option) {
+        Message obj = new Message(this.getFrames()[0], true, option);
         obj.showMessage(message);
         return obj.isOk();
     }
