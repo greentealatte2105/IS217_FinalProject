@@ -2,6 +2,7 @@
 package com.raven.component;
 
 
+import com.raven.event.EventBillRow;
 import com.raven.model.Product;
 import java.text.DecimalFormat;
 
@@ -43,8 +44,10 @@ public class billInfoRow extends javax.swing.JPanel {
     }
     private DecimalFormat df = new DecimalFormat("#,###,###");
     private JLabel lbTotal;
+    private EventBillRow evtBill;
+    private Product product;
     
-    public billInfoRow(Product product, JLabel lbTotal) {
+    public billInfoRow(Product product, EventBillRow evtBill) {
         initComponents();
         setOpaque(false);
         idProduct = product.getId();
@@ -53,12 +56,12 @@ public class billInfoRow extends javax.swing.JPanel {
         quantity = 1;
         amount = price * quantity;
         this.lbTotal = lbTotal;
+        this.evtBill = evtBill;
+        this.product = product;
         update();
     }
     
     public void update(){
-        
-
         lbName.setText(nameProduct);
         lbQuantity.setText(String.valueOf(quantity));
         lbAmount.setText(df.format(amount));
@@ -91,7 +94,6 @@ public class billInfoRow extends javax.swing.JPanel {
             }
         });
 
-        bDelete.setBackground(new java.awt.Color(255, 255, 255));
         bDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/delete.png"))); // NOI18N
         bDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,37 +178,28 @@ public class billInfoRow extends javax.swing.JPanel {
         // TODO add your handling code here:
         quantity -= 1;
         amount = price * quantity;
+        this.evtBill.decrease(this.product);
         if(quantity <= 0){
             JComponent parent = (JComponent) this.getParent();
             parent.remove(this);
             parent.repaint();
             parent.revalidate();
         }
-        else
-        {int total = Integer.parseInt(lbTotal.getText().replaceAll("[,\\.]", "")) - price;
-            if (total <= 0)
-                this.lbTotal.setText("0");
-            else  this.lbTotal.setText(df.format(total));
-            update();
-        }
+        else update();
     }//GEN-LAST:event_bDescreaseActionPerformed
 
     private void bInscreaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInscreaseActionPerformed
         // TODO add your handling code here:
         quantity += 1;
         amount = quantity * price;
-        int total = Integer.parseInt(lbTotal.getText().replaceAll("[,\\.]", "")) + price;
-        this.lbTotal.setText(df.format(total));
+        this.evtBill.increase(this.product);
         update();
     }//GEN-LAST:event_bInscreaseActionPerformed
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
         // TODO add your handling code here:
         JComponent parent = (JComponent) this.getParent();
-        int total = Integer.parseInt(lbTotal.getText().replaceAll("[,\\.]", "")) - amount;
-        if (total <= 0)
-                this.lbTotal.setText("0");
-            else  this.lbTotal.setText(df.format(total));
+        this.evtBill.delete(this.product, this.amount);
         parent.remove(this);
         parent.repaint();
         parent.revalidate();

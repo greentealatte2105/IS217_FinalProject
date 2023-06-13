@@ -93,7 +93,7 @@ public class EditForm extends javax.swing.JPanel {
                txtCatagory.setText(currentCatagoryButton.getText());
                txtName.setText(product.getName());
                txtId.setText(String.valueOf(product.getId()));
-               txtPrice.setText(df.format(product.getPrice()));
+               txtPrice.setText(String.valueOf(product.getPrice()));
                
             }
         };
@@ -385,7 +385,7 @@ public class EditForm extends javax.swing.JPanel {
         updateTabble(bAdd);
         Product addProduct = new Product( txtName.getText(), 
                                         ProductDAO.getProductCategoryId(txtCatagory.getText()), 
-                                        Integer.parseInt( txtPrice.getText().replace(",", "") ));
+                                        Integer.parseInt( txtPrice.getText() ));
         ProductDAO.save(addProduct);
     }//GEN-LAST:event_bAddActionPerformed
 

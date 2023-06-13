@@ -13,6 +13,7 @@ import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
 import com.raven.dao.UserDAO;
 import com.raven.dialog.Message;
+import com.raven.event.EventBillRow;
 import com.raven.event.EventCard;
 import com.raven.main.Main;
 import com.raven.model.Product;
@@ -45,8 +46,8 @@ public class OrderForm extends javax.swing.JPanel {
     private Button currentCatagoryButton = null;
     private Color defaultColor = new Color(0,0,0,150);
     private Color choiceColor = new Color(0,0,0,100);
-    private double discount = 0;
-    
+    private int discount = 0;
+    private DecimalFormat df = new DecimalFormat("#,###,###");
 
     public OrderForm() {
         initComponents();
@@ -109,10 +110,48 @@ public class OrderForm extends javax.swing.JPanel {
     private void initProductCard(ArrayList<Product> listProduct){
         Iterator<Product> itr = listProduct.iterator();
         DecimalFormat df = new DecimalFormat("#,###,###");
+         EventBillRow evtBill = new EventBillRow() {
+            @Override
+            public void increase(Product product) {
+                
+//                discount = Integer.valueOf(txtDiscount.getText());
+                total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", ""));
+                total = total * 100 / (100 - discount);
+                total = total + product.getPrice();
+                total = total * (100 - discount) / 100;
+                lbTotalView.setText(df.format(total));
+           }
+
+            @Override
+            public void delete(Product product, int amount) {
+//              discount = Integer.valueOf(txtDiscount.getText());
+                total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", ""));
+                total = total * 100 / (100 - discount);
+                total = total - amount;
+                total = total * (100 - discount) / 100;
+                
+                if (total <= 0)
+                    lbTotalView.setText("0");
+                else  lbTotalView.setText(df.format(total));
+            }
+
+            @Override
+            public void decrease(Product product) {
+//                discount = Integer.valueOf(txtDiscount.getText());
+                total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", ""));
+                total = total * 100 / (100 - discount);
+                total = total - product.getPrice();
+                total = total * (100 - discount) / 100;
+                
+                if (total <= 0)
+                    lbTotalView.setText("0");
+                else  lbTotalView.setText(df.format(total));
+            }
+        };
         EventCard evt = new EventCard() {
             @Override
             public void update(Product product) {
-               billInfoRow row = new billInfoRow(product,lbTotalView);
+               billInfoRow row = new billInfoRow(product,evtBill);
 
                int discount = Integer.valueOf(txtDiscount.getText());
                total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice() * (100 - discount)/100;;
@@ -468,7 +507,10 @@ public class OrderForm extends javax.swing.JPanel {
                 e.printStackTrace();
             }
             // tính tiền mọi bill
-            try {
+            
+
+        }
+        try {
                 String query = "CALL USP_CalculateBill(?);";
                 PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
                 stmt.setInt(1, idBill);
@@ -477,7 +519,8 @@ public class OrderForm extends javax.swing.JPanel {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        
+
         
     }//GEN-LAST:event_bPrintBillActionPerformed
 
@@ -506,9 +549,15 @@ public class OrderForm extends javax.swing.JPanel {
             ResultSet rs = st.executeQuery(query);
             if (rs.next()) {
                 String rank = rs.getString("Rank");
-                int discount = rs.getInt("Discount");
-                txtRank.setText(rank);
-                txtDiscount.setText(String.valueOf(discount));
+                
+                 int total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) ;
+               total = total * 100 / ( 100 - discount);
+               discount = rs.getInt("Discount");
+               total = total * (100 - discount)/100;
+               lbTotalView.setText(df.format(total));
+               
+               txtRank.setText(rank);
+               txtDiscount.setText(String.valueOf(discount));
 //                
 //                discount = Integer.valueOf(txtDiscount.getText());
 //                total = total * (100 - discount)/100;
