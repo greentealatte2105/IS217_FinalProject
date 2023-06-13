@@ -3,13 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/ProductDAO.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/BillDAO.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/model/Bill.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/ProductCategoryDAO.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/dao/BillInfoDAO.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/model/BillInfo.java</file>
-            <file>file:/D:/UIT/IS216/IS217_FinalProject/src/com/raven/main/Main.java</file>
+            <file>file:/D:/test%20code%20from%20github/IS217_FinalProject/src/com/raven/dao/ConnectionProvider.java</file>
         </group>
     </open-files>
 </project-private>

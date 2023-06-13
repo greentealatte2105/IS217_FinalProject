@@ -2,7 +2,10 @@
 package com.raven.main;
 
 
+import com.raven.dao.DbOperations;
 import java.awt.Color;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 
 public class ForgotPassword extends javax.swing.JFrame {
@@ -165,8 +168,23 @@ public class ForgotPassword extends javax.swing.JFrame {
         // TODO add your handling code here:
         //kiểm tra format email, check xem có tài khoản không, 
         //nếu có chuyển đến tạo mới mật khẩu, nếu không hỏi có muốn sign up
-        if(txtEmail.getText().length() != 0 && txtUsername.getText().length() != 0){
-            //check
+        String username = txtUsername.getText();
+        String email = txtEmail.getText();
+        if(email.length() != 0 && username.length() != 0){
+            try {
+                String sql = "SELECT * FROM Account WHERE userName = '" + username + "' AND email = '" + email + "';";
+//                PreparedStatement st = ConnectionProvider.getCon().prepareStatement(sql);
+                ResultSet rs = DbOperations.getData(sql);
+                if (rs.next()){
+                    int id = rs.getInt("id");
+//                    JOptionPane.showMessageDialog(null, id);
+                    
+                    setVisible(false);
+                    new ChangePassword(id).setVisible(true);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Can't find account", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_bSendActionPerformed
 
