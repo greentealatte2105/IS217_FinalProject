@@ -1,16 +1,23 @@
 package com.raven.form;
 
+import com.raven.model.User;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.border.EmptyBorder;
 
 public class MainForm extends javax.swing.JPanel {
-
-    public MainForm() {
+    private User user;
+    
+    public MainForm(User user) {
         initComponents();
+        this.user = user;
         setOpaque(false);
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(10, 20, 10, 20));
+    }
+    
+    public User getUser() {
+        return this.user;
     }
 
     public void showForm(Component form) {

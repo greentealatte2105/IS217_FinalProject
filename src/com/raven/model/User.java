@@ -9,12 +9,22 @@ package com.raven.model;
  * @author dothinhtpr247gmai.com
  */
 public class User {
-    private int id;
-    private String userName;
-    private String password;
-    private String phoneNumber;
-    private String eMail;
-    private String role;
+    private int id = 0;
+    private String userName = "";
+    private String password = "";
+    private String phoneNumber = "";
+    private String eMail = "";
+    private String role = "";
+    
+    public User(){
+    }
+
+    public User(int id, String userName, String password, String role) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.role = role;
+    }
 
     public int getId() {
         return id;

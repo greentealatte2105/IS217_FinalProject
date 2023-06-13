@@ -9,34 +9,27 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
 public class Header extends javax.swing.JPanel {
+    private User user = null;
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-    public void updateProfile(){
-        lbUserName.setText(this.userName);
-        lbRole.setText(this.role);
-    }
-    public void showProfile(User user){
-        userName = user.getUserName();
-        role = user.getRole();
-        lbUserName.setText(this.userName);
-        lbRole.setText(this.role);
+//    public void updateProfile(){
+//        lbUserName.setText(this.userName);
+//        lbRole.setText(this.role);
+//    }
+    public void showProfile(){
+        lbUserName.setText(this.user.getUserName());
+        lbRole.setText(this.user.getRole());
         repaint();
     }
-    private String userName;
-    private String role;
-    public Header() {
+
+    public Header(User user) {
         initComponents();
         setOpaque(true);
-        userName = "User name";
-        role = "Staff";
-        updateProfile();
-        
+        this.user = user;
+        showProfile();
+    }
+    
+    public User getUser(){
+        return this.user;
     }
    
 

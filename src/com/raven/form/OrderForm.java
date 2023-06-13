@@ -4,15 +4,20 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.raven.component.Card;
+import com.raven.component.Header;
 import com.raven.component.billInfoRow;
+import com.raven.dao.BillDAO;
 import com.raven.dao.ConnectionProvider;
+import com.raven.dao.DbOperations;
 import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
+import com.raven.dao.UserDAO;
 import com.raven.dialog.Message;
 import com.raven.event.EventCard;
 import com.raven.main.Main;
 import com.raven.model.Product;
 import com.raven.model.ProductCategory;
+import com.raven.model.User;
 import com.raven.swing.Button;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import java.awt.Color;
@@ -22,6 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
@@ -29,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 public class OrderForm extends javax.swing.JPanel {
@@ -39,15 +46,18 @@ public class OrderForm extends javax.swing.JPanel {
     private Color defaultColor = new Color(0,0,0,150);
     private Color choiceColor = new Color(0,0,0,100);
     private double discount = 0;
+    
 
     public OrderForm() {
         initComponents();
+       
         setOpaque(false);
         scrollBill.setVerticalScrollBar(new ScrollBarCustom());
         scrollProduct.setVerticalScrollBar(new ScrollBarCustom());
         scrollCatogory.setHorizontalScrollBar(new ScrollBarCustom());
         
         initCatagory();
+        
     }
     private void initCatagory(){
         ArrayList<ProductCategory> list = ProductCategoryDAO.getAllRecords();
@@ -105,7 +115,7 @@ public class OrderForm extends javax.swing.JPanel {
                billInfoRow row = new billInfoRow(product,lbTotalView);
 
                int discount = Integer.valueOf(txtDiscount.getText());
-               int total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice() * (100 - discount)/100;;
+               total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice() * (100 - discount)/100;;
 //               total = total * (100 - discount)/100;
                lbTotalView.setText(df.format(total));
                
@@ -367,9 +377,7 @@ public class OrderForm extends javax.swing.JPanel {
             .addComponent(orderBillParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
-        // TODO add your handling code here:
+    private void exportBillPdf() {
         if (billPanel.getComponentCount() > 0){
             String name;
             String id;
@@ -418,6 +426,56 @@ public class OrderForm extends javax.swing.JPanel {
                  }
             catch(Exception e){
                 JOptionPane.showMessageDialog(null,e);
+            }
+        }
+    }
+    
+    private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
+        // TODO add your handling code here:
+        // create a new bill
+        MainForm parent = (MainForm) getParent();
+        int idUser = parent.getUser().getId();
+        try {
+            String query = "CALL USP_AddBill(?, CURDATE(), ?);";
+            PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+            
+            stmt.setInt(1, idUser);
+//            stmt.setString(2, "CURDATE()");
+            stmt.setInt(2, Integer.parseInt(txtDiscount.getText()));
+            stmt.execute();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        // get id of new bill
+        int idBill = BillDAO.getLastestBillId();
+//        JOptionPane.showMessageDialog(null, idBill);
+        
+        for(int i=0; i < billPanel.getComponentCount();i++){
+            billInfoRow billinfo = (billInfoRow) billPanel.getComponent(i);
+            int idProduct = billinfo.getIdProduct();
+            int count = billinfo.getQuantity();
+            
+            try {
+                String query = "CALL USP_AddBillInfo(?, ?, ?);";
+                PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+                stmt.setInt(1, idBill);
+                stmt.setInt(2,idProduct);
+                stmt.setInt(3, count);
+                stmt.execute();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // tính tiền mọi bill
+            try {
+                String query = "CALL USP_CalculateBill(?);";
+                PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+                stmt.setInt(1, idBill);
+                stmt.execute();
+                JOptionPane.showMessageDialog(null, "Bill created");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         

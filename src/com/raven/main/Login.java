@@ -5,6 +5,7 @@
 package com.raven.main;
 
 import com.raven.dao.UserDAO;
+import com.raven.model.User;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -239,7 +240,7 @@ public class Login extends javax.swing.JFrame {
 
     private void bLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLoginActionPerformed
         // TODO add your handling code here:
-         String user = txtUsername.getText();
+        String user = txtUsername.getText();
         String pass = String.valueOf(txtPassword.getPassword());
 //        // code chưa connect sql
 //        if (user.equals("admin") && pass.equals("admin"))
@@ -253,7 +254,9 @@ public class Login extends javax.swing.JFrame {
         if (loginID > 0) {
             setVisible(false);
             String role = UserDAO.getUserRole(loginID);
-            new Main(user, role).setVisible(true);
+            
+            User objUser = new User(loginID, user, pass, role);
+            new Main(objUser).setVisible(true);
         }
     }//GEN-LAST:event_bLoginActionPerformed
 
