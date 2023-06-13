@@ -141,7 +141,7 @@ public class MenuItem extends javax.swing.JPanel {
         int size = 4;
         // position arrow 
         int y = 19;
-        int x = 205; // 
+        int x = 125; // 
         g2.setColor(new Color(230, 230, 230));
         float ay = alpha * size;
         float ay1 = (1f - alpha) * size;
