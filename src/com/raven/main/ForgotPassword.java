@@ -31,6 +31,7 @@ public class ForgotPassword extends javax.swing.JFrame {
         bExit1 = new com.raven.swing.Button();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        lbSignup = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -140,17 +141,39 @@ public class ForgotPassword extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        lbSignup.setFont(new java.awt.Font("Montserrat", 1, 13)); // NOI18N
+        lbSignup.setForeground(new java.awt.Color(255, 255, 255));
+        lbSignup.setText("Sign up here");
+        lbSignup.setName("Sign up here"); // NOI18N
+        lbSignup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbSignupMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lbSignupMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbSignupMouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(294, Short.MAX_VALUE)
+                .addComponent(lbSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(backgroundForgot1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(426, Short.MAX_VALUE)
+                .addComponent(lbSignup)
+                .addGap(17, 17, 17))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(backgroundForgot1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -205,6 +228,24 @@ public class ForgotPassword extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsernameMouseClicked
 
+    private void lbSignupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbSignupMouseClicked
+        // TODO add your handling code here:
+        System.out.println("com.raven.main.Login.lbSignupMouseClicked()");
+        setVisible(false);
+        new Signup().setVisible(true);
+    }//GEN-LAST:event_lbSignupMouseClicked
+
+    private void lbSignupMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbSignupMouseEntered
+        // TODO add your handling code here:
+        String underlineTxt = "<HTML><u>"+lbSignup.getText()+"</u></HTML>";
+        lbSignup.setText(underlineTxt);
+    }//GEN-LAST:event_lbSignupMouseEntered
+
+    private void lbSignupMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbSignupMouseExited
+        // TODO add your handling code here:
+        lbSignup.setText(lbSignup.getName());
+    }//GEN-LAST:event_lbSignupMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -250,6 +291,7 @@ public class ForgotPassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbSignup;
     private com.raven.swing.TextField txtEmail;
     private com.raven.swing.TextField txtUsername;
     // End of variables declaration//GEN-END:variables

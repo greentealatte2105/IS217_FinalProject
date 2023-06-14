@@ -257,6 +257,7 @@ public class Login extends javax.swing.JFrame {
             
             User objUser = new User(loginID, user, pass, role);
             new Main(objUser).setVisible(true);
+            setVisible(false);
         }
     }//GEN-LAST:event_bLoginActionPerformed
 

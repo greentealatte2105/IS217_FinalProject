@@ -91,7 +91,11 @@ public class Main extends javax.swing.JFrame {
                 else if (menuIndex == 4 && user.getRole().equals("admin")) {
                         main.showForm(new StaffManagementForm());
                 }
-                 else {
+                 else if (menuIndex == (2 + (user.getRole().equals("admin") ? 3 : 0))){
+                     new ChangePassword(user.getId()).setVisible(true);
+                     setVisible(false);
+                 }
+                 else if (menuIndex == (3 + (user.getRole().equals("admin") ? 3 : 0))){
                      //Log out
                      DecimalFormat dfFloat = new DecimalFormat("##.###");
                      Instant end = Instant.now();

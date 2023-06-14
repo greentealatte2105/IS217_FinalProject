@@ -3,21 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/StaffManagementForm.java</file>
+            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/OrderForm.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/component/Header.java</file>
+            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/dao/ConnectionProvider.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/component/Profile.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/swing/PasswordField.java</file>
-            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/component/Menu.java</file>
-=======
-<<<<<<< HEAD
-            <file>file:/D:/Java%20Project/IS217_FinalProject/src/com/raven/form/OrderForm.java</file>
-=======
-            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/StaffManagementForm.java</file>
-            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/EditForm.java</file>
-            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/MainForm.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/dao/UserDAO.java</file>
->>>>>>> 0a5cc20d29928b5bb7b7d9f5b8ce9b9786d8fe9e
->>>>>>> refs/remotes/origin/main
+            <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/component/Menu.java</file>
         </group>
     </open-files>
 </project-private>

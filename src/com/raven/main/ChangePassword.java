@@ -194,6 +194,8 @@ public class ChangePassword extends javax.swing.JFrame {
                     "' WHERE a.id = '" + this.id + "';";
             st.execute(sql);
             JOptionPane.showMessageDialog(null, "Update password successfully");
+            new Login().setVisible(true);
+            setVisible(false);
         } catch (Exception e) {
             e.printStackTrace();
         }

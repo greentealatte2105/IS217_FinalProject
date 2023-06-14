@@ -88,6 +88,10 @@ public class Menu extends javax.swing.JPanel {
                 );
         }
         addMenu(new ModelMenu(
+                new ImageIcon(getClass().getResource("/com/raven/icon/change-24.png")), 
+                "New password")
+                );
+        addMenu(new ModelMenu(
                 new ImageIcon(getClass().getResource("/com/raven/icon/log-out-24.png")), 
                 "Log out")
                 );
