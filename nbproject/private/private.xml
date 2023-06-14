@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/StaffManagementForm.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/form/OrderForm.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/component/Header.java</file>
@@ -11,6 +12,11 @@
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/swing/PasswordField.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/dao/UserDAO.java</file>
             <file>file:/Users/dothinhtpr247gmai.com/Desktop/IS217_FinalProject/testfoler/src/com/raven/component/Menu.java</file>
+=======
+            <file>file:/D:/test%20project/IS217_FinalProject/src/com/raven/dao/ConnectionProvider.java</file>
+            <file>file:/D:/test%20project/IS217_FinalProject/src/com/raven/form/StaffManagementForm.java</file>
+            <file>file:/D:/test%20project/IS217_FinalProject/src/com/raven/form/OrderForm.java</file>
+>>>>>>> refs/remotes/origin/main
         </group>
     </open-files>
 </project-private>
