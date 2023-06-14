@@ -33,6 +33,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JFileChooser;
@@ -440,17 +443,19 @@ public class OrderForm extends javax.swing.JPanel {
 //        com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
 //        PdfWriter.getInstance(doc, new FileOutputStream(path + "bill.pdf"));
 //            String path = "C:\\Users\\Dell\\Desktop\\";
-           
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = currentDate.format(formatter);
             try{
                 Document doc = new Document();
-                PdfWriter.getInstance(doc, new FileOutputStream(path + "bill.pdf"));
-                PdfWriter.getInstance(doc, new FileOutputStream(path + "" +" bill.pdf"));
+                PdfWriter.getInstance(doc, new FileOutputStream(path + "/bill.pdf"));
                 doc.open();
-                Paragraph cafeName = new Paragraph("                                                                 Mood Lift Cafe\n");
+                Paragraph cafeName = new Paragraph("                                                                 Home Cafe\n");
                 doc.add(cafeName);
                 Paragraph starLine = new Paragraph("****************************************************************************************************************");
+                
                 doc.add(starLine);
-
+                doc.add(new Paragraph("Date: " + formattedDate));
 //                Paragraph customer = new Paragraph("\nCustomer Phone: "+txtCustomerPhone);
 //                doc.add(customer);
                 doc.add(starLine);
@@ -473,7 +478,9 @@ public class OrderForm extends javax.swing.JPanel {
                     tb1.addCell(amount);
                 }
                 doc.add(tb1);
-                Paragraph paragraph3 = new Paragraph("\nTotal Paid: "+lbTotalView.getText());
+                Paragraph paragraphDiscount = new Paragraph("\nDiscount: "+ txtDiscount.getText() + "%");
+                Paragraph paragraph3 = new Paragraph("Total Paid: "+lbTotalView.getText());
+                doc.add(paragraphDiscount);
                 doc.add(paragraph3);
                 doc.add(starLine);
                 Paragraph thanksMsg = new Paragraph("Thank You,Please Visit Again");
