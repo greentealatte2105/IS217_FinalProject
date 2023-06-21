@@ -42,6 +42,11 @@ public class billInfoRow extends javax.swing.JPanel {
     public int getAmount() {
         return amount;
     }
+    public void increaseQuantity(int n){
+        quantity += n;
+        amount = price * quantity;
+        update();
+    }
     private DecimalFormat df = new DecimalFormat("#,###,###");
     private JLabel lbTotal;
     private EventBillRow evtBill;

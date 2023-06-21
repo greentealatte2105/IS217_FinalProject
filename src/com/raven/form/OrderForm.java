@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -51,7 +52,7 @@ public class OrderForm extends javax.swing.JPanel {
     private int discount = 0;
     private DecimalFormat df = new DecimalFormat("#,###,###");
     private int idCustomer = -1;
-
+    private TreeMap<String, billInfoRow> billRestore ;
     public OrderForm() {
         initComponents();
        
@@ -61,7 +62,7 @@ public class OrderForm extends javax.swing.JPanel {
         scrollCatogory.setHorizontalScrollBar(new ScrollBarCustom());
         
         initCatagory();
-        
+        billRestore = new TreeMap<>();
     }
     private void initCatagory(){
         ArrayList<ProductCategory> list = ProductCategoryDAO.getAllRecords();
@@ -154,16 +155,24 @@ public class OrderForm extends javax.swing.JPanel {
         EventCard evt = new EventCard() {
             @Override
             public void update(Product product) {
-               billInfoRow row = new billInfoRow(product,evtBill);
+               
 
                int discount = Integer.valueOf(txtDiscount.getText());
                total = Integer.parseInt(lbTotalView.getText().replaceAll("[,\\.]", "")) + product.getPrice() * (100 - discount)/100;;
 //               total = total * (100 - discount)/100;
                lbTotalView.setText(df.format(total));
-               
+               if (billRestore.get(product.getName()) == null)
+               {
+               billInfoRow row = new billInfoRow(product,evtBill);
                billPanel.add(row);
                billPanel.repaint();
                billPanel.revalidate();
+               billRestore.put(product.getName(), row);
+               }
+               else{
+                   billInfoRow row = (billInfoRow) billRestore.get(product.getName());
+                   row.increaseQuantity(1);
+               }
             }
         };
         while (itr.hasNext()) {
@@ -456,8 +465,11 @@ public class OrderForm extends javax.swing.JPanel {
                 
                 doc.add(starLine);
                 doc.add(new Paragraph("Date: " + formattedDate));
-//                Paragraph customer = new Paragraph("\nCustomer Phone: "+txtCustomerPhone);
-//                doc.add(customer);
+                doc.add(new Paragraph("\nCustomer Phone: "+txtCustomer.getText()));
+                MainForm parent = (MainForm) getParent();
+        
+                doc.add(new Paragraph("\nStaff: " + parent.getUser().getUserName()) );
+                
                 doc.add(starLine);
                 PdfPTable tb1 = new PdfPTable(4);
                 tb1.addCell("Name");
@@ -544,7 +556,16 @@ public class OrderForm extends javax.swing.JPanel {
 }
     }
     
-     
+     private void clearBill(){
+        billPanel.removeAll();
+        billPanel.repaint();
+        billPanel.revalidate();
+        lbTotalView.setText("0");
+        txtCustomer.setText("");
+        txtRank.setText("");
+        txtDiscount.setText("");
+         
+     }
        
     
     private void bPrintBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrintBillActionPerformed
@@ -600,6 +621,9 @@ public class OrderForm extends javax.swing.JPanel {
         // cập nhật tổng tiền đã chi của customer
         updateCustomerTotal(idCustomer, idBill);
         exportBillPdf();
+        clearBill();
+        
+        
 
         
     }//GEN-LAST:event_bPrintBillActionPerformed
