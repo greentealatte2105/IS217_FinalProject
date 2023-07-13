@@ -455,9 +455,10 @@ public class OrderForm extends javax.swing.JPanel {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = currentDate.format(formatter);
+        int idBill = BillDAO.getLastestBillId();
             try{
                 Document doc = new Document();
-                PdfWriter.getInstance(doc, new FileOutputStream(path + "/bill.pdf"));
+                PdfWriter.getInstance(doc, new FileOutputStream(path + "/bill" + idBill + ".pdf"));
                 doc.open();
                 Paragraph cafeName = new Paragraph("                                                                 Home Cafe\n");
                 doc.add(cafeName);
@@ -622,10 +623,7 @@ public class OrderForm extends javax.swing.JPanel {
         updateCustomerTotal(idCustomer, idBill);
         exportBillPdf();
         clearBill();
-        
-        
-
-        
+              
     }//GEN-LAST:event_bPrintBillActionPerformed
 
     private void txtCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomerActionPerformed

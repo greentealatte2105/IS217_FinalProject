@@ -55,6 +55,25 @@ public class UserDAO {
         return "";
     }
     
+    public static User getObjUser(int id) {
+        try {
+            String query = "SELECT * FROM Account WHERE id=" +id;
+            ResultSet rs = DbOperations.getData(query);
+            if (rs.next()) {
+                String username = rs.getString("userName");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                String phone = rs.getString("phoneNumber");
+                String role = rs.getString("role");
+                return new User(id, username, password, role);
+            }
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+    
     public static void save(User user){
             String query = "INSERT INTO Account (userName, password, email, phoneNumber, role) " +
                 "VALUES (?, ?, ?, ?, 'staff')";

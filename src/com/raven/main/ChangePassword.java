@@ -5,6 +5,8 @@
 package com.raven.main;
 
 import com.raven.dao.ConnectionProvider;
+import com.raven.dao.UserDAO;
+import com.raven.model.User;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -214,7 +216,9 @@ public class ChangePassword extends javax.swing.JFrame {
 
     private void bExit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bExit1ActionPerformed
         // TODO add your handling code here:
-        System.exit(0);
+        setVisible(false);
+        User objUser = UserDAO.getObjUser(id);
+        new Main(objUser).setVisible(true);
     }//GEN-LAST:event_bExit1ActionPerformed
 
     /**
