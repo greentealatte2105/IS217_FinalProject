@@ -24,9 +24,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Component id="cmdMenu" min="-2" pref="38" max="-2" attributes="0"/>
-              <EmptySpace pref="389" max="32767" attributes="0"/>
+              <EmptySpace pref="468" max="32767" attributes="0"/>
               <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="lbRole" min="-2" max="-2" attributes="0"/>
                   <Component id="lbUserName" min="-2" pref="89" max="-2" attributes="0"/>
@@ -44,7 +44,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lbUserName" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="10" max="32767" attributes="0"/>
                       <Component id="lbRole" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="cmdMenu" max="32767" attributes="0"/>

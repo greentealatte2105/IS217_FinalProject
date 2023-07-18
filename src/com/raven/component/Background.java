@@ -20,33 +20,40 @@ import javax.swing.SwingUtilities;
 import raven.fbr.FancyBorderRadius;
 import com.raven.shadow.ShadowRenderer;
 
-/**
- *
- * @author RAVEN
- */
 public class Background extends JComponent {
 
     public Component getBlur() {
         return blur;
     }
+    public void setFancyBorderRadius(String s){
+        sBorder = s;
+    }
+    public void setImageSource(String src){
+        try {
+            image = new ImageIcon(getClass().getResource(src));
+        } catch (Exception e) {
+            image = new ImageIcon(getClass().getResource("/com/raven/images/cup.jpg"));
+        }
+        
+        SwingUtilities.invokeLater(() -> {
+            createImage();
+            repaint();
+        });
 
+    }
     public void setBlur(Component blur) {
         this.blur = blur;
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createImage();
-                repaint();
-            }
+        SwingUtilities.invokeLater(() -> {
+            createImage();
+            repaint();
         });
     }
 
     private Icon image;
     private BufferedImage bufferedImage;
     private Component blur;
-
+    private String sBorder = "32% 68% 65% 35% / 60% 78% 22% 40%";
     public Background() {
-        
         image = new ImageIcon(getClass().getResource("/com/raven/images/Gladius.jpg"));
     }
 
@@ -78,7 +85,7 @@ public class Background extends JComponent {
             BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = img.createGraphics();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            Shape shape = new FancyBorderRadius(width, height, "32% 68% 65% 35% / 60% 78% 22% 40%").getShape();
+            Shape shape = new FancyBorderRadius(width, height, sBorder).getShape();
             g2.fill(shape);
             g2.setComposite(AlphaComposite.SrcIn);
             g2.drawImage(ImageUtil.blur(bufferedImage.getSubimage(x, y, width, height), 30f), 0, 0, null);

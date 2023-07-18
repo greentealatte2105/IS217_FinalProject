@@ -1,15 +1,10 @@
 package com.raven.form;
 
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+
 import com.raven.component.Card;
-import com.raven.component.billInfoRow;
 import com.raven.dao.ProductCategoryDAO;
 import com.raven.dao.ProductDAO;
-import com.raven.dialog.Message;
 import com.raven.event.EventCard;
-import com.raven.main.Main;
 import com.raven.model.Product;
 import com.raven.model.ProductCategory;
 import com.raven.swing.Button;
@@ -19,18 +14,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import sun.security.krb5.internal.rcache.DflCache;
 
 public class EditForm extends javax.swing.JPanel {
-    private ArrayList<Product> products;
     private int idTabe;
     private int total;
     private Button currentCatagoryButton = null;
@@ -104,7 +94,7 @@ public class EditForm extends javax.swing.JPanel {
             
         
             Product product = new Product(productObj.getId(), productObj.getName(), productObj.getPrice());
-            addProduct(new Card(product, evt));
+            addProduct(new Card(product, evt,""));
         }
     }
     public void updateTabble(JButton button){
@@ -119,7 +109,6 @@ public class EditForm extends javax.swing.JPanel {
        productView.add(card);
   }
     public void setProducts(ArrayList<Product> products){
-        this.products = products;
     }
 
 //    private boolean showMessage(String message) {

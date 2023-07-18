@@ -6,6 +6,7 @@ import com.raven.dao.UserDAO;
 import com.raven.dialog.Message;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
+import com.raven.form.CustomerForm;
 import com.raven.form.EditForm;
 import com.raven.form.StaffManagementForm;
 import com.raven.form.OrderForm;
@@ -89,7 +90,10 @@ public class Main extends javax.swing.JFrame {
                     main.showForm(new ReportForm());
                 }
                 else if (menuIndex == 4 && user.getRole().equals("admin")) {
+                    if (subMenuIndex == 0)
                         main.showForm(new StaffManagementForm());
+                    else if (subMenuIndex == 1)
+                        main.showForm(new CustomerForm());
                 }
                  else if (menuIndex == (2 + (user.getRole().equals("admin") ? 3 : 0))){
                      new ChangePassword(user.getId()).setVisible(true);

@@ -84,7 +84,7 @@ public class Menu extends javax.swing.JPanel {
                 );
         addMenu(new ModelMenu(
                     new ImageIcon(getClass().getResource("/com/raven/icon/staff-24.png")), 
-                    "Staff")
+                    "Management","Staff","Customer")
                 );
         }
         addMenu(new ModelMenu(
@@ -165,7 +165,7 @@ public class Menu extends javax.swing.JPanel {
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 523, Short.MAX_VALUE)
+            .addGap(0, 529, Short.MAX_VALUE)
         );
 
         sp.setViewportView(panel);
@@ -181,8 +181,8 @@ public class Menu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(profile1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(sp))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sp, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

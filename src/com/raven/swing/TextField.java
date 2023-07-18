@@ -25,11 +25,15 @@ public class TextField extends JTextField {
         this.hint = hint;
         repaint();
     }
+    public void setUnderlineColor(Color color){
+        underlineColor = color;
+    }
 
     private String hint = "";
     private final Animator animator;
     private float animate;
     private boolean show = true;
+    private Color underlineColor = new Color(255, 255, 255, 200);
 
     public TextField() {
         setOpaque(false);
@@ -130,7 +134,7 @@ public class TextField extends JTextField {
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setColor(new Color(255, 255, 255, 200));
+        g2.setColor(underlineColor);
         g2.drawLine(0, getHeight() - 3, getWidth(), getHeight() - 3);
         if (!hint.equals("")) {
             int h = getHeight();

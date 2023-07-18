@@ -34,25 +34,23 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import java.awt.Dimension;
 
 public class OrderForm extends javax.swing.JPanel {
-    private ArrayList<Product> products;
-    private int idTabe;
     private int total;
     private Button currentCatagoryButton = null;
-    private Color defaultColor = new Color(0,0,0,150);
-    private Color choiceColor = new Color(0,0,0,100);
+    private final Color defaultColor = new Color(0,0,0,150);
+    private final Color choiceColor = new Color(0,0,0,100);
     private int discount = 0;
-    private DecimalFormat df = new DecimalFormat("#,###,###");
+    private final DecimalFormat df = new DecimalFormat("#,###,###");
     private int idCustomer = -1;
-    private TreeMap<String, billInfoRow> billRestore ;
+    private final TreeMap<String, billInfoRow> billRestore ;
     public OrderForm() {
         initComponents();
        
@@ -63,9 +61,17 @@ public class OrderForm extends javax.swing.JPanel {
         
         initCatagory();
         billRestore = new TreeMap<>();
+//        cbOption.removeAllItems();
+//        cbOption.addItem("Trending");
+        cbOption.addItem("Increase");
+        cbOption.addItem("Descrease");
+        
+
     }
     private void initCatagory(){
         ArrayList<ProductCategory> list = ProductCategoryDAO.getAllRecords();
+        catagoryPanel.setPreferredSize(new Dimension(list.size() * 110 + 10,catagoryPanel.getHeight()));
+
         System.out.println(list.size());
         Iterator<ProductCategory> itr = list.iterator();
         while (itr.hasNext()) {
@@ -75,7 +81,8 @@ public class OrderForm extends javax.swing.JPanel {
         Button initProducts = (Button) catagoryPanel.getComponent(0);
         currentCatagoryButton = initProducts;
         currentCatagoryButton.setBackground(choiceColor);
-        initProductCard(getProductDAO(list.get(0).getId()));
+        getProduct(list.get(0).getId());
+       
     }
     
     public Button createCatagroryButton(ProductCategory productCategory){
@@ -100,20 +107,18 @@ public class OrderForm extends javax.swing.JPanel {
                 productView.removeAll();
                 productView.repaint();
                 productView.revalidate();
-                initProductCard(getProductDAO(productCategory.getId()));
+                getProduct(productCategory.getId());
                 
             }});
         return bt;
     }
     
-    public ArrayList<Product> getProductDAO(int idCatagory){
+    public void getProduct(int idCatagory){
+        int choice = cbOption.getSelectedIndex();
         ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(idCatagory);
-        return list;
-    }
-    
-    private void initProductCard(ArrayList<Product> listProduct){
-        Iterator<Product> itr = listProduct.iterator();
+        Iterator<Product> itr = list.iterator();
         DecimalFormat df = new DecimalFormat("#,###,###");
+        
          EventBillRow evtBill = new EventBillRow() {
             @Override
             public void increase(Product product) {
@@ -175,32 +180,22 @@ public class OrderForm extends javax.swing.JPanel {
                }
             }
         };
+        productView.setPreferredSize(new Dimension(productView.getWidth(), list.size() * 290 /2 ));
         while (itr.hasNext()) {
             Product productObj = itr.next();
             
-            Product product = new Product(productObj.getId(), productObj.getName(), productObj.getPrice());
-            addProduct(new Card(product, evt));
+            Product product = new Product(productObj.getId(), productObj.getName(), productObj.getPrice()); 
+            String path = "/com/raven/images/" + String.valueOf(idCatagory)+"/"+String.valueOf(productObj.getId())+".jpg";
+      
+            addProduct(new Card(product, evt,path));
         }
     }
     
-    private void addBillRow(billInfoRow row){
-        billPanel.add(row);
-    }
-    private void addCatagoryButton(Button bt){
-        catagoryPanel.add(bt);
-    }
    private void addProduct(Card card){
        productView.add(card);
   }
     public void setProducts(ArrayList<Product> products){
-        this.products = products;
     }
-
-//    private boolean showMessage(String message) {
-//        Message obj = new Message(Main.getFrames()[0], true);
-//        obj.showMessage(message);
-//        return obj.isOk();
-//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -221,7 +216,11 @@ public class OrderForm extends javax.swing.JPanel {
         productView = new javax.swing.JPanel();
         scrollCatogory = new javax.swing.JScrollPane();
         catagoryPanel = new javax.swing.JPanel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cbOption = new javax.swing.JComboBox<>();
+        txtSearch = new com.raven.swing.TextField();
+        cmdMenu1 = new com.raven.swing.Button();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         orderBillParentPanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -235,13 +234,17 @@ public class OrderForm extends javax.swing.JPanel {
             }
         });
 
+        lbTotalView.setBackground(new java.awt.Color(102, 102, 102));
         lbTotalView.setFont(new java.awt.Font("Montserrat", 0, 18)); // NOI18N
+        lbTotalView.setForeground(new java.awt.Color(255, 255, 255));
         lbTotalView.setText("0");
         lbTotalView.setAlignmentX(0.5F);
         lbTotalView.setOpaque(true);
         lbTotalView.setPreferredSize(new java.awt.Dimension(50, 30));
 
+        jLabel2.setBackground(new java.awt.Color(102, 102, 102));
         jLabel2.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Total: ");
         jLabel2.setOpaque(true);
@@ -255,7 +258,7 @@ public class OrderForm extends javax.swing.JPanel {
 
         billPanel.setBackground(new java.awt.Color(255, 255, 255));
         billPanel.setPreferredSize(new java.awt.Dimension(400, 800));
-        billPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        billPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
         scrollBill.setViewportView(billPanel);
 
         txtCustomer.setBorder(null);
@@ -298,22 +301,16 @@ public class OrderForm extends javax.swing.JPanel {
         orderBillParentPanelLayout.setHorizontalGroup(
             orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                        .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrollBill, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(259, 259, 259)))
-                        .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                         .addComponent(bPrintBill, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(lbTotalView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7))))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbTotalView, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(txtCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -321,7 +318,8 @@ public class OrderForm extends javax.swing.JPanel {
                 .addComponent(txtRank, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
+            .addComponent(scrollBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         orderBillParentPanelLayout.setVerticalGroup(
             orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,7 +336,7 @@ public class OrderForm extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                        .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
                         .addGap(20, 20, 20))
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                         .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -356,9 +354,9 @@ public class OrderForm extends javax.swing.JPanel {
         scrollProduct.setOpaque(false);
         scrollProduct.setPreferredSize(new java.awt.Dimension(100, 800));
 
-        productView.setBackground(new java.awt.Color(243, 243, 243));
+        productView.setBackground(new java.awt.Color(255, 255, 255));
         productView.setPreferredSize(new java.awt.Dimension(100, 600));
-        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10);
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 20, 20);
         flowLayout1.setAlignOnBaseline(true);
         productView.setLayout(flowLayout1);
         scrollProduct.setViewportView(productView);
@@ -367,17 +365,16 @@ public class OrderForm extends javax.swing.JPanel {
         productViewParentPanel.setLayout(productViewParentPanelLayout);
         productViewParentPanelLayout.setHorizontalGroup(
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(productViewParentPanelLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(scrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productViewParentPanelLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(scrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         productViewParentPanelLayout.setVerticalGroup(
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productViewParentPanelLayout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addComponent(scrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10))
+                .addGap(0, 0, 0)
+                .addComponent(scrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         scrollCatogory.setBackground(new java.awt.Color(255, 255, 255));
@@ -391,11 +388,31 @@ public class OrderForm extends javax.swing.JPanel {
         catagoryPanel.setForeground(new java.awt.Color(153, 255, 255));
         catagoryPanel.setOpaque(false);
         catagoryPanel.setPreferredSize(new java.awt.Dimension(1300, 60));
-        catagoryPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 10, 10));
+        java.awt.FlowLayout flowLayout2 = new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, 10, 10);
+        flowLayout2.setAlignOnBaseline(true);
+        catagoryPanel.setLayout(flowLayout2);
         scrollCatogory.setViewportView(catagoryPanel);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trending", "New", "Increase", "Decrease", " " }));
-        jComboBox2.setBorder(null);
+        cbOption.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trending", "New", "Increase", "Decrease", " " }));
+        cbOption.setBorder(null);
+        cbOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbOptionActionPerformed(evt);
+            }
+        });
+
+        txtSearch.setBackground(new java.awt.Color(204, 204, 204));
+        txtSearch.setForeground(new java.awt.Color(153, 153, 153));
+        txtSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
+        txtSearch.setHint("Search...");
+        txtSearch.setUnderlineColor(new java.awt.Color(153, 153, 153));
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchActionPerformed(evt);
+            }
+        });
+
+        cmdMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/search.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -403,28 +420,32 @@ public class OrderForm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(scrollCatogory, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbOption, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(scrollCatogory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(cmdMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(20, 20, 20)))
-                .addComponent(orderBillParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(orderBillParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(cmdMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20)
-                .addComponent(productViewParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(cbOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                .addGap(2, 2, 2))
             .addComponent(orderBillParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -564,8 +585,9 @@ public class OrderForm extends javax.swing.JPanel {
         lbTotalView.setText("0");
         txtCustomer.setText("");
         txtRank.setText("");
-        txtDiscount.setText("");
-         
+        txtDiscount.setText("0");
+        this.total = 0;
+        billRestore.clear();
      }
        
     
@@ -679,12 +701,23 @@ public class OrderForm extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_txtCustomerKeyReleased
+  
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void cbOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbOptionActionPerformed
+        // TODO add your handling code here:
+        System.out.println(cbOption.getSelectedItem().toString());
+    }//GEN-LAST:event_cbOptionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button bPrintBill;
     private javax.swing.JPanel billPanel;
     private javax.swing.JPanel catagoryPanel;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> cbOption;
+    private com.raven.swing.Button cmdMenu1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbTotalView;
@@ -697,5 +730,6 @@ public class OrderForm extends javax.swing.JPanel {
     private com.raven.swing.TextField txtCustomer;
     private com.raven.swing.TextField txtDiscount;
     private com.raven.swing.TextField txtRank;
+    private com.raven.swing.TextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
