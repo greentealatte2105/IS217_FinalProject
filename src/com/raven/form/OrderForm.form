@@ -55,7 +55,7 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="cbOption" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-              <Component id="productViewParentPanel" pref="490" max="32767" attributes="0"/>
+              <Component id="productViewParentPanel" pref="493" max="32767" attributes="0"/>
               <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
           </Group>
           <Component id="orderBillParentPanel" max="32767" attributes="0"/>

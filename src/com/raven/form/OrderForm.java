@@ -557,6 +557,21 @@ public class OrderForm extends javax.swing.JPanel {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        
+        // thêm data vào bill_customer
+        try {
+                String query = "CALL USP_AddBill_Customer(?, ?);";
+                PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
+                stmt.setInt(1, idBill);
+                stmt.setInt(2, idCustomer);
+                stmt.execute();
+                // get the id of the recently added customer
+//                idCustomer = CustomerDAO.getLastestId();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+
     }
     public void test(){
         JFileChooser fileChooser = new JFileChooser();
@@ -629,8 +644,9 @@ public class OrderForm extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         }
+        
+
         // tính tiền mọi bill
-//        JOptionPane.showMessageDialog(null, this.idCustomer);
         try {
                 String query = "CALL USP_CalculateBill(?);";
                 PreparedStatement stmt = ConnectionProvider.getCon().prepareStatement(query);
@@ -641,7 +657,7 @@ public class OrderForm extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         
-        // cập nhật tổng tiền đã chi của customer
+        // cập nhật tổng tiền đã chi của customer và thêm data vào bill_customer
         updateCustomerTotal(idCustomer, idBill);
         exportBillPdf();
         clearBill();

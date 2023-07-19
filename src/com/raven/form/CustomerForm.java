@@ -1,48 +1,115 @@
 
 package com.raven.form;
 
+import com.raven.dao.DbOperations;
 import com.raven.dao.UserDAO;
 import com.raven.model.User;
 import com.raven.swing.scrollbar.ScrollBarCustom;
 import com.raven.swing.table.EventAction;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.ResultSet;
 import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
 public class CustomerForm extends javax.swing.JPanel {
-
+    private DefaultTableModel model1;
+    private DefaultTableModel model2;
+    private DefaultTableModel model3;
+    
     /** Creates new form CustomerForm */
     public CustomerForm() {
         initComponents();
         jScrollPane1.setVerticalScrollBar(new ScrollBarCustom());
         jScrollPane2.setVerticalScrollBar(new ScrollBarCustom());
         jScrollPane3.setVerticalScrollBar(new ScrollBarCustom());
-        DefaultTableModel model1 = (DefaultTableModel) tbCustomer.getModel();
-        DefaultTableModel model2 = (DefaultTableModel) tbBillInfo.getModel();
-        DefaultTableModel model3 = (DefaultTableModel) tbBillDetail.getModel();
+        model1 = (DefaultTableModel) tbCustomer.getModel();
+        model2 = (DefaultTableModel) tbBillInfo.getModel();
+        model3 = (DefaultTableModel) tbBillDetail.getModel();
         
         model1.setRowCount(0);
         model2.setRowCount(0);
         model3.setRowCount(0);
+        
+        tbBillInfo.getColumnModel().getColumn(0).setMinWidth(0);
+        tbBillInfo.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbBillInfo.getColumnModel().getColumn(0).setWidth(0);
+        
+        initTableCustomer();
         
         tbCustomer.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
                 int row = tbCustomer.getSelectedRow();
                 String id = model1.getValueAt(row, 0).toString();
                 // query các bill KH đã mua
+                model2.setRowCount(0);
+                String query = "SELECT b.id, a.userName as staffName, b.dateCheckin, b.totalPrice " +
+                                "FROM Account a " +
+                                "JOIN Bill b ON a.id = b.idStaff " +
+                                "JOIN bill_customer bc ON b.id = bc.idBill " +
+                                "WHERE bc.idCustomer =" + id;
+                ResultSet rs = DbOperations.getData(query);
+                try {
+                    while(rs.next()){
+                        int idBill = rs.getInt("id");
+                        String staff = rs.getString("staffName");
+                        String date = rs.getString("dateCheckin");
+                        int total = rs.getInt("totalPrice");
+                        model2.addRow(new Object[]{idBill, staff, date, total});
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         
         tbBillInfo.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
+                model3.setRowCount(0);
                 int row = tbBillInfo.getSelectedRow();
-                String id = model1.getValueAt(row, 0).toString();
+                String idBill = model2.getValueAt(row, 0).toString();
                 // query các sản phẩm của bill đang chọn
+                String query = "SELECT p.name, p.price, bi.count " +
+                                "FROM Product p " +
+                                "JOIN BillInfo bi ON p.id = bi.idProduct " +
+                                "WHERE bi.idBill =" + idBill;
+                ResultSet rs = DbOperations.getData(query);
+                try {
+                    while(rs.next()){
+                        String nameProduct = rs.getString("name");
+                        int price = rs.getInt("price");
+                        int quantity = rs.getInt("count");
+                        int total = price * quantity;
+                        model3.addRow(new Object[]{nameProduct, quantity, total});
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
             }
         });
 
+    }
+    
+    private void initTableCustomer() {
+        String query = "SELECT c.id, c.phoneNumber AS phone, c.total, cc.name as rankName, cc.discount " +
+                                "FROM Customer c " +
+                                "JOIN CustomerCategory cc ON c.idRank = cc.id order by c.id";
+        ResultSet rs = DbOperations.getData(query);
+        try {
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String phone = rs.getString("phone");
+                int total = rs.getInt("total");
+                String rank = rs.getString("rankName");
+                int discount = rs.getInt("discount");
+                model1.addRow(new Object[]{id, phone, total, rank, discount+"%"});
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
   
@@ -68,7 +135,7 @@ public class CustomerForm extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "Staff", "Date", "Total"
+                "ID", "Staff", "Date", "Total discount"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -99,17 +166,17 @@ public class CustomerForm extends javax.swing.JPanel {
 
         tbBillDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "ID", "Product", "Quantity", "Total"
+                "Product", "Quantity", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -139,17 +206,17 @@ public class CustomerForm extends javax.swing.JPanel {
 
         tbCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Phone", "Quantity", "Total", "Rank", "Discount"
+                "ID", "Phone", "Total", "Rank", "Discount"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
