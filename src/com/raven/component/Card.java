@@ -110,7 +110,7 @@ public class Card extends javax.swing.JPanel {
 
         lbProductName.setBackground(new java.awt.Color(138, 131, 122));
         lbProductName.setFont(new java.awt.Font("Montserrat", 1, 16)); // NOI18N
-        lbProductName.setForeground(new java.awt.Color(52, 52, 52));
+        lbProductName.setForeground(new java.awt.Color(111, 51, 0));
         lbProductName.setText("Tra sua");
         lbProductName.setAutoscrolls(true);
         lbProductName.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -118,14 +118,16 @@ public class Card extends javax.swing.JPanel {
         lbProductName.setMinimumSize(new java.awt.Dimension(60, 20));
         lbProductName.setPreferredSize(new java.awt.Dimension(60, 20));
 
-        priceView.setBackground(new java.awt.Color(142, 139, 150));
+        priceView.setBackground(new java.awt.Color(204, 194, 187));
         priceView.setFont(new java.awt.Font("Montserrat", 0, 16)); // NOI18N
-        priceView.setForeground(new java.awt.Color(204, 204, 204));
+        priceView.setForeground(new java.awt.Color(125, 55, 74));
+        priceView.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         priceView.setText("1121313123123");
         priceView.setAutoscrolls(true);
         priceView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         priceView.setMaximumSize(new java.awt.Dimension(250, 30));
         priceView.setMinimumSize(new java.awt.Dimension(60, 30));
+        priceView.setOpaque(true);
         priceView.setPreferredSize(new java.awt.Dimension(30, 30));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -134,9 +136,9 @@ public class Card extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(priceView, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(priceView, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
