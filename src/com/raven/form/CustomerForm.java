@@ -45,7 +45,7 @@ public class CustomerForm extends javax.swing.JPanel {
                 String id = model1.getValueAt(row, 0).toString();
                 // query các bill KH đã mua
                 model2.setRowCount(0);
-                String query = "SELECT b.id, a.userName as staffName, b.dateCheckin, b.totalPrice " +
+                String query = "SELECT b.id, a.userName as staffName, b.dateCheckin, b.discount, b.totalPrice " +
                                 "FROM Account a " +
                                 "JOIN Bill b ON a.id = b.idStaff " +
                                 "JOIN bill_customer bc ON b.id = bc.idBill " +
@@ -54,10 +54,11 @@ public class CustomerForm extends javax.swing.JPanel {
                 try {
                     while(rs.next()){
                         int idBill = rs.getInt("id");
+                        int discount = rs.getInt("discount");
                         String staff = rs.getString("staffName");
                         String date = rs.getString("dateCheckin");
                         int total = rs.getInt("totalPrice");
-                        model2.addRow(new Object[]{idBill, staff, date, total});
+                        model2.addRow(new Object[]{idBill, staff, date, discount, total});
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -129,17 +130,17 @@ public class CustomerForm extends javax.swing.JPanel {
 
         tbBillInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Staff", "Date", "Total discount"
+                "ID", "Staff", "Date", "Discount", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
