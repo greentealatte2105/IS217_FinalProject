@@ -19,7 +19,7 @@ public class PopupMenu extends javax.swing.JDialog {
         super(parent, false);
         initComponents();
         setOpacity(0f);
-        setBackground(new Color(0, 0, 0, 0));
+        setBackground(new Color(255, 0, 255, 255));
         panel.setLayout(new MigLayout("fill, wrap", "8[fill, 120]0", "0[35, fill]0[35, fill]0"));
         int subMenuIndex = -1;
         for (String st : subMenu) {
@@ -32,7 +32,7 @@ public class PopupMenu extends javax.swing.JDialog {
                     closeMenu();
                 }
             });
-            panel.add(item);
+//            panel.add(item);
             setSize(new Dimension(120, 35 * subMenu.length));
         }
         TimingTarget target = new TimingTargetAdapter() {

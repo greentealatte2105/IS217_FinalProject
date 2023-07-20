@@ -65,18 +65,19 @@ public class EditForm extends javax.swing.JPanel {
                 }
                 bt.setBackground(choiceColor);
                 currentCatagoryButton = bt;
-                ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(productCategory.getId());
+               
                 productView.removeAll();
                 productView.repaint();
                 productView.revalidate();
-                initProductCard(list);
+                initProductCard(productCategory.getId());
                 
             }});
         return bt;
     }
                 
     
-    private void initProductCard(ArrayList<Product> listProduct){
+    private void initProductCard(int idCategory){
+        ArrayList<Product> listProduct = ProductDAO.getRecordsByIdCategory(idCategory);
         Iterator<Product> itr = listProduct.iterator();
         DecimalFormat df = new DecimalFormat("#,###,###");
         EventCard evt = new EventCard() {
@@ -91,10 +92,9 @@ public class EditForm extends javax.swing.JPanel {
         };
         while (itr.hasNext()) {
             Product productObj = itr.next();
-            
-        
+            String path = "/com/raven/images/" + String.valueOf(idCategory)+"/"+String.valueOf(productObj.getId())+".jpg";
             Product product = new Product(productObj.getId(), productObj.getName(), productObj.getPrice());
-            addProduct(new Card(product, evt,""));
+            addProduct(new Card(product, evt,path));
         }
     }
     public void updateTabble(JButton button){
@@ -141,6 +141,8 @@ public class EditForm extends javax.swing.JPanel {
         catagoryPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbLog = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         editParentPanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -215,7 +217,7 @@ public class EditForm extends javax.swing.JPanel {
                 .addComponent(jLabel3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editParentPanelLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(editParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(editParentPanelLayout.createSequentialGroup()
                         .addGroup(editParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -242,7 +244,7 @@ public class EditForm extends javax.swing.JPanel {
                             .addComponent(lbPrice)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         editParentPanelLayout.setVerticalGroup(
             editParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,7 +286,7 @@ public class EditForm extends javax.swing.JPanel {
         scrollProduct.setOpaque(false);
         scrollProduct.setPreferredSize(new java.awt.Dimension(100, 800));
 
-        productView.setBackground(new java.awt.Color(243, 243, 243));
+        productView.setBackground(new java.awt.Color(255, 255, 255));
         productView.setPreferredSize(new java.awt.Dimension(100, 600));
         java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 10);
         flowLayout1.setAlignOnBaseline(true);
@@ -354,13 +356,10 @@ public class EditForm extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollCatogory, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
                     .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(editParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+                    .addComponent(editParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

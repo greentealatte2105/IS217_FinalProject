@@ -1,4 +1,4 @@
-package raven.chart.blankchart;
+package com.raven.chart.blankchart;
 
 import java.awt.Color;
 import java.awt.FontMetrics;

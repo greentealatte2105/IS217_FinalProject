@@ -51,6 +51,8 @@ public class OrderForm extends javax.swing.JPanel {
     private final DecimalFormat df = new DecimalFormat("#,###,###");
     private int idCustomer = -1;
     private final TreeMap<String, billInfoRow> billRestore ;
+    private  final TreeMap<String, Integer> name2id;
+    private final boolean searching = false;
     public OrderForm() {
         initComponents();
        
@@ -59,13 +61,11 @@ public class OrderForm extends javax.swing.JPanel {
         scrollProduct.setVerticalScrollBar(new ScrollBarCustom());
         scrollCatogory.setHorizontalScrollBar(new ScrollBarCustom());
         
-        initCatagory();
         billRestore = new TreeMap<>();
-//        cbOption.removeAllItems();
-//        cbOption.addItem("Trending");
-        cbOption.addItem("Increase");
-        cbOption.addItem("Descrease");
-        
+        name2id = new TreeMap<>();
+        bSearch.setFont(new Font("Montserrat", Font.BOLD, 18));
+
+        initCatagory();
 
     }
     private void initCatagory(){
@@ -77,12 +77,13 @@ public class OrderForm extends javax.swing.JPanel {
         while (itr.hasNext()) {
             ProductCategory productCategoryObj = itr.next();
             catagoryPanel.add( createCatagroryButton(productCategoryObj) );
+            name2id.put(productCategoryObj.getName(), productCategoryObj.getId());
         }            
         Button initProducts = (Button) catagoryPanel.getComponent(0);
         currentCatagoryButton = initProducts;
         currentCatagoryButton.setBackground(choiceColor);
         getProduct(list.get(0).getId());
-       
+        System.err.println(name2id.toString());
     }
     
     public Button createCatagroryButton(ProductCategory productCategory){
@@ -103,19 +104,27 @@ public class OrderForm extends javax.swing.JPanel {
                 }
                 bt.setBackground(choiceColor);
                 currentCatagoryButton = bt;
-                
-                productView.removeAll();
-                productView.repaint();
-                productView.revalidate();
                 getProduct(productCategory.getId());
                 
             }});
         return bt;
     }
     
-    public void getProduct(int idCatagory){
+    public void getProduct(int idCategory){
+        
         int choice = cbOption.getSelectedIndex();
-        ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(idCatagory);
+        String item = cbOption.getSelectedItem().toString();
+
+//        ArrayList<Product> list = ProductDAO.getRecordsByIdCategory(idCatagory);
+        ArrayList<Product> list = ProductDAO.getRecordsByOptions(choice,idCategory);
+        showProduct(list);
+    }
+    public void showProduct(ArrayList<Product> list){
+        
+        productView.removeAll();
+        productView.repaint();
+        productView.revalidate();
+        
         Iterator<Product> itr = list.iterator();
         DecimalFormat df = new DecimalFormat("#,###,###");
         
@@ -182,11 +191,12 @@ public class OrderForm extends javax.swing.JPanel {
             }
         };
         productView.setPreferredSize(new Dimension(productView.getWidth(), list.size() * 290 /2 ));
+        int idCategory = name2id.get(currentCatagoryButton.getText());
         while (itr.hasNext()) {
             Product productObj = itr.next();
             
             Product product = new Product(productObj.getId(), productObj.getName(), productObj.getPrice()); 
-            String path = "/com/raven/images/" + String.valueOf(idCatagory)+"/"+String.valueOf(productObj.getId())+".jpg";
+            String path = "/com/raven/images/" + String.valueOf(idCategory)+"/"+String.valueOf(productObj.getId())+".jpg";
       
             addProduct(new Card(product, evt,path));
         }
@@ -219,11 +229,11 @@ public class OrderForm extends javax.swing.JPanel {
         catagoryPanel = new javax.swing.JPanel();
         cbOption = new javax.swing.JComboBox<>();
         txtSearch = new com.raven.swing.TextField();
-        cmdMenu1 = new com.raven.swing.Button();
+        bSearch = new com.raven.swing.Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        orderBillParentPanel.setBackground(new java.awt.Color(102, 102, 102));
+        orderBillParentPanel.setBackground(new java.awt.Color(51, 51, 51));
 
         bPrintBill.setBackground(new java.awt.Color(0, 153, 153));
         bPrintBill.setForeground(new java.awt.Color(255, 255, 255));
@@ -337,7 +347,7 @@ public class OrderForm extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
-                        .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
+                        .addComponent(bPrintBill, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
                         .addGap(20, 20, 20))
                     .addGroup(orderBillParentPanelLayout.createSequentialGroup()
                         .addGroup(orderBillParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -366,16 +376,11 @@ public class OrderForm extends javax.swing.JPanel {
         productViewParentPanel.setLayout(productViewParentPanelLayout);
         productViewParentPanelLayout.setHorizontalGroup(
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productViewParentPanelLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(scrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(scrollProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         productViewParentPanelLayout.setVerticalGroup(
             productViewParentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, productViewParentPanelLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(scrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+            .addComponent(scrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         scrollCatogory.setBackground(new java.awt.Color(255, 255, 255));
@@ -418,7 +423,12 @@ public class OrderForm extends javax.swing.JPanel {
             }
         });
 
-        cmdMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/search.png"))); // NOI18N
+        bSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/search.png"))); // NOI18N
+        bSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -426,17 +436,21 @@ public class OrderForm extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbOption, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE))
-                        .addGap(25, 25, 25))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(bSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(scrollCatogory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(cmdMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20)))
+                            .addComponent(scrollCatogory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 517, Short.MAX_VALUE)
+                                .addComponent(cbOption, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE))
+                        .addGap(25, 25, 25)))
                 .addComponent(orderBillParentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
@@ -444,13 +458,13 @@ public class OrderForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                    .addComponent(cmdMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20)
                 .addComponent(scrollCatogory, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+                .addGap(5, 5, 5)
+                .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
             .addComponent(orderBillParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -723,27 +737,49 @@ public class OrderForm extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_txtCustomerKeyReleased
-  
+    public void searchAction(){
+        String searhingText = txtSearch.getText();
+        bSearch.setIcon(null);
+        
+        bSearch.setText("X");
+        
+        ArrayList<Product> list = ProductDAO.searchProducts(searhingText);
+        showProduct(list);
+        
+    }
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
         
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void cbOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbOptionActionPerformed
-        // TODO add your handling code here:
-        System.out.println(cbOption.getSelectedItem().toString());
+        String name = currentCatagoryButton.getText();
+        int id = name2id.get(name);
+        getProduct(id);
+        
     }//GEN-LAST:event_cbOptionActionPerformed
 
     // tìm kiếm live (không cần nhấn enter, nhập tới đâu tìm tới đó)
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        searchAction();
     }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void bSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSearchActionPerformed
+        // TODO add your handling code here:
+        txtSearch.setText("");
+        bSearch.setText("");
+        bSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/search.png")));
+        String name = currentCatagoryButton.getText();
+        int id = name2id.get(name);
+        getProduct(id);
+    }//GEN-LAST:event_bSearchActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button bPrintBill;
+    private com.raven.swing.Button bSearch;
     private javax.swing.JPanel billPanel;
     private javax.swing.JPanel catagoryPanel;
     private javax.swing.JComboBox<String> cbOption;
-    private com.raven.swing.Button cmdMenu1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbTotalView;

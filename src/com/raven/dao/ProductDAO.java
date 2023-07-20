@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.raven.dao;
 
 import com.raven.model.Product;
@@ -10,10 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Dell
- */
+
 public class ProductDAO {
     public static void save(Product product) {
         String query = "insert into product (name,idCategory,price) values('" + product.getName() + "','" + product.getIdCategory() + "','" + product.getPrice() + "') ";
@@ -75,7 +69,7 @@ public class ProductDAO {
     public static ArrayList<Product> searchProducts(String search) {
         ArrayList<Product> arrayList = new ArrayList<>();
         try {
-            ResultSet rs = DbOperations.getData("SELECT * FROM Product WHERE name REGEXP 'Trà *'");
+            ResultSet rs = DbOperations.getData("SELECT * FROM Product WHERE name REGEXP '(\\w|\\W|\\u)*"+search+"(\\w|\\W|\\u)*'");
             while (rs.next()) {
                 Product product = new Product();
                 product.setId(rs.getInt("id"));
@@ -93,29 +87,34 @@ public class ProductDAO {
     }
     
     
-    public static ArrayList<Product> getRecordsByOptions(int option) {
+    public static ArrayList<Product> getRecordsByOptions(int option, int idCategory) {
         // 0 trending, 1 new, 2 increase, 3 decrease
         ArrayList<Product> arrayList = new ArrayList<>();
         String query = "";
         try {
             switch (option) {
                 case 0:
-                    query = "SELECT * FROM Product WHERE id IN " +
-                        "(SELECT idProduct FROM BillInfo bi " +
-"			GROUP BY bi.idProduct ORDER BY SUM(bi.count) DESC);";
+                    query = "SELECT * FROM Product WHERE idCategory = "+
+                            String.valueOf(idCategory)+ " and id IN " +
+                            "(SELECT idProduct FROM BillInfo bi " +
+                            "GROUP BY bi.idProduct ORDER BY SUM(bi.count) DESC);";
                     break;
                 case 1:
-                    query = "SELECT * FROM product ORDER BY id desc";
+                    query = "SELECT * FROM product WHERE idCategory = "+
+                            String.valueOf(idCategory)+" ORDER BY id desc";
                     break;
                 case 2:
-                    query = "SELECT * FROM product ORDER BY price asc";
+                    query = "SELECT * FROM product WHERE idCategory = "+
+                            String.valueOf(idCategory)+" ORDER BY price asc";
                     break;
                 case 3:
-                    query = "SELECT * FROM product ORDER BY price desc";
+                    query = "SELECT * FROM product WHERE idCategory = "+
+                            String.valueOf(idCategory)+" ORDER BY price desc";
                     break;
                 default:
                     throw new AssertionError();
             }
+//            System.err.println(idCategory);
 //            if (option == 0)
 //                query = "SELECT * " +
 //                        "FROM Product\n" +
@@ -148,17 +147,15 @@ public class ProductDAO {
     public static ArrayList<Product> getRecordsByIdCategory(int idCategory) {
         ArrayList<Product> arrayList = new ArrayList<>();
         try {
-            String query = "SELECT product.id, product.name, product.price, productCategory.name AS category " +
-                            "FROM product " +
-                            "JOIN productCategory ON product.idCategory = productCategory.id " +
-                            "WHERE productCategory.id = %s;";
+            String query = "SELECT * FROM product " +
+                            "WHERE idCategory = %s;";
             query = String.format(query, Integer.toString(idCategory));
             ResultSet rs = DbOperations.getData(query);
             while(rs.next()){
                 Product product = new Product();
                 product.setId(rs.getInt("id"));
                 product.setName(rs.getString("name"));
-//                product.setIdCategory(rs.getInt("category"));
+                product.setIdCategory(rs.getInt("idCategory"));
                 product.setPrice(rs.getInt("price"));
                 arrayList.add(product);
             }

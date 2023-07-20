@@ -1,4 +1,4 @@
-package raven.chart.blankchart;
+package com.raven.chart.blankchart;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;

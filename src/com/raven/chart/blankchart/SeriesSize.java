@@ -1,4 +1,4 @@
-package raven.chart.blankchart;
+package com.raven.chart.blankchart;
 
 public class SeriesSize {
 

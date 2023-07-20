@@ -1,4 +1,4 @@
-package raven.spline;
+package com.raven.spline;
 
 public class SplinePoint {
 

@@ -1,4 +1,4 @@
-package raven.chart;
+package com.raven.chart;
 
 public class ModelChart {
 

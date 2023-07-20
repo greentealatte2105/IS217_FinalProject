@@ -1,4 +1,4 @@
-package raven.panel;
+package com.raven.panel;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
-import raven.shadow.ShadowRenderer;
+import com.raven.shadow.ShadowRenderer;
 
 public class PanelShadow extends JPanel {
 
