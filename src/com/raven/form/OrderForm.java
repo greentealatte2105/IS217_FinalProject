@@ -157,6 +157,7 @@ public class OrderForm extends javax.swing.JPanel {
                 else  lbTotalView.setText(df.format(total));
             }
         };
+         
         EventCard evt = new EventCard() {
             @Override
             public void update(Product product) {
@@ -411,6 +412,11 @@ public class OrderForm extends javax.swing.JPanel {
                 txtSearchActionPerformed(evt);
             }
         });
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         cmdMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/raven/icon/search.png"))); // NOI18N
 
@@ -444,7 +450,7 @@ public class OrderForm extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addComponent(cbOption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                .addComponent(productViewParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
                 .addGap(2, 2, 2))
             .addComponent(orderBillParentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -727,6 +733,10 @@ public class OrderForm extends javax.swing.JPanel {
         // TODO add your handling code here:
         System.out.println(cbOption.getSelectedItem().toString());
     }//GEN-LAST:event_cbOptionActionPerformed
+
+    // tìm kiếm live (không cần nhấn enter, nhập tới đâu tìm tới đó)
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+    }//GEN-LAST:event_txtSearchKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.raven.swing.Button bPrintBill;

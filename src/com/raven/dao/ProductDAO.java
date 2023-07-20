@@ -71,6 +71,80 @@ public class ProductDAO {
         }
     }
     
+    
+    public static ArrayList<Product> searchProducts(String search) {
+        ArrayList<Product> arrayList = new ArrayList<>();
+        try {
+            ResultSet rs = DbOperations.getData("SELECT * FROM Product WHERE name REGEXP 'Trà *'");
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setIdCategory(rs.getInt("idCategory"));
+                product.setPrice(rs.getInt("price"));
+                arrayList.add(product);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+        return arrayList;
+    }
+    
+    
+    public static ArrayList<Product> getRecordsByOptions(int option) {
+        // 0 trending, 1 new, 2 increase, 3 decrease
+        ArrayList<Product> arrayList = new ArrayList<>();
+        String query = "";
+        try {
+            switch (option) {
+                case 0:
+                    query = "SELECT * FROM Product WHERE id IN " +
+                        "(SELECT idProduct FROM BillInfo bi " +
+"			GROUP BY bi.idProduct ORDER BY SUM(bi.count) DESC);";
+                    break;
+                case 1:
+                    query = "SELECT * FROM product ORDER BY id desc";
+                    break;
+                case 2:
+                    query = "SELECT * FROM product ORDER BY price asc";
+                    break;
+                case 3:
+                    query = "SELECT * FROM product ORDER BY price desc";
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+//            if (option == 0)
+//                query = "SELECT * " +
+//                        "FROM Product\n" +
+//                        "WHERE id IN " +
+//                        "(SELECT idProduct FROM BillInfo bi " +
+//"			GROUP BY bi.idProduct ORDER BY SUM(bi.count) DESC);";
+//            else if (option == 1)
+//                query = "SELECT * FROM product ORDER BY id desc";
+//            else if (option == 2)
+//                query = "SELECT * FROM product ORDER BY price asc";
+//            else if (option == 3)
+//                query = "SELECT * FROM product ORDER BY price desc";
+            
+            ResultSet rs = DbOperations.getData(query);
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setIdCategory(rs.getInt("idCategory"));
+                product.setPrice(rs.getInt("price"));
+                arrayList.add(product);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return arrayList;
+    }
+    
     public static ArrayList<Product> getRecordsByIdCategory(int idCategory) {
         ArrayList<Product> arrayList = new ArrayList<>();
         try {
@@ -112,6 +186,5 @@ public class ProductDAO {
         }
 
         return arrayList;
-
     }
 }
