@@ -95,7 +95,7 @@ public class UserDAO {
         ArrayList<User> arrayList = new ArrayList<>();
         String query = "SELECT a.id, a.userName, a.password, a.phoneNumber, a.email, a.role, b.timeCount " +
                         "FROM account a " +
-                        "JOIN staffmanagement b ON a.id = b.id " +
+                        "LEFT JOIN staffmanagement b ON a.id = b.id " +
                         "WHERE a.role = 'staff';";
         try {
             ResultSet rs = DbOperations.getData(query);

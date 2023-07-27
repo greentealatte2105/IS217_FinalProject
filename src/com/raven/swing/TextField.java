@@ -140,11 +140,12 @@ public class TextField extends JTextField {
             int h = getHeight();
             Insets ins = getInsets();
             FontMetrics fm = g.getFontMetrics();
-            g2.setColor(new Color(232, 232, 232));
+            g2.setColor(this.getForeground());
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f - animate));
             g2.drawString(hint, ins.left + (animate * 30), h / 2 + fm.getAscent() / 2  - 1);
         }
         g2.dispose();
         super.paint(g);
+        
     }
 }

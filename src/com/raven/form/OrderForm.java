@@ -400,6 +400,7 @@ public class OrderForm extends javax.swing.JPanel {
         scrollCatogory.setViewportView(catagoryPanel);
 
         cbOption.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trending", "New", "Increase", "Decrease", " " }));
+        cbOption.setSelectedIndex(1);
         cbOption.setBorder(null);
         cbOption.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -408,7 +409,7 @@ public class OrderForm extends javax.swing.JPanel {
         });
 
         txtSearch.setBackground(new java.awt.Color(204, 204, 204));
-        txtSearch.setForeground(new java.awt.Color(153, 153, 153));
+        txtSearch.setForeground(new java.awt.Color(51, 51, 51));
         txtSearch.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtSearch.setHint("Search...");
         txtSearch.setUnderlineColor(new java.awt.Color(153, 153, 153));
