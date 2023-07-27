@@ -55,6 +55,21 @@ public class UserDAO {
         return "";
     }
     
+    public static String getUserName(int id){
+        try {
+            String query = "SELECT userName FROM Account WHERE id=" +id;
+            ResultSet rs = DbOperations.getData(query);
+            if (rs.next()) {
+                String role = rs.getString("userName");
+                return role;
+            }
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, e, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return "";
+    }
+    
     public static User getObjUser(int id) {
         try {
             String query = "SELECT * FROM Account WHERE id=" +id;

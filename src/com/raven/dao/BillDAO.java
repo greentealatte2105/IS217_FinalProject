@@ -77,4 +77,61 @@ public class BillDAO {
         }
         return id;
     }
+    
+    // this is for admin
+    public static ArrayList<Bill> getBillByDate(String dateStart, String dateEnd, int option) {
+        ArrayList<Bill> arrayList = new ArrayList<>();
+        String query = "";
+        // quey by range date
+        if (option == 0)
+            query = "SELECT b.idStaff, b.dateCheckIn, b.discount, b.totalPrice FROM Bill b" +
+                            "WHERE dateCheckIn BETWEEN '" + dateStart + "' AND '" + dateEnd;
+        else // query today
+            query = "SELECT b.idStaff, b.dateCheckIn, b.discount, b.totalPrice FROM Bill b" +
+                            "WHERE dateCheckIn = CURDATE()";
+        try {
+            ResultSet rs = DbOperations.getData(query);
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setId(rs.getInt("idStaff"));
+                bill.setDate(rs.getString("dateCheckIn"));
+                bill.setDiscount(rs.getInt("discount"));
+                bill.setTotal(rs.getInt("totalPrice"));
+                arrayList.add(bill);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return arrayList;
+    }
+    
+    // this is for staff
+    public static ArrayList<Bill> getStaffBillByDate(String dateStart, String dateEnd, int option, String staffName) {
+        ArrayList<Bill> arrayList = new ArrayList<>();
+        String query = "";
+        // quey by range date
+        if (option == 0)
+            query = "SELECT b.dateCheckIn, b.discount, b.totalPrice FROM Bill b " +
+                    "JOIN account a ON b.idStaff = a.id " +
+                    "WHERE a.userName = '" + staffName + "' AND dateCheckIn BETWEEN '" + dateStart + "' AND '" + dateEnd;
+        else // query today
+            query = "SELECT b.dateCheckIn, b.discount, b.totalPrice FROM Bill b " +
+                    "JOIN account a ON b.idStaff = a.id " +
+                    "WHERE a.userName = '" + staffName + "' AND dateCheckIn = CURDATE()";
+        try {
+            ResultSet rs = DbOperations.getData(query);
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setDate(rs.getString("dateCheckIn"));
+                bill.setDiscount(rs.getInt("discount"));
+                bill.setTotal(rs.getInt("totalPrice"));
+                arrayList.add(bill);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return arrayList;
+    }
+    
+    
 }
