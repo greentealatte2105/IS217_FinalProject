@@ -1,7 +1,9 @@
 
 package com.raven.model;
 
+import com.raven.dao.UserDAO;
 import java.net.IDN;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -57,7 +59,12 @@ public class Bill {
     public void setTotal(int total) {
         this.total = total;
     }
-
+    public Object toRowObject(){
+        DecimalFormat df = new DecimalFormat("#,###,###");
+        String staffName = UserDAO.getUserName(this.idStaff);
+        System.err.println("name " + staffName);
+        return new Object[]{this.id, staffName,this.date,this.discount,df.format(this.total)};
+    }
 //    public ArrayList<BillInfo> getBillInfoList() {
 //        return billInfoList;
 //    }

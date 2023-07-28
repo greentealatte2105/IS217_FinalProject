@@ -6,6 +6,7 @@ import com.raven.dao.UserDAO;
 import com.raven.dialog.Message;
 import com.raven.event.EventMenuSelected;
 import com.raven.event.EventShowPopupMenu;
+import com.raven.form.BillForm;
 import com.raven.form.CustomerForm;
 import com.raven.form.EditForm;
 import com.raven.form.StaffManagementForm;
@@ -17,10 +18,8 @@ import com.raven.swing.MenuItem;
 import com.raven.swing.PopupMenu;
 import com.raven.swing.icon.GoogleMaterialDesignIcons;
 import com.raven.swing.icon.IconFontSwing;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,9 +37,6 @@ public class Main extends javax.swing.JFrame {
     private Animator animator;
     private User user;
     private int idUser;
-    private String username;
-    private String password;
-    private String role; 
     private Instant start = Instant.now();
     public Main(){
         initComponents();
@@ -49,9 +45,9 @@ public class Main extends javax.swing.JFrame {
 
     public Main(User objUser) {
         this.user = objUser;
-        this.username = objUser.getUserName();
+        objUser.getUserName();
         this.idUser = objUser.getId();
-        this.role = objUser.getRole();
+        objUser.getRole();
         initComponents();
         init();
     }
@@ -74,7 +70,7 @@ public class Main extends javax.swing.JFrame {
         menu.addEvent(new EventMenuSelected() {
             @Override
             public void menuSelected(int menuIndex, int subMenuIndex) {
-//                System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
+                System.out.println("Menu Index : " + menuIndex + " SubMenu Index " + subMenuIndex);
                 if (menuIndex == 0) {
 
                         //show home
@@ -89,17 +85,27 @@ public class Main extends javax.swing.JFrame {
                 else if (menuIndex == 3&& user.getRole().equals("admin")) {
                     main.showForm(new ReportForm());
                 }
-                else if (menuIndex == 4 && user.getRole().equals("admin")) {
-                    if (subMenuIndex == 0)
-                        main.showForm(new StaffManagementForm());
-                    else if (subMenuIndex == 1)
-                        main.showForm(new CustomerForm());
+                else if (menuIndex == (2 + (user.getRole().equals("admin") ? 2 : 0))) {
+                    subMenuIndex = user.getRole().equals("admin") ? subMenuIndex : (subMenuIndex >= 0)?2:-1;
+                    switch (subMenuIndex) {
+                        case 0:
+                            main.showForm(new StaffManagementForm());
+                            break;
+                        case 1:
+                            main.showForm(new CustomerForm());
+                            break;
+                        case 2:
+                            main.showForm(new BillForm(user));
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                 else if (menuIndex == (2 + (user.getRole().equals("admin") ? 3 : 0))){
+                 else if (menuIndex == (3 + (user.getRole().equals("admin") ? 2 : 0))){
                      new ChangePassword(user.getId()).setVisible(true);
                      setVisible(false);
                  }
-                 else if (menuIndex == (3 + (user.getRole().equals("admin") ? 3 : 0))){
+                 else if (menuIndex == (4 + (user.getRole().equals("admin") ? 2 : 0))){
                      //Log out
                      DecimalFormat dfFloat = new DecimalFormat("##.###");
                      Instant end = Instant.now();
@@ -161,16 +167,13 @@ public class Main extends javax.swing.JFrame {
         animator.setResolution(0);
         animator.setDeceleration(0.5f);
         animator.setAcceleration(0.5f);
-        header.addMenuEvent(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if (!animator.isRunning()) {
-                    animator.start();
-                }
-                menu.setEnableMenu(false);
-                if (menu.isShowMenu()) {
-                    menu.hideallMenu();
-                }
+        header.addMenuEvent((ActionEvent ae) -> {
+            if (!animator.isRunning()) {
+                animator.start();
+            }
+            menu.setEnableMenu(false);
+            if (menu.isShowMenu()) {
+                menu.hideallMenu();
             }
         });
         //  Init google icon font

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.raven.dao;
 
 import com.raven.model.Customer;
@@ -10,10 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Dell
- */
 public class CustomerDAO {
     public static void save(Customer customer) {
         String query = "insert into customer (idRank, phoneNumber, total) values('" + customer.getIdRank() + "','" + customer.getPhoneNumber() + "','" + customer.getTotal() + "') ";

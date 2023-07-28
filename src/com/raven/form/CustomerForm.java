@@ -2,15 +2,11 @@
 package com.raven.form;
 
 import com.raven.dao.DbOperations;
-import com.raven.dao.UserDAO;
-import com.raven.model.User;
 import com.raven.swing.scrollbar.ScrollBarCustom;
-import com.raven.swing.table.EventAction;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
-import java.text.DecimalFormat;
-import javax.swing.JOptionPane;
+import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -40,6 +36,7 @@ public class CustomerForm extends javax.swing.JPanel {
         initTableCustomer();
         
         tbCustomer.addMouseListener(new MouseAdapter(){
+            @Override
             public void mouseClicked(MouseEvent e){
                 int row = tbCustomer.getSelectedRow();
                 String id = model1.getValueAt(row, 0).toString();
@@ -67,6 +64,7 @@ public class CustomerForm extends javax.swing.JPanel {
         });
         
         tbBillInfo.addMouseListener(new MouseAdapter(){
+            @Override
             public void mouseClicked(MouseEvent e){
                 model3.setRowCount(0);
                 int row = tbBillInfo.getSelectedRow();
@@ -108,7 +106,7 @@ public class CustomerForm extends javax.swing.JPanel {
                 int discount = rs.getInt("discount");
                 model1.addRow(new Object[]{id, phone, total, rank, discount+"%"});
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }

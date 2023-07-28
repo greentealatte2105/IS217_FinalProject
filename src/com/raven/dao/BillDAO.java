@@ -79,49 +79,48 @@ public class BillDAO {
     }
     
     // this is for admin
-    public static ArrayList<Bill> getBillByDate(String dateStart, String dateEnd, int option) {
+    public static ArrayList<Bill> getBillByDate(String dateStart, String dateEnd) {
         ArrayList<Bill> arrayList = new ArrayList<>();
         String query = "";
         // quey by range date
-        if (option == 0)
-            query = "SELECT b.idStaff, b.dateCheckIn, b.discount, b.totalPrice FROM Bill b" +
-                            "WHERE dateCheckIn BETWEEN '" + dateStart + "' AND '" + dateEnd;
-        else // query today
-            query = "SELECT b.idStaff, b.dateCheckIn, b.discount, b.totalPrice FROM Bill b" +
-                            "WHERE dateCheckIn = CURDATE()";
+      
+        query = "SELECT * FROM Bill "
+                + "WHERE dateCheckIn BETWEEN '" + dateStart + "' AND '" + dateEnd+"'";
+        
         try {
+            System.out.println(query);
             ResultSet rs = DbOperations.getData(query);
             while (rs.next()) {
                 Bill bill = new Bill();
-                bill.setId(rs.getInt("idStaff"));
+                bill.setId(rs.getInt("id"));
+                bill.setIdStaff(rs.getInt("idStaff"));
                 bill.setDate(rs.getString("dateCheckIn"));
                 bill.setDiscount(rs.getInt("discount"));
                 bill.setTotal(rs.getInt("totalPrice"));
                 arrayList.add(bill);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+//            JOptionPane.showMessageDialog(null, e);
+              System.out.println(e);
         }
         return arrayList;
     }
     
     // this is for staff
-    public static ArrayList<Bill> getStaffBillByDate(String dateStart, String dateEnd, int option, String staffName) {
+    public static ArrayList<Bill> getBillByDateAndStaff(String dateStart, String dateEnd, String staffName) {
         ArrayList<Bill> arrayList = new ArrayList<>();
-        String query = "";
-        // quey by range date
-        if (option == 0)
-            query = "SELECT b.dateCheckIn, b.discount, b.totalPrice FROM Bill b " +
-                    "JOIN account a ON b.idStaff = a.id " +
-                    "WHERE a.userName = '" + staffName + "' AND dateCheckIn BETWEEN '" + dateStart + "' AND '" + dateEnd;
-        else // query today
-            query = "SELECT b.dateCheckIn, b.discount, b.totalPrice FROM Bill b " +
-                    "JOIN account a ON b.idStaff = a.id " +
-                    "WHERE a.userName = '" + staffName + "' AND dateCheckIn = CURDATE()";
+        String query = "SELECT b.id, b.idStaff, b.dateCheckIn, b.discount, b.totalPrice "
+                        + "FROM Bill b " 
+                        + "JOIN account a ON b.idStaff = a.id "
+                        + "WHERE  a.userName = '" + staffName + "' "
+                        + "AND dateCheckIn BETWEEN '" + dateStart + "' AND '" + dateEnd+"'";
+         
         try {
             ResultSet rs = DbOperations.getData(query);
             while (rs.next()) {
                 Bill bill = new Bill();
+                bill.setId(rs.getInt("id"));
+                bill.setIdStaff(rs.getInt("idStaff"));
                 bill.setDate(rs.getString("dateCheckIn"));
                 bill.setDiscount(rs.getInt("discount"));
                 bill.setTotal(rs.getInt("totalPrice"));
@@ -133,5 +132,27 @@ public class BillDAO {
         return arrayList;
     }
     
-    
+    public static ArrayList<Bill> getBillByStaff(String staffName) {
+        ArrayList<Bill> arrayList = new ArrayList<>();
+        String query = "SELECT b.id, b.idStaff, b.dateCheckIn, b.discount, b.totalPrice"
+                        + " FROM Bill b " 
+                        + "JOIN account a ON b.idStaff = a.id "
+                        + "WHERE  a.userName = '" + staffName + "' ";
+                
+        try {
+            ResultSet rs = DbOperations.getData(query);
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setId(rs.getInt("id"));
+                bill.setIdStaff(rs.getInt("idStaff"));
+                bill.setDate(rs.getString("dateCheckIn"));
+                bill.setDiscount(rs.getInt("discount"));
+                bill.setTotal(rs.getInt("totalPrice"));
+                arrayList.add(bill);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        return arrayList;
+    }
 }
