@@ -234,7 +234,6 @@ public class BillForm extends javax.swing.JPanel {
         txtBill.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtBill.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtBill.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        txtBill.setHint("Số hoá đơn");
         txtBill.setSelectionColor(new java.awt.Color(0, 0, 0));
         txtBill.setUnderlineColor(new java.awt.Color(153, 153, 153));
         txtBill.addActionListener(new java.awt.event.ActionListener() {
@@ -247,12 +246,14 @@ public class BillForm extends javax.swing.JPanel {
         txtStaff.setForeground(new java.awt.Color(102, 102, 102));
         txtStaff.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtStaff.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        txtStaff.setHint("User");
         txtStaff.setUnderlineColor(new java.awt.Color(153, 153, 153));
 
         txtDate.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Date Check In", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
         txtDate.setForeground(new java.awt.Color(102, 102, 102));
         txtDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDate.setHint("Choose date");
+        txtDate.setMinimumSize(new java.awt.Dimension(64, 45));
         txtDate.setUnderlineColor(new java.awt.Color(153, 153, 153));
 
         txtTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
@@ -260,7 +261,6 @@ public class BillForm extends javax.swing.JPanel {
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtTotal.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtTotal.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
-        txtTotal.setHint("Tổng tiền");
         txtTotal.setUnderlineColor(new java.awt.Color(153, 153, 153));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
