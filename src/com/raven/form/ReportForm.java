@@ -18,11 +18,11 @@ import com.raven.chart.ModelChart;
 public class ReportForm extends javax.swing.JPanel {
     public ReportForm() {
         initComponents();
-        chartRevenue.setTitle("Thống kê doanh thu");
-        chartRevenue.addLegend("Doanh thu", Color.decode("#1B5461"), Color.decode("#c0e5b1"));
+        chartRevenue.setTitle("Revenue");
+        chartRevenue.addLegend("Revenue", Color.decode("#1B5461"), Color.decode("#c0e5b1"));
         
-        chartProduct.setTitle("Thống kê số sản phẩm");
-        chartProduct.addLegend("Sản phẩm", Color.decode("#7b4397"), Color.decode("#dc2430"));
+        chartProduct.setTitle("Sold products");
+        chartProduct.addLegend("Products", Color.decode("#7b4397"), Color.decode("#dc2430"));
 //        test();
         setDataByQuarter();
     }
@@ -262,7 +262,7 @@ public class ReportForm extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
 
         bMonth.setBackground(new java.awt.Color(204, 255, 204));
-        bMonth.setText("Tháng");
+        bMonth.setText("Month");
         bMonth.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         bMonth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,7 +271,7 @@ public class ReportForm extends javax.swing.JPanel {
         });
 
         bQuarter.setBackground(new java.awt.Color(102, 153, 255));
-        bQuarter.setText("Quý");
+        bQuarter.setText("Quarter");
         bQuarter.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         bQuarter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -308,7 +308,7 @@ public class ReportForm extends javax.swing.JPanel {
         }
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Thống kê theo :");
+        jLabel2.setText("Statistics by:");
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Slowest Selling", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
 
@@ -338,7 +338,7 @@ public class ReportForm extends javax.swing.JPanel {
         }
 
         bQuarter1.setBackground(new java.awt.Color(255, 255, 204));
-        bQuarter1.setText("Số sản phẩm");
+        bQuarter1.setText("Top products");
         bQuarter1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         bQuarter1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -374,7 +374,7 @@ public class ReportForm extends javax.swing.JPanel {
         panelShadow2.setLayout(panelShadow2Layout);
         panelShadow2Layout.setHorizontalGroup(
             panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 497, Short.MAX_VALUE)
+            .addGap(0, 492, Short.MAX_VALUE)
             .addGroup(panelShadow2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelShadow2Layout.createSequentialGroup()
                     .addContainerGap()
@@ -399,8 +399,8 @@ public class ReportForm extends javax.swing.JPanel {
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(bMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(bQuarter, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -419,7 +419,7 @@ public class ReportForm extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 234, Short.MAX_VALUE))
+                                .addGap(0, 229, Short.MAX_VALUE))
                             .addComponent(panelShadow2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(0, 0, 0))
         );
@@ -442,6 +442,8 @@ public class ReportForm extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
+
+        jLabel2.getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
     private void bMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bMonthActionPerformed
