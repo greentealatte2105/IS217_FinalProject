@@ -12,12 +12,14 @@ This project used Swing library to build UI, MySQL and Apache NetBeans.
 * Apache Netbeans IDE: 17
 
 ## Features
-* Role division: admin, staff 
+* Role division (admin, staff)
 * Login, sign up, forgot password
 * Order, export bill
 * Report product sold, revenue and best/least selling products
-* Staff management: calculate salary
-* Customer management: rank
+* Bill management
+* Staff management (calculate salary)
+* Customer management (rank, purchased bill)
+  
 
 ## Installation
 * Create database in MySQL by run file `sql_script.sql`
@@ -35,13 +37,27 @@ This project used Swing library to build UI, MySQL and Apache NetBeans.
     <img src="https://github.com/npq-thien/README_Resources/blob/main/java_cafe/login.jpg" width=50%>
 <!-- ![login](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/login.jpg) -->
 
+### Navigator
+<p align="center">
+    <img src="https://github.com/npq-thien/README_Resources/blob/main/java_cafe/navigator.jpg" width=15%>
+
 ### Order
 ![order](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/order.jpg)
 
 ### Report
 ![report](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/report.jpg)
 
-### Bill
+### Managements
+**Staff**
+![staff_management](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/staff_management.jpg)
+
+**Customer**
+![customer_management](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/customer_management.jpg)
+
+**Bill**
+![bill_management](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/bill_management.jpg)
+
+### Export bill
 ![bill](https://github.com/npq-thien/README_Resources/blob/main/java_cafe/bill.jpg)
 
 
