@@ -42,7 +42,7 @@ public class UserDAO {
     
     public static String getUserRole(int id){
         try {
-            String query = "SELECT Role FROM Account WHERE id=" +id;
+            String query = "SELECT role FROM Account WHERE id=" +id;
             ResultSet rs = DbOperations.getData(query);
             if (rs.next()) {
                 String role = rs.getString("role");
@@ -60,8 +60,8 @@ public class UserDAO {
             String query = "SELECT userName FROM Account WHERE id=" +id;
             ResultSet rs = DbOperations.getData(query);
             if (rs.next()) {
-                String role = rs.getString("userName");
-                return role;
+                String name = rs.getString("userName");
+                return name;
             }
         }
         catch (Exception e){
@@ -110,7 +110,7 @@ public class UserDAO {
         ArrayList<User> arrayList = new ArrayList<>();
         String query = "SELECT a.id, a.userName, a.password, a.phoneNumber, a.email, a.role, b.timeCount " +
                         "FROM account a " +
-                        "JOIN staffmanagement b ON a.id = b.id " +
+                        "LEFT JOIN staffmanagement b ON a.id = b.id " +
                         "WHERE a.role = 'staff';";
         try {
             ResultSet rs = DbOperations.getData(query);

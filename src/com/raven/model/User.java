@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.raven.model;
 
 import com.raven.swing.table.EventAction;
 import com.raven.swing.table.ModelAction;
 import java.text.DecimalFormat;
 
-/**
- *
- * @author dothinhtpr247gmai.com
- */
 public class User {
     private int id = 0;
     private String userName = "";
@@ -91,6 +84,11 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+    
+    public boolean isStaff(){
+        return role.equals("staff");
+            
     }
             
     public Object[] toRowTable(EventAction event) {
