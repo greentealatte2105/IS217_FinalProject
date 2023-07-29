@@ -229,10 +229,13 @@ public class BillForm extends javax.swing.JPanel {
                     .addContainerGap()))
         );
 
+        txtBill.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Bill", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
         txtBill.setForeground(new java.awt.Color(102, 102, 102));
         txtBill.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtBill.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtBill.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtBill.setHint("Số hoá đơn");
+        txtBill.setSelectionColor(new java.awt.Color(0, 0, 0));
         txtBill.setUnderlineColor(new java.awt.Color(153, 153, 153));
         txtBill.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,18 +243,22 @@ public class BillForm extends javax.swing.JPanel {
             }
         });
 
+        txtStaff.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "User", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
         txtStaff.setForeground(new java.awt.Color(102, 102, 102));
         txtStaff.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtStaff.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtStaff.setHint("User");
         txtStaff.setUnderlineColor(new java.awt.Color(153, 153, 153));
 
+        txtDate.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Date Check In", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
         txtDate.setForeground(new java.awt.Color(102, 102, 102));
         txtDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtDate.setUnderlineColor(new java.awt.Color(153, 153, 153));
 
+        txtTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Total", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Montserrat", 1, 14))); // NOI18N
         txtTotal.setForeground(new java.awt.Color(102, 102, 102));
         txtTotal.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtTotal.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtTotal.setFont(new java.awt.Font("Montserrat", 0, 14)); // NOI18N
         txtTotal.setHint("Tổng tiền");
         txtTotal.setUnderlineColor(new java.awt.Color(153, 153, 153));
